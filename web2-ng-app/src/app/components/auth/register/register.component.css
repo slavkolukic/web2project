@@ -1,0 +1,33 @@
+.btn {
+  background: #e37222;
+}
+
+.img-center {
+  display: block;
+  margin: 0 auto;
+  border-radius: 2em;
+}
+
+.border-color-top {
+  border-top: solid orange 1px !important;
+  border-left: solid orange 1px !important;
+  border-right: solid orange 1px !important;
+}
+
+.border-color-bottom {
+  border-bottom: solid orange 1px !important;
+  border-left: solid orange 1px !important;
+  border-right: solid orange 1px !important;
+}
+
+.border-color-left {
+  border-left: solid orange 1px !important;
+}
+
+.border-color-right {
+  border-right: solid orange 1px !important;
+}
+
+.btn-create-accaunt {
+  border: solid darkcyan 1px;
+}
