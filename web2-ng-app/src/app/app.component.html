@@ -1,35 +1,47 @@
-<nav style="background-color: #e37222;" class="navbar navbar-dark">
-  <div class="container">
-    <a class="navbar-brand" href="#">WEB2</a>
+<div class="background-image">
+  <nav style="background-color: #e37222;" class="navbar navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">WEB2</a>
 
-    <nav class="nav nav-pills mr-auto flex-column flex-sm-row">
-      <a class="flex-sm-fill text-sm-center nav-link active" href="#">Home</a>
-      <a class="flex-sm-fill text-sm-center nav-link" href="#">Flights</a>
-      <a class="flex-sm-fill text-sm-center nav-link" href="#">Rent a Car</a>
-    </nav>
-    <nav class="nav nav-pills ml-auto flex-column flex-sm-row">
-      <a class="flex-sm-fill text-sm-center nav-link" href="#" routerLink="/login">Sign in</a>
-      <a class="flex-sm-fill text-sm-center nav-link" href="#" routerLink="/register">Register</a>
-    </nav>
+      <nav class="nav nav-pills mr-auto flex-column flex-sm-row">
+        <a class="flex-sm-fill text-sm-center nav-link active" href="#">Home</a>
+        <a class="flex-sm-fill text-sm-center nav-link" href="#">Flights</a>
+        <a class="flex-sm-fill text-sm-center nav-link" href="#">Rent a Car</a>
+      </nav>
+      <nav class="nav nav-pills ml-auto flex-column flex-sm-row">
+        <a
+          class="flex-sm-fill text-sm-center nav-link"
+          href="#"
+          routerLink="/login"
+          >Sign in</a
+        >
+        <a
+          class="flex-sm-fill text-sm-center nav-link"
+          href="#"
+          routerLink="/register"
+          >Register</a
+        >
+      </nav>
+    </div>
+  </nav>
+
+  <div
+    style="background-color: transparent; color: white;"
+    class="jumbotron jumbotron-fluid text-center"
+  >
+    <div class="container">
+      <h1 class="display-3">
+        WEB 2 Project
+      </h1>
+      <p class="lead">
+        pr125-2016, pr129-2016
+      </p>
+      <br />
+      <hr class="solid" />
+    </div>
   </div>
-</nav>
 
-<div
-  style="background-color: white; color: #07889b;"
-  class="jumbotron jumbotron-fluid text-center"
->
   <div class="container">
-    <h1 class="display-3">
-      WEB 2 Project
-    </h1>
-    <p class="lead">
-      pr125-2016, pr129-2016
-    </p>
-    <br>
-    <hr class="solid">
+    <router-outlet></router-outlet>
   </div>
-</div>
-
-<div class="container">
-  <router-outlet></router-outlet>
 </div>
