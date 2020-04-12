@@ -1,0 +1,16 @@
+.btn {
+  background: #e37222;
+}
+
+.img-center {
+  display: block;
+  margin: 0 auto;
+}
+
+.border-color {
+  border: solid orange 1px !important;
+}
+
+.btn-create-accaunt {
+  border: solid darkcyan 1px;
+}
