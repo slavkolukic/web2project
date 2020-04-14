@@ -12,14 +12,32 @@
           class="flex-sm-fill text-sm-center nav-link"
           href="#"
           routerLink="/login"
+          routerLinkActive="active"
           >Sign in</a
         >
         <a
           class="flex-sm-fill text-sm-center nav-link"
           href="#"
           routerLink="/register"
+          routerLinkActive="active"
           >Register</a
         >
+        <div class="dropdown">
+          <button
+            class="btn btn-secondary dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Petar
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="#">Edit profile</a>
+            <a class="dropdown-item" href="#">Sign out</a>
+          </div>
+        </div>
       </nav>
     </div>
   </nav>
@@ -43,4 +61,15 @@
   <div class="container">
     <router-outlet></router-outlet>
   </div>
+  <br />
+  <br />
+  <br />
+  <br />
 </div>
+
+<footer class="page-footer font-small">
+  <div class="footer-copyright text-center py-3">
+    © 2020 Copyright:
+    <a href="https://mdbootstrap.com/"> MDBootstrap.com</a>
+  </div>
+</footer>
