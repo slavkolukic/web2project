@@ -3,24 +3,28 @@
     <div class="container">
       <a class="navbar-brand">WEB2</a>
       <nav class="nav nav-pills mr-auto flex-column flex-sm-row">
-        <a class="flex-sm-fill text-sm-center nav-link active" href="#">Home</a>
         <a
           class="flex-sm-fill text-sm-center nav-link"
-          href="#"
+          routerLink="/home"
+          routerLinkActive="active"
+          >Home</a
+        >
+        <a
+          class="flex-sm-fill text-sm-center nav-link"
           routerLink="/flights"
+          routerLinkActive="active"
           >Flights</a
         >
         <a
           class="flex-sm-fill text-sm-center nav-link"
-          href="#"
           routerLink="/cars"
+          routerLinkActive="active"
           >Rent a Car</a
         >
       </nav>
       <nav class="nav nav-pills ml-auto flex-column flex-sm-row">
         <a
           class="flex-sm-fill text-sm-center nav-link"
-          href="#"
           routerLink="/login"
           routerLinkActive="active"
           >Sign in</a
@@ -44,8 +48,12 @@
             Petar
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="#">Edit profile</a>
+            <a class="dropdown-item" routerLink="/edit-profile">View profile</a>
             <a class="dropdown-item" href="#">Sign out</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Home Re</a>
+            <a class="dropdown-item" href="#">Flights Re</a>
+            <a class="dropdown-item" href="#">Cars Re</a>
           </div>
         </div>
       </nav>
