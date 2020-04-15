@@ -1,0 +1,8 @@
+.card {
+  border: solid orange 1px;
+}
+
+.transparent-background {
+  background-color: gray,
+    linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+}
