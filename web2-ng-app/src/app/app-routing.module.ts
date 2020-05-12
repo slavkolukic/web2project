@@ -12,6 +12,7 @@ import { EditProfileComponent } from './signedUser/profile/edit-profile/edit-pro
 import { FriendsComponent } from './signedUser/profile/friends/friends.component';
 import { UserFlightsComponent } from './signedUser/profile/user-flights/user-flights.component';
 import { UserCarsComponent } from './signedUser/profile/user-cars/user-cars.component';
+import { AirlineProfileComponent } from './unsignedUser/profiles/airline-profile/airline-profile.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -27,6 +28,7 @@ const routes: Routes = [
   { path: 'friends', component: FriendsComponent },
   { path: 'user-flights', component: UserFlightsComponent },
   { path: 'user-cars', component: UserCarsComponent },
+  { path: 'airline-profile', component: AirlineProfileComponent },
 ];
 
 @NgModule({
