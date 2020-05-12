@@ -13,6 +13,7 @@ import { FriendsComponent } from './signedUser/profile/friends/friends.component
 import { UserFlightsComponent } from './signedUser/profile/user-flights/user-flights.component';
 import { UserCarsComponent } from './signedUser/profile/user-cars/user-cars.component';
 import { AirlineProfileComponent } from './unsignedUser/profiles/airline-profile/airline-profile.component';
+import { RentACarProfileComponent } from './unsignedUser/profiles/rent-a-car-profile/rent-a-car-profile.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -29,6 +30,7 @@ const routes: Routes = [
   { path: 'user-flights', component: UserFlightsComponent },
   { path: 'user-cars', component: UserCarsComponent },
   { path: 'airline-profile', component: AirlineProfileComponent },
+  { path: 'rent-a-car-profile', component: RentACarProfileComponent },
 ];
 
 @NgModule({

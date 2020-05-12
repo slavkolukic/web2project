@@ -17,6 +17,7 @@ import { FriendsComponent } from './signedUser/profile/friends/friends.component
 import { UserCarsComponent } from './signedUser/profile/user-cars/user-cars.component';
 import { UserFlightsComponent } from './signedUser/profile/user-flights/user-flights.component';
 import { AirlineProfileComponent } from './unsignedUser/profiles/airline-profile/airline-profile.component';
+import { RentACarProfileComponent } from './unsignedUser/profiles/rent-a-car-profile/rent-a-car-profile.component';
 
 
 @NgModule({
@@ -36,6 +37,7 @@ import { AirlineProfileComponent } from './unsignedUser/profiles/airline-profile
     UserCarsComponent,
     UserFlightsComponent,
     AirlineProfileComponent,
+    RentACarProfileComponent,
 
   ],
   imports: [BrowserModule, AppRoutingModule],
