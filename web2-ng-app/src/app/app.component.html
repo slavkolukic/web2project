@@ -1,62 +1,90 @@
 <div class="background-image">
   <nav style="background-color: #e37222;" class="navbar navbar-dark">
     <div class="container">
-      <a routerLink="/home" class="navbar-brand">WEB2</a>
-      <nav class="nav nav-pills mr-auto flex-column flex-sm-row">
-        <a
-          class="flex-sm-fill text-sm-center nav-link"
-          routerLink="/home"
-          routerLinkActive="active"
-          >Home</a
-        >
-        <a
-          class="flex-sm-fill text-sm-center nav-link"
-          routerLink="/flights"
-          routerLinkActive="active"
-          >Flights</a
-        >
-        <a
-          class="flex-sm-fill text-sm-center nav-link"
-          routerLink="/cars"
-          routerLinkActive="active"
-          >Rent a Car</a
-        >
-      </nav>
-      <nav class="nav nav-pills ml-auto flex-column flex-sm-row">
-        <a
-          class="flex-sm-fill text-sm-center nav-link"
-          routerLink="/login"
-          routerLinkActive="active"
-          >Sign in</a
-        >
-        <a
-          class="flex-sm-fill text-sm-center nav-link"
-          href="#"
-          routerLink="/register"
-          routerLinkActive="active"
-          >Register</a
-        >
-        <div class="dropdown">
-          <button
-            class="btn btn-secondary dropdown-toggle"
-            type="button"
-            id="dropdownMenuButton"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
+      <div *ngIf="isUserLogged() == false; then unsigned; else signed"></div>
+      <ng-template #unsigned>
+        <a routerLink="/home" class="navbar-brand">WEB2</a>
+        <nav class="nav nav-pills mr-auto flex-column flex-sm-row">
+          <a
+            class="flex-sm-fill text-sm-center nav-link"
+            routerLink="/home"
+            routerLinkActive="active"
+            >Home</a
           >
-            Petar
-          </button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" routerLink="/edit-profile">View profile</a>
-            <a class="dropdown-item" href="#">Sign out</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Home Re</a>
-            <a class="dropdown-item" href="#">Flights Re</a>
-            <a class="dropdown-item" href="#">Cars Re</a>
+          <a
+            class="flex-sm-fill text-sm-center nav-link"
+            routerLink="/flights"
+            routerLinkActive="active"
+            >Flights</a
+          >
+          <a
+            class="flex-sm-fill text-sm-center nav-link"
+            routerLink="/cars"
+            routerLinkActive="active"
+            >Rent a Car</a
+          >
+        </nav>
+        <nav class="nav nav-pills ml-auto flex-column flex-sm-row">
+          <a
+            class="flex-sm-fill text-sm-center nav-link"
+            routerLink="/login"
+            routerLinkActive="active"
+            >Sign in
+          </a>
+          <a
+            class="flex-sm-fill text-sm-center nav-link"
+            href="#"
+            routerLink="/register"
+            routerLinkActive="active"
+            >Register
+          </a>
+        </nav>
+      </ng-template>
+      <ng-template #signed>
+        <a routerLink="/signed-home" class="navbar-brand">WEB2</a>
+        <nav class="nav nav-pills mr-auto flex-column flex-sm-row">
+          <a
+            class="flex-sm-fill text-sm-center nav-link"
+            routerLink="/signed-home"
+            routerLinkActive="active"
+            >Home</a
+          >
+          <a
+            class="flex-sm-fill text-sm-center nav-link"
+            routerLink="/signed-flights"
+            routerLinkActive="active"
+            >Flights</a
+          >
+          <a
+            class="flex-sm-fill text-sm-center nav-link"
+            routerLink="/signed-cars"
+            routerLinkActive="active"
+            >Rent a Car</a
+          >
+        </nav>
+        <nav class="nav nav-pills ml-auto flex-column flex-sm-row">
+          <div class="dropdown">
+            <button
+              class="btn btn-secondary dropdown-toggle"
+              type="button"
+              id="dropdownMenuButton"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Petar
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" routerLink="/edit-profile"
+                >View profile</a
+              >
+              <a class="dropdown-item" href="#" (click)="logOutUser()"
+                >Sign out
+              </a>
+            </div>
           </div>
-        </div>
-      </nav>
+        </nav>
+      </ng-template>
     </div>
   </nav>
 

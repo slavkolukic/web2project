@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { GlobalVariables } from './common/globalVariables';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,12 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'web2-ng-app';
+
+  isUserLogged(): boolean {
+    return GlobalVariables.GetLoggedUser();
+  }
+
+  logOutUser(): void {
+    GlobalVariables.loggedUser = false;
+  }
 }

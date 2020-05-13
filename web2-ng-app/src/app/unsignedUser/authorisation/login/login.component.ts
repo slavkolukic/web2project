@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GlobalVariables } from '../../../common/globalVariables';
 
 @Component({
   selector: 'app-login',
@@ -9,4 +10,8 @@ export class LoginComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {}
+
+  SetUserAsLogged(): void {
+    GlobalVariables.loggedUser = true;
+  }
 }
