@@ -9,11 +9,11 @@ import { GlobalVariables } from './common/globalVariables';
 export class AppComponent {
   title = 'web2-ng-app';
 
-  isUserLogged(): boolean {
+  isUserLogged(): string {
     return GlobalVariables.GetLoggedUser();
   }
 
   logOutUser(): void {
-    GlobalVariables.loggedUser = false;
+    GlobalVariables.loggedUser = 'unsigned';
   }
 }

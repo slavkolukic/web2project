@@ -1,7 +1,9 @@
 <div class="background-image">
   <nav style="background-color: #e37222;" class="navbar navbar-dark">
     <div class="container">
-      <div *ngIf="isUserLogged() == false; then unsigned; else signed"></div>
+      <div
+        *ngIf="isUserLogged() == 'unsigned'; then unsigned; else signed"
+      ></div>
       <ng-template #unsigned>
         <a routerLink="/home" class="navbar-brand">WEB2</a>
         <nav class="nav nav-pills mr-auto flex-column flex-sm-row">

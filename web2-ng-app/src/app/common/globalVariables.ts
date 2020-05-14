@@ -1,7 +1,7 @@
 export class GlobalVariables {
-  public static loggedUser: boolean = false;
+  public static loggedUser: string = 'unsigned';
 
-  static GetLoggedUser(): boolean {
+  static GetLoggedUser(): string {
     return GlobalVariables.loggedUser;
   }
 }
