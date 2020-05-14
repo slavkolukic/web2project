@@ -18,6 +18,9 @@ import { RacServiceEditProfileComponent } from './signedUser/rac-admin/rac-servi
 import { RacServiceCarsComponent } from './signedUser/rac-admin/rac-service-cars/rac-service-cars.component';
 import { RacServiceOfficesComponent } from './signedUser/rac-admin/rac-service-offices/rac-service-offices.component';
 import { RacServiceReportComponent } from './signedUser/rac-admin/rac-service-report/rac-service-report.component';
+import { RegisterRacCompanyComponent } from './signedUser/admin/register-rac-company/register-rac-company.component';
+import { RegisterFlightCompanyComponent } from './signedUser/admin/register-flight-company/register-flight-company.component';
+import { RegisterAdministratorComponent } from './signedUser/admin/register-administrator/register-administrator.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -35,6 +38,7 @@ const routes: Routes = [
   { path: 'user-cars', component: UserCarsComponent },
   { path: 'airline-profile', component: AirlineProfileComponent },
   { path: 'rent-a-car-profile', component: RentACarProfileComponent },
+
   {
     path: 'rac-service-edit-profile',
     component: RacServiceEditProfileComponent,
@@ -50,6 +54,18 @@ const routes: Routes = [
   {
     path: 'rac-service-report',
     component: RacServiceReportComponent,
+  },
+  {
+    path: 'register-rac-company',
+    component: RegisterRacCompanyComponent,
+  },
+  {
+    path: 'register-flight-company',
+    component: RegisterFlightCompanyComponent,
+  },
+  {
+    path: 'register-administrator',
+    component: RegisterAdministratorComponent,
   },
 ];
 

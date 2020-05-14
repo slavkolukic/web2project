@@ -72,6 +72,33 @@
               >My Car Service</a
             >
           </div>
+
+          <div *ngIf="isUserLogged() == 'admin'">
+            <div class="dropdown">
+              <button
+                class="btn btn-outline-light dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                style="border-color: #e37222;"
+              >
+                Registrations
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" routerLink="/register-rac-company"
+                  >Register RaC Company</a
+                >
+                <a class="dropdown-item" routerLink="/register-flight-company"
+                  >Register Flight Company
+                </a>
+                <a class="dropdown-item" routerLink="/register-administrator"
+                  >Register Administrator
+                </a>
+              </div>
+            </div>
+          </div>
         </nav>
         <nav class="nav nav-pills ml-auto flex-column flex-sm-row">
           <div class="dropdown">
