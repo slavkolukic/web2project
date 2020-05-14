@@ -14,6 +14,8 @@ import { UserFlightsComponent } from './signedUser/profile/user-flights/user-fli
 import { UserCarsComponent } from './signedUser/profile/user-cars/user-cars.component';
 import { AirlineProfileComponent } from './unsignedUser/profiles/airline-profile/airline-profile.component';
 import { RentACarProfileComponent } from './unsignedUser/profiles/rent-a-car-profile/rent-a-car-profile.component';
+import { RacServiceEditProfileComponent } from './signedUser/rac-admin/rac-service-edit-profile/rac-service-edit-profile.component';
+import { RacServiceCarsComponent } from './signedUser/rac-admin/rac-service-cars/rac-service-cars.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -31,6 +33,14 @@ const routes: Routes = [
   { path: 'user-cars', component: UserCarsComponent },
   { path: 'airline-profile', component: AirlineProfileComponent },
   { path: 'rent-a-car-profile', component: RentACarProfileComponent },
+  {
+    path: 'rac-service-edit-profile',
+    component: RacServiceEditProfileComponent,
+  },
+  {
+    path: 'rac-service-cars',
+    component: RacServiceCarsComponent,
+  },
 ];
 
 @NgModule({

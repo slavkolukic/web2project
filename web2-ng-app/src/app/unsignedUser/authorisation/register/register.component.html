@@ -1,129 +1,133 @@
 <div class="container">
-  <div class="row">
-    <div class="col-sm-4"></div>
-    <div class="col-sm-4 border-color-top" style="background: whitesmoke;">
-      <br />
-      <div>
-        <h4><b>Sign up and save</b></h4>
+  <form>
+    <div class="row">
+      <div class="col-sm-4"></div>
+      <div class="col-sm-4 border-color-top" style="background: whitesmoke;">
         <br />
-        <p class="lead">
-          Create an account now for access to member-only deals.
-        </p>
+        <div>
+          <h4><b>Sign up and save</b></h4>
+          <br />
+          <p class="lead">
+            Create an account now for access to member-only deals.
+          </p>
+        </div>
       </div>
-    </div>
-    <div class="col-sm-4"></div>
-  </div>
-
-  <div class="row">
-    <div class="col-sm-4"></div>
-    <div class="col-sm-2 border-color-left" style="background: whitesmoke;">
-      <div class="form-group">
-        <input
-          type="text"
-          class="form-control"
-          id="RegisterName"
-          placeholder="Name"
-        />
-      </div>
-
-      <div class="form-group">
-        <input
-          type="text"
-          class="form-control"
-          id="RegisterCity"
-          placeholder="City"
-        />
-      </div>
-
-      <div class="form-group">
-        <input
-          type="password"
-          class="form-control"
-          id="RegisterPassword"
-          placeholder="Password"
-        />
-      </div>
+      <div class="col-sm-4"></div>
     </div>
 
-    <div
-      class="col-sm-2 rounded border-color-right"
-      style="background: whitesmoke;"
-    >
-      <div class="form-group">
-        <input
-          type="text"
-          class="form-control"
-          id="RegisterLastName"
-          placeholder="Last name"
-        />
+    <div class="row">
+      <div class="col-sm-4"></div>
+      <div class="col-sm-2 border-color-left" style="background: whitesmoke;">
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control"
+            id="RegisterName"
+            placeholder="Name"
+          />
+        </div>
+
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control"
+            id="RegisterCity"
+            placeholder="City"
+          />
+        </div>
+
+        <div class="form-group">
+          <input
+            type="password"
+            class="form-control"
+            id="RegisterPassword"
+            placeholder="Password"
+          />
+        </div>
       </div>
 
-      <div class="form-group">
-        <input
-          type="number"
-          class="form-control"
-          id="RegisterPhoneNumber"
-          placeholder="Phone number"
-        />
-      </div>
+      <div
+        class="col-sm-2 rounded border-color-right"
+        style="background: whitesmoke;"
+      >
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control"
+            id="RegisterLastName"
+            placeholder="Last name"
+          />
+        </div>
 
-      <div class="form-group">
-        <input
-          type="password"
-          class="form-control"
-          id="RegisterPasswordRepeat"
-          placeholder="Repeat password"
-        />
+        <div class="form-group">
+          <input
+            type="number"
+            class="form-control"
+            id="RegisterPhoneNumber"
+            placeholder="Phone number"
+          />
+        </div>
+
+        <div class="form-group">
+          <input
+            type="password"
+            class="form-control"
+            id="RegisterPasswordRepeat"
+            placeholder="Repeat password"
+          />
+        </div>
       </div>
+      <div class="col-sm-4"></div>
     </div>
-    <div class="col-sm-4"></div>
-  </div>
 
-  <div class="row">
-    <div class="col-sm-4"></div>
-    <div class="col-sm-4 border-color-bottom" style="background: whitesmoke;">
-      <div class="form-group">
-        <input
-          type="email"
-          class="form-control"
-          id="RegisterEmail"
-          placeholder="Enter email"
-        />
-      </div>
+    <div class="row">
+      <div class="col-sm-4"></div>
+      <div class="col-sm-4 border-color-bottom" style="background: whitesmoke;">
+        <div class="form-group">
+          <input
+            type="email"
+            class="form-control"
+            id="RegisterEmail"
+            placeholder="Enter email"
+          />
+        </div>
 
-      <div>
-        <button type="button" class="btn btn-primary btn-block">Sign in</button>
-      </div>
-      <div>
-        <br />
-        <p class="text-muted">
-          ------------------------ or -------------------------
-        </p>
-      </div>
+        <div>
+          <button type="button" class="btn btn-primary btn-block">
+            Sign in
+          </button>
+        </div>
+        <div>
+          <br />
+          <p class="text-muted">
+            ------------------------ or -------------------------
+          </p>
+        </div>
 
-      <div>
-        <img
-          src="../../../../assets/google_sign-in_logo.png"
-          class="img-center"
-          alt="Google button"
-        />
-        <br />
-      </div>
+        <div>
+          <img
+            src="../../../../assets/google_sign-in_logo.png"
+            class="img-center"
+            alt="Google button"
+          />
+          <br />
+        </div>
 
-      <div>
-        <p>
-          Already have an account?
-          <a routerLink="/login"
-            ><button
-              type="button"
-              class="btn-create-accaunt float-right rounded"
+        <div>
+          <p>
+            Already have an account?
+            <a routerLink="/login"
+              ><button
+                type="button"
+                class="btn-create-accaunt float-right rounded"
+              >
+                Sign in
+              </button></a
             >
-              Sign in
-            </button></a
-          >
-        </p>
+          </p>
+        </div>
       </div>
+      <div class="col-sm-4"></div>
     </div>
-    <div class="col-sm-4"></div>
-  </div>
+  </form>
 </div>

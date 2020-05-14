@@ -18,7 +18,9 @@ import { UserCarsComponent } from './signedUser/profile/user-cars/user-cars.comp
 import { UserFlightsComponent } from './signedUser/profile/user-flights/user-flights.component';
 import { AirlineProfileComponent } from './unsignedUser/profiles/airline-profile/airline-profile.component';
 import { RentACarProfileComponent } from './unsignedUser/profiles/rent-a-car-profile/rent-a-car-profile.component';
-
+import { RacServiceNavbarComponent } from './signedUser/rac-admin/rac-service-navbar/rac-service-navbar.component';
+import { RacServiceEditProfileComponent } from './signedUser/rac-admin/rac-service-edit-profile/rac-service-edit-profile.component';
+import { RacServiceCarsComponent } from './signedUser/rac-admin/rac-service-cars/rac-service-cars.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,9 @@ import { RentACarProfileComponent } from './unsignedUser/profiles/rent-a-car-pro
     UserFlightsComponent,
     AirlineProfileComponent,
     RentACarProfileComponent,
-
+    RacServiceNavbarComponent,
+    RacServiceEditProfileComponent,
+    RacServiceCarsComponent,
   ],
   imports: [BrowserModule, AppRoutingModule],
   providers: [],

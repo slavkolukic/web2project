@@ -63,6 +63,15 @@
             routerLinkActive="active"
             >Rent a Car</a
           >
+
+          <div *ngIf="isUserLogged() == 'rac-admin'">
+            <a
+              class="flex-sm-fill text-sm-center nav-link"
+              routerLink="/rac-service-edit-profile"
+              routerLinkActive="active"
+              >My Car Service</a
+            >
+          </div>
         </nav>
         <nav class="nav nav-pills ml-auto flex-column flex-sm-row">
           <div class="dropdown">

@@ -1,0 +1,123 @@
+<app-rac-service-navbar></app-rac-service-navbar>
+<div class="container transparent-bg">
+  <br />
+  <div *ngIf="newCarProcess == false; then button; else newCarAddition"></div>
+  <ng-template #button>
+    <div class="row justify-content-center">
+      <button
+        type="button"
+        class="btn btn-secondary btn-lg"
+        (click)="newCarOn()"
+      >
+        Add new car
+      </button>
+    </div>
+  </ng-template>
+
+  <ng-template #newCarAddition>
+    <div class="row">
+      <div class="col-sm-4"></div>
+      <div class="col-sm-4 rounded border-color transparent-bg">
+        <br />
+        <div class="text-center">
+          <h4><b>Add new car</b></h4>
+        </div>
+
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control"
+            id="carModel"
+            placeholder="Car model"
+          />
+        </div>
+
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control"
+            id="office"
+            placeholder="Office"
+          />
+        </div>
+
+        <div class="form-group">
+          <input
+            type="number"
+            class="form-control"
+            id="pricePerDay"
+            placeholder="Price per day ($)"
+          />
+        </div>
+
+        <div>
+          <button
+            type="submit"
+            class="btn btn-secondary btn-block"
+            (click)="newCarOff()"
+          >
+            Add car
+          </button>
+          <br />
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <table class="table table-bordered text-center">
+    <thead style="background: #e37222;">
+      <tr>
+        <th scope="col">Car</th>
+        <th scope="col">Office</th>
+        <th scope="col">Price per day</th>
+        <th scope="col">Status</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Audi</td>
+        <td>Petra Petrovica 2, Novi Sad</td>
+        <td>10$</td>
+        <td>Reserved</td>
+        <td>
+          <button type="button" class="btn mx-4 btn-secondary btn-sm">
+            Edit
+          </button>
+          <button type="button" class="btn mx-4 btn-secondary btn-sm">
+            Remove
+          </button>
+        </td>
+      </tr>
+      <tr>
+        <td>Fiat</td>
+        <td>Marka Markovica 1, Belgrade</td>
+        <td>7$</td>
+        <td>Available</td>
+        <td>
+          <button type="button" class="btn mx-4 btn-secondary btn-sm">
+            Edit
+          </button>
+          <button type="button" class="btn mx-4 btn-secondary btn-sm">
+            Remove
+          </button>
+        </td>
+      </tr>
+      <tr>
+        <td>BMW</td>
+        <td>Marka Markovica 1, Belgrade</td>
+        <td>15$</td>
+        <td>Available</td>
+        <td>
+          <button type="button" class="btn mx-4 btn-secondary btn-sm">
+            Edit
+          </button>
+          <button type="button" class="btn mx-4 btn-secondary btn-sm">
+            Remove
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <br />
+</div>
