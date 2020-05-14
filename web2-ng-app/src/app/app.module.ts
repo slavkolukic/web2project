@@ -22,6 +22,7 @@ import { RacServiceNavbarComponent } from './signedUser/rac-admin/rac-service-na
 import { RacServiceEditProfileComponent } from './signedUser/rac-admin/rac-service-edit-profile/rac-service-edit-profile.component';
 import { RacServiceCarsComponent } from './signedUser/rac-admin/rac-service-cars/rac-service-cars.component';
 import { RacServiceOfficesComponent } from './signedUser/rac-admin/rac-service-offices/rac-service-offices.component';
+import { RacServiceReportComponent } from './signedUser/rac-admin/rac-service-report/rac-service-report.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { RacServiceOfficesComponent } from './signedUser/rac-admin/rac-service-o
     RacServiceEditProfileComponent,
     RacServiceCarsComponent,
     RacServiceOfficesComponent,
+    RacServiceReportComponent,
   ],
   imports: [BrowserModule, AppRoutingModule],
   providers: [],

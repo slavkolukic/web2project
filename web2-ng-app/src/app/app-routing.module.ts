@@ -17,6 +17,7 @@ import { RentACarProfileComponent } from './unsignedUser/profiles/rent-a-car-pro
 import { RacServiceEditProfileComponent } from './signedUser/rac-admin/rac-service-edit-profile/rac-service-edit-profile.component';
 import { RacServiceCarsComponent } from './signedUser/rac-admin/rac-service-cars/rac-service-cars.component';
 import { RacServiceOfficesComponent } from './signedUser/rac-admin/rac-service-offices/rac-service-offices.component';
+import { RacServiceReportComponent } from './signedUser/rac-admin/rac-service-report/rac-service-report.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -45,6 +46,10 @@ const routes: Routes = [
   {
     path: 'rac-service-offices',
     component: RacServiceOfficesComponent,
+  },
+  {
+    path: 'rac-service-report',
+    component: RacServiceReportComponent,
   },
 ];
 
