@@ -39,7 +39,7 @@ const routes: Routes = [
   { path: 'user-cars', component: UserCarsComponent },
   { path: 'airline-profile', component: AirlineProfileComponent },
   { path: 'rent-a-car-profile', component: RentACarProfileComponent },
-  { path: 'add-new-friend', component: AddNewFriendComponent },
+  { path: 'friends/add-new-friend', component: AddNewFriendComponent },
 
   {
     path: 'rac-service-edit-profile',
