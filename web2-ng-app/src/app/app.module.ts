@@ -26,6 +26,7 @@ import { RacServiceReportComponent } from './signedUser/rac-admin/rac-service-re
 import { RegisterRacCompanyComponent } from './signedUser/admin/register-rac-company/register-rac-company.component';
 import { RegisterFlightCompanyComponent } from './signedUser/admin/register-flight-company/register-flight-company.component';
 import { RegisterAdministratorComponent } from './signedUser/admin/register-administrator/register-administrator.component';
+import { AddNewFriendComponent } from './signedUser/profile/add-new-friend/add-new-friend.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { RegisterAdministratorComponent } from './signedUser/admin/register-admi
     RegisterRacCompanyComponent,
     RegisterFlightCompanyComponent,
     RegisterAdministratorComponent,
+    AddNewFriendComponent,
   ],
   imports: [BrowserModule, AppRoutingModule],
   providers: [],

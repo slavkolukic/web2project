@@ -21,6 +21,7 @@ import { RacServiceReportComponent } from './signedUser/rac-admin/rac-service-re
 import { RegisterRacCompanyComponent } from './signedUser/admin/register-rac-company/register-rac-company.component';
 import { RegisterFlightCompanyComponent } from './signedUser/admin/register-flight-company/register-flight-company.component';
 import { RegisterAdministratorComponent } from './signedUser/admin/register-administrator/register-administrator.component';
+import { AddNewFriendComponent } from './signedUser/profile/add-new-friend/add-new-friend.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -38,6 +39,7 @@ const routes: Routes = [
   { path: 'user-cars', component: UserCarsComponent },
   { path: 'airline-profile', component: AirlineProfileComponent },
   { path: 'rent-a-car-profile', component: RentACarProfileComponent },
+  { path: 'add-new-friend', component: AddNewFriendComponent },
 
   {
     path: 'rac-service-edit-profile',
