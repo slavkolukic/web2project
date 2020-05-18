@@ -6,3 +6,12 @@
   background-color: gray,
     linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
 }
+
+.table-head-color {
+  background-color: #e37222;
+}
+
+.center-cards {
+  display: flex;
+  justify-content: center;
+}
