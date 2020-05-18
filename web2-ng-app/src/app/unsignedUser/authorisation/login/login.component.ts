@@ -12,6 +12,6 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {}
 
   SetUserAsLogged(): void {
-    GlobalVariables.loggedUser = 'rzmin';
+    GlobalVariables.loggedUser = 'rac-admin';
   }
 }

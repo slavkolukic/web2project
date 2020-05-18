@@ -7,10 +7,12 @@ import { LoginComponent } from './unsignedUser/authorisation/login/login.compone
 import { RegisterComponent } from './unsignedUser/authorisation/register/register.component';
 import { UnsignedHomeComponent } from './unsignedUser/unsigned-home/unsigned-home.component';
 import { UnsignedFlightsComponent } from './unsignedUser/unsigned-flights/unsigned-flights.component';
-import { UnsignedCarsComponent } from './unsignedUser/unsigned-cars/unsigned-cars.component';
+import { UnsignedRacServicesCarsComponent } from './unsignedUser/unsigned-cars/unsigned-rac-services-cars/unsigned-rac-services-cars.component';
+import { UnsignedRacServicesComponent } from './unsignedUser/unsigned-cars/unsigned-rac-services/unsigned-rac-services.component';
 import { SignedHomeComponent } from './signedUser/signed-home/signed-home.component';
 import { SignedFlightsComponent } from './signedUser/signed-flights/signed-flights.component';
-import { SignedCarsComponent } from './signedUser/signed-cars/signed-cars.component';
+import { SignedRacServicesComponent } from './signedUser/signed-cars/signed-rac-services/signed-rac-services.component';
+import { SignedRacServicesCarsComponent } from './signedUser/signed-cars/signed-rac-services-cars/signed-rac-services-cars.component';
 import { ProfileNavbarComponent } from './signedUser/profile/profile-navbar/profile-navbar.component';
 import { EditProfileComponent } from './signedUser/profile/edit-profile/edit-profile.component';
 import { FriendsComponent } from './signedUser/profile/friends/friends.component';
@@ -35,10 +37,8 @@ import { AddNewFriendComponent } from './signedUser/profile/add-new-friend/add-n
     RegisterComponent,
     UnsignedHomeComponent,
     UnsignedFlightsComponent,
-    UnsignedCarsComponent,
     SignedHomeComponent,
     SignedFlightsComponent,
-    SignedCarsComponent,
     ProfileNavbarComponent,
     EditProfileComponent,
     FriendsComponent,
@@ -55,6 +55,10 @@ import { AddNewFriendComponent } from './signedUser/profile/add-new-friend/add-n
     RegisterFlightCompanyComponent,
     RegisterAdministratorComponent,
     AddNewFriendComponent,
+    UnsignedRacServicesCarsComponent,
+    UnsignedRacServicesComponent,
+    SignedRacServicesComponent,
+    SignedRacServicesCarsComponent,
   ],
   imports: [BrowserModule, AppRoutingModule],
   providers: [],
