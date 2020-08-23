@@ -22,8 +22,9 @@
           <input
             type="text"
             class="form-control"
-            id="RegisterName"
             placeholder="Name"
+            [(ngModel)]="name"
+            name="name"
           />
         </div>
 
@@ -31,8 +32,9 @@
           <input
             type="text"
             class="form-control"
-            id="RegisterCity"
             placeholder="City"
+            [(ngModel)]="city"
+            name="city"
           />
         </div>
 
@@ -40,8 +42,9 @@
           <input
             type="password"
             class="form-control"
-            id="RegisterPassword"
             placeholder="Password"
+            [(ngModel)]="password"
+            name="password"
           />
         </div>
       </div>
@@ -54,8 +57,9 @@
           <input
             type="text"
             class="form-control"
-            id="RegisterLastName"
             placeholder="Last name"
+            [(ngModel)]="lastName"
+            name="lastName"
           />
         </div>
 
@@ -63,8 +67,9 @@
           <input
             type="number"
             class="form-control"
-            id="RegisterPhoneNumber"
             placeholder="Phone number"
+            [(ngModel)]="phoneNumber"
+            name="phoneNumber"
           />
         </div>
 
@@ -72,8 +77,9 @@
           <input
             type="password"
             class="form-control"
-            id="RegisterPasswordRepeat"
             placeholder="Repeat password"
+            [(ngModel)]="repeatedPassword"
+            name="repeatedPassword"
           />
         </div>
       </div>
@@ -87,20 +93,25 @@
           <input
             type="email"
             class="form-control"
-            id="RegisterEmail"
             placeholder="Enter email"
+            [(ngModel)]="email"
+            name="email"
           />
         </div>
 
         <div>
-          <button type="button" class="btn btn-primary btn-block">
-            Sign in
+          <button
+            type="button"
+            class="btn btn-primary btn-block"
+            (click)="onSubmit()"
+          >
+            Sign up
           </button>
         </div>
         <div>
           <br />
           <p class="text-muted">
-            ------------------------ or -------------------------
+            ----------------------------------------------
           </p>
         </div>
 

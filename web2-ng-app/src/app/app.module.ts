@@ -29,6 +29,7 @@ import { RegisterRacCompanyComponent } from './signedUser/admin/register-rac-com
 import { RegisterFlightCompanyComponent } from './signedUser/admin/register-flight-company/register-flight-company.component';
 import { RegisterAdministratorComponent } from './signedUser/admin/register-administrator/register-administrator.component';
 import { AddNewFriendComponent } from './signedUser/profile/add-new-friend/add-new-friend.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,7 @@ import { AddNewFriendComponent } from './signedUser/profile/add-new-friend/add-n
     SignedRacServicesComponent,
     SignedRacServicesCarsComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule],
+  imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [],
   bootstrap: [AppComponent],
 })
