@@ -9,62 +9,87 @@
     using System.Security.Claims;
     using System.Text;
     using System.Threading.Tasks;
+    using web2_server.Database;
     using web2_server.Models;
     using web2_server.Models.Identity;
 
-    public class IdentityController : ApiController
+    public class UserController : ApiController
     {
         private readonly UserManager<User> userManager;
         private readonly AppSettings appSettings;
+        private DatabaseContext _dbContext;
 
-        public IdentityController(
+        public UserController(
             UserManager<User> userManager,
-            IOptions<AppSettings> appSettings)
+            IOptions<AppSettings> appSettings,
+            DatabaseContext db)
         {
             this.userManager = userManager;
             this.appSettings = appSettings.Value;
+            this._dbContext = db;
         }
 
+        [HttpPost]
         [Route(nameof(Register))]
         public async Task<ActionResult> Register(RegisterUserRequestModel model)
         {
-            var user = new User
+            var userExists = await userManager.FindByEmailAsync(model.Email);
+            if (userExists == null)
             {
-                Name = model.Name,
-                LastName = model.LastName,
-                Email = model.Email,
-                PhoneNumber = model.PhoneNumber,
-                City = model.City
-            };
-            var result = await this.userManager.CreateAsync(user, model.Password);
+                var newUser = new User()
+                {
+                    UserName = model.Name,
+                    Email = model.Email,
+                    Name = model.Name,
+                    LastName = model.LastName,
+                    PhoneNumber = model.PhoneNumber,
+                    City = model.City,
+                    Role = UserRole.Registered,
+                    EmailConfirmed = false
+                };
 
-            if (result.Succeeded)
-            {
-                return Ok();
+                var result = await userManager.CreateAsync(newUser, model.Password);
+                if (result.Succeeded)
+                {
+                    return Ok("User is successfully registered!");
+                }
+
+                return BadRequest(result.Errors);
             }
-
-            return BadRequest(result.Errors);
+            else
+            {
+                return BadRequest(new { message = "Email already exist" });
+            }
         }
 
+        [HttpPost]
         [Route(nameof(Login))]
         public async Task<ActionResult<string>> Login(LoginUserRequestModel model)
         {
-            var user = await this.userManager.FindByNameAsync(model.Email);
+            if (model.Password == null)
+            {
+                return BadRequest(new { message = "Bad data" });
+            }
+            if (model.Password.Length < 6)
+            {
+                return BadRequest(new { message = "Bad data" });
+            }
+            var user = await this.userManager.FindByEmailAsync(model.Email);
             if (user == null)
             {
-                return Unauthorized();
+                return Unauthorized("Email is not registered!");
             }
 
             var passwordValid = await this.userManager.CheckPasswordAsync(user, model.Password);
 
             if (!passwordValid)
             {
-                return Unauthorized();
+                return Unauthorized("Wrong password!");
             }
 
             var token = generateJwtToken(user);
 
-            return token;
+            return Ok(new { token });
         }
 
         private string generateJwtToken(User user)
@@ -79,7 +104,8 @@
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+            var retToken = tokenHandler.WriteToken(token);
+            return retToken;
         }
     }
 }

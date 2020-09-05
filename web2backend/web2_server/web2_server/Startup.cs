@@ -10,8 +10,9 @@ namespace web2_server
     using Microsoft.Extensions.Hosting;
     using Microsoft.IdentityModel.Tokens;
     using System.Text;
-    using web2_server.Data;
-    using web2_server.Infrastructure;
+
+    using web2_server.Database;
+
     using web2_server.Models;
 
     public class Startup
@@ -25,7 +26,10 @@ namespace web2_server
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<Web2_DbContext>(options =>
+            var applicationSettingsConfiguration = this.Configuration.GetSection("ApplicationSettings");
+            services.Configure<AppSettings>(applicationSettingsConfiguration);
+
+            services.AddDbContext<DatabaseContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<User, IdentityRole>(options =>
@@ -35,10 +39,7 @@ namespace web2_server
                 options.Password.RequireLowercase = false;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
-            }).AddEntityFrameworkStores<Web2_DbContext>();
-
-            var applicationSettingsConfiguration = this.Configuration.GetSection("ApplicationSettings");
-            services.Configure<AppSettings>(applicationSettingsConfiguration);
+            }).AddEntityFrameworkStores<DatabaseContext>();
 
             var appSettings = applicationSettingsConfiguration.Get<AppSettings>();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
@@ -58,7 +59,7 @@ namespace web2_server
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(key),
                         ValidateIssuer = false,
-                        ValidateAudience = false
+                        ValidateAudience = false,
                     };
                 });
 
@@ -67,6 +68,15 @@ namespace web2_server
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.Use(async (ctx, next) =>
+            {
+                await next();
+                if (ctx.Response.StatusCode == 204)
+                {
+                    ctx.Response.ContentLength = 0;
+                }
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -85,7 +95,7 @@ namespace web2_server
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
-            app.ApplyMigrations();
+            //app.ApplyMigrations();
         }
     }
 }

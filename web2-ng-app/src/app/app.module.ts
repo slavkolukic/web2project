@@ -29,7 +29,14 @@ import { RegisterRacCompanyComponent } from './signedUser/admin/register-rac-com
 import { RegisterFlightCompanyComponent } from './signedUser/admin/register-flight-company/register-flight-company.component';
 import { RegisterAdministratorComponent } from './signedUser/admin/register-administrator/register-administrator.component';
 import { AddNewFriendComponent } from './signedUser/profile/add-new-friend/add-new-friend.component';
-import { FormsModule } from '@angular/forms';
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+} from '@angular/forms';
+import { AuthService } from './services/auth.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -61,8 +68,14 @@ import { FormsModule } from '@angular/forms';
     SignedRacServicesComponent,
     SignedRacServicesCarsComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule],
-  providers: [],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+  ],
+  providers: [AuthService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { User } from 'src/app/models/user';
+import { FormControl } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -8,30 +10,42 @@ import { User } from 'src/app/models/user';
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent implements OnInit {
-  public name = '';
-  public lastName = '';
-  public phoneNumber = '';
-  public city = '';
-  public email = '';
-  public password = '';
-  public repeatedPassword = '';
+  registerForm: FormGroup;
 
-  constructor() {}
+  constructor(private fb: FormBuilder, private authService: AuthService) {
+    this.registerForm = this.fb.group({
+      name: ['', Validators.required],
+      lastName: ['', Validators.required],
+      email: ['', Validators.required],
+      city: ['', Validators.required],
+      phoneNumber: ['', Validators.required],
+      password: ['', Validators.required],
+      repeatedPassword: ['', Validators.required],
+    });
+  }
 
   ngOnInit(): void {}
 
-  onSubmit() {
-    if (this.password !== this.repeatedPassword) {
-      alert('The passwords doesnt match please try again');
-    } else {
-      let newUser = new User(
-        this.name,
-        this.lastName,
-        this.email,
-        this.phoneNumber,
-        this.city,
-        this.password
-      );
+  register() {
+    if (
+      this.registerForm.get('name').value == '' ||
+      this.registerForm.get('lastName').value == '' ||
+      this.registerForm.get('city').value == '' ||
+      this.registerForm.get('phoneNumber').value == '' ||
+      this.registerForm.get('email').value == '' ||
+      this.registerForm.get('password').value == '' ||
+      this.registerForm.get('repeatedPassword').value == ''
+    ) {
+      alert('Fields must not be empty!');
+    } else if (
+      this.registerForm.get('password').value !==
+      this.registerForm.get('repeatedPassword').value
+    ) {
+      alert('Passwords must be same!');
     }
+
+    this.authService.register(this.registerForm.value).subscribe((data) => {
+      console.log(data);
+    });
   }
 }

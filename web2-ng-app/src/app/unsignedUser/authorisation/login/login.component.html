@@ -1,11 +1,8 @@
 <div class="container">
-  <form>
+  <form [formGroup]="loginForm" (ngSubmit)="login()">
     <div class="row">
       <div class="col-sm-4"></div>
-      <div
-        class="col-sm-4 rounded border-color"
-        style="background: whitesmoke;"
-      >
+      <div class="col-sm-4 rounded border-color" style="background: whitesmoke">
         <br />
         <div>
           <h4><b>Good to see you again</b></h4>
@@ -19,9 +16,8 @@
           <input
             type="email"
             class="form-control"
-            id="InputLoginEmail"
-            aria-describedby="emailHelp"
             placeholder="Enter email"
+            formControlName="email"
           />
         </div>
 
@@ -29,25 +25,17 @@
           <input
             type="password"
             class="form-control"
-            id="InputLoginPassword"
             placeholder="Password"
+            formControlName="password"
           />
         </div>
         <div>
-          <button
-            type="submit"
-            class="btn btn-primary btn-block"
-            routerLink="/signed-home"
-            (click)="SetUserAsLogged()"
-          >
+          <button type="submit" class="btn btn-primary btn-block">
             Sign in
           </button>
         </div>
         <div>
           <br />
-          <p class="text-muted">
-            ------------------------ or -------------------------
-          </p>
         </div>
 
         <div>
