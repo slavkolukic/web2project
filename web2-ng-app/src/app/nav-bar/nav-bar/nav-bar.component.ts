@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { GlobalVariables } from '../../common/globalVariables';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -8,16 +7,18 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./nav-bar.component.css'],
 })
 export class NavBarComponent implements OnInit {
-  constructor(private authService: AuthService) {}
+  userRole = '';
+  constructor(private authService: AuthService) {
+    try {
+      this.userRole = this.authService.getUserRole();
+    } catch {
+      this.userRole = 'NonRegistered';
+    }
+  }
 
   ngOnInit(): void {}
 
-  isUserLogged(): string {
-    return GlobalVariables.GetLoggedUser();
-  }
-
   logOutUser(): void {
-    GlobalVariables.loggedUser = 'unsigned';
     this.authService.deleteToken();
   }
 }

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { GlobalVariables } from '../../../common/globalVariables';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
@@ -25,12 +24,9 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {}
 
   login() {
-    GlobalVariables.loggedUser = 'admin';
     this.authService.login(this.loginForm.value).subscribe((data) => {
       this.authService.saveToken(data['token']);
       this.router.navigate(['home']);
     });
-
-    this.authService.getUserRole();
   }
 }
