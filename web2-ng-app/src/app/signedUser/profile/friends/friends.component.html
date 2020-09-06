@@ -1,41 +1,59 @@
-<app-profile-navbar></app-profile-navbar>
-<div class="container transparent-bg">
-  <br />
-  <form class="form-inline">
-    <div class="form-group mx-sm-3 mb-2">
-      <input
-        type="text"
-        class="form-control mx-1"
-        id="search-friends"
-        placeholder="Search friends..."
-      />
-      <button type="submit" class="btn btn-primary mx-1 my-2">Search</button>
-      <a
-        routerLink="/friends/add-new-friend"
-        class="btn btn-primary btn active mx-1 my-2"
-        role="button"
-        >Add new friend</a
-      >
+<app-nav-bar></app-nav-bar>
+
+<div class="background-image">
+  <div
+    style="background-color: transparent; color: white"
+    class="jumbotron jumbotron-fluid text-center"
+  >
+    <div class="container">
+      <h1 class="display-3">WEB 2 Project</h1>
+      <p class="lead">pr125-2016, pr129-2016</p>
+      <br />
+      <hr class="solid" />
     </div>
-  </form>
+  </div>
+
+  <app-profile-navbar></app-profile-navbar>
+  <div class="container transparent-bg">
+    <br />
+    <form class="form-inline">
+      <div class="form-group mx-sm-3 mb-2">
+        <input
+          type="text"
+          class="form-control mx-1"
+          id="search-friends"
+          placeholder="Search friends..."
+        />
+        <button type="submit" class="btn btn-primary mx-1 my-2">Search</button>
+        <a
+          routerLink="/friends/add-new-friend"
+          class="btn btn-primary btn active mx-1 my-2"
+          role="button"
+          >Add new friend</a
+        >
+      </div>
+    </form>
+    <br />
+    <ul class="list-group mx-sm-3 mb-2">
+      <li class="list-group-item">
+        Alex Michaels
+        <button class="btn btn-primary float-right">Remove</button>
+      </li>
+      <li class="list-group-item">
+        Nikita Dragovich
+        <button class="btn btn-primary float-right">Remove</button>
+      </li>
+      <li class="list-group-item">
+        Lena Dostoevsky
+        <button class="btn btn-primary float-right">Remove</button>
+      </li>
+      <li class="list-group-item">
+        David Walker
+        <button class="btn btn-primary float-right">Remove</button>
+      </li>
+    </ul>
+    <br />
+  </div>
   <br />
-  <ul class="list-group mx-sm-3 mb-2">
-    <li class="list-group-item">
-      Alex Michaels
-      <button class="btn btn-primary float-right">Remove</button>
-    </li>
-    <li class="list-group-item">
-      Nikita Dragovich
-      <button class="btn btn-primary float-right">Remove</button>
-    </li>
-    <li class="list-group-item">
-      Lena Dostoevsky
-      <button class="btn btn-primary float-right">Remove</button>
-    </li>
-    <li class="list-group-item">
-      David Walker
-      <button class="btn btn-primary float-right">Remove</button>
-    </li>
-  </ul>
   <br />
 </div>

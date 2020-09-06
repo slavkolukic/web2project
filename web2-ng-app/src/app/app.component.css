@@ -6,27 +6,3 @@
   color: #e37222 !important;
   background-color: white !important;
 }
-
-.nav-link:hover {
-  text-decoration: underline;
-}
-
-hr.solid {
-  border-top: 2px solid whitesmoke;
-}
-
-.background-image {
-  background-image: url("../assets/background2.png");
-  min-height: 100vh;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-.dropdown-item:hover {
-  background: #eeaa7b !important;
-}
-
-.dropdown-item:active {
-  background: #e37222 !important;
-}

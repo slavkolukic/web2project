@@ -1,67 +1,88 @@
-<div class="container">
-  <form [formGroup]="loginForm" (ngSubmit)="login()">
-    <div class="row">
-      <div class="col-sm-4"></div>
-      <div class="col-sm-4 rounded border-color" style="background: whitesmoke">
-        <br />
-        <div>
-          <h4><b>Good to see you again</b></h4>
-          <br />
-          <p class="lead">
-            Sign in for member-only deals and access to your trip details.
-          </p>
-        </div>
+<app-nav-bar></app-nav-bar>
 
-        <div class="form-group">
-          <input
-            type="email"
-            class="form-control"
-            placeholder="Enter email"
-            formControlName="email"
-          />
-        </div>
-
-        <div class="form-group">
-          <input
-            type="password"
-            class="form-control"
-            placeholder="Password"
-            formControlName="password"
-          />
-        </div>
-        <div>
-          <button type="submit" class="btn btn-primary btn-block">
-            Sign in
-          </button>
-        </div>
-        <div>
-          <br />
-        </div>
-
-        <div>
-          <img
-            src="../../../../assets/google_sign-in_logo.png"
-            class="img-center"
-            alt="Google button"
-          />
-          <br />
-        </div>
-
-        <div>
-          <p>
-            Don't have an account?
-            <a routerLink="/register"
-              ><button
-                type="button"
-                class="btn-create-accaunt float-right rounded"
-              >
-                Create account
-              </button></a
-            >
-          </p>
-        </div>
-      </div>
-      <div class="col-sm-4"></div>
+<div class="background-image">
+  <div
+    style="background-color: transparent; color: white"
+    class="jumbotron jumbotron-fluid text-center"
+  >
+    <div class="container">
+      <h1 class="display-3">WEB 2 Project</h1>
+      <p class="lead">pr125-2016, pr129-2016</p>
+      <br />
+      <hr class="solid" />
     </div>
-  </form>
+  </div>
+
+  <div class="container">
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+      <div class="row">
+        <div class="col-sm-4"></div>
+        <div
+          class="col-sm-4 rounded border-color"
+          style="background: whitesmoke"
+        >
+          <br />
+          <div>
+            <h4><b>Good to see you again</b></h4>
+            <br />
+            <p class="lead">
+              Sign in for member-only deals and access to your trip details.
+            </p>
+          </div>
+
+          <div class="form-group">
+            <input
+              type="email"
+              class="form-control"
+              placeholder="Enter email"
+              formControlName="email"
+            />
+          </div>
+
+          <div class="form-group">
+            <input
+              type="password"
+              class="form-control"
+              placeholder="Password"
+              formControlName="password"
+            />
+          </div>
+          <div>
+            <button type="submit" class="btn btn-primary btn-block">
+              Sign in
+            </button>
+          </div>
+          <div>
+            <br />
+          </div>
+
+          <div>
+            <img
+              src="../../../../assets/google_sign-in_logo.png"
+              class="img-center"
+              alt="Google button"
+            />
+            <br />
+          </div>
+
+          <div>
+            <p>
+              Don't have an account?
+              <a routerLink="/register"
+                ><button
+                  type="button"
+                  class="btn-create-accaunt float-right rounded"
+                >
+                  Create account
+                </button></a
+              >
+            </p>
+          </div>
+        </div>
+        <div class="col-sm-4"></div>
+      </div>
+    </form>
+  </div>
+  <br />
+  <br />
 </div>

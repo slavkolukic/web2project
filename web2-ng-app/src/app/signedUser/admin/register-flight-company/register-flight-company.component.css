@@ -13,3 +13,19 @@ table.table-bordered > thead > tr > th {
 table.table-bordered > tbody > tr > td {
   border: 1px solid black;
 }
+
+
+
+hr.solid {
+  border-top: 2px solid whitesmoke;
+}
+
+.background-image {
+  background-image: url("../../../../assets/background2.png");
+  min-height: 100vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+

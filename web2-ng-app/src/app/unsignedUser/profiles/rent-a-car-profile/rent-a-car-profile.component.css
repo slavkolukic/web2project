@@ -89,3 +89,15 @@ body {
   font-weight: 600;
   color: #0062cc;
 }
+
+hr.solid {
+  border-top: 2px solid whitesmoke;
+}
+
+.background-image {
+  background-image: url("../../../../assets/background2.png");
+  min-height: 100vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}

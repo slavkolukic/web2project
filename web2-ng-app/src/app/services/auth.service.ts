@@ -35,7 +35,11 @@ export class AuthService {
     return false;
   }
 
-  getUserRole() {
+  deleteToken() {
+    localStorage.removeItem('token');
+  }
+
+  getUserRole(): string {
     let jwt = this.getToken();
 
     let jwtData = jwt.split('.')[1];
@@ -44,9 +48,6 @@ export class AuthService {
 
     let userRole = decodedJwtData.role;
 
-    console.log('jwtData: ' + jwtData);
-    console.log('decodedJwtJsonData: ' + decodedJwtJsonData);
-    console.log('decodedJwtData: ' + decodedJwtData);
-    console.log('role: ' + userRole);
+     return userRole;
   }
 }

@@ -1,175 +1,193 @@
-<div class="container" style="background-color: rgba(245, 245, 245, 0.2);">
-  <form action="/cars">
+<app-nav-bar></app-nav-bar>
+
+<div class="background-image">
+  <div
+    style="background-color: transparent; color: white"
+    class="jumbotron jumbotron-fluid text-center"
+  >
+    <div class="container">
+      <h1 class="display-3">WEB 2 Project</h1>
+      <p class="lead">pr125-2016, pr129-2016</p>
+      <br />
+      <hr class="solid" />
+    </div>
+  </div>
+
+  <div class="container" style="background-color: rgba(245, 245, 245, 0.2)">
+    <form action="/cars">
+      <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6 text-center">
+          <br />
+          <div>
+            <h4><b>Search available flights</b></h4>
+          </div>
+        </div>
+        <div class="col-sm-3"></div>
+      </div>
+
+      <br />
+
+      <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-3">
+          <div class="form-group" id="RoadType">
+            <select class="browser-default custom-select">
+              <option selected></option>
+              <option value="1">One-way</option>
+              <option value="2">Multi-city</option>
+              <option value="3">Round-trip</option>
+            </select>
+          </div>
+
+          <div class="form-group" id="ClassType">
+            <select class="browser-default custom-select">
+              <option selected></option>
+              <option value="1">economy</option>
+              <option value="2">business</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              id="SourceCity"
+              placeholder="From"
+            />
+          </div>
+
+          <div class="form-group">
+            <input
+              placeholder="Depart date"
+              type="text"
+              class="form-control"
+              onfocus="(this.type='date')"
+              onblur="(this.type='text')"
+              id="DepartDate"
+            />
+          </div>
+        </div>
+
+        <div class="col-sm-3">
+          <div class="form-group" id="NumberOfPassengers">
+            <select class="browser-default custom-select">
+              <option selected></option>
+              <option value="1">1 adults</option>
+              <option value="2">2 adults</option>
+              <option value="3">3 adults</option>
+              <option value="4">4 adults</option>
+            </select>
+          </div>
+
+          <div class="form-group" id="NumberOfBags">
+            <select class="browser-default custom-select">
+              <option selected></option>
+              <option value="1">1 bags</option>
+              <option value="2">2 bags</option>
+              <option value="3">3 bags</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              id="DestinationCity"
+              placeholder="To"
+            />
+          </div>
+
+          <div class="form-group">
+            <input
+              placeholder="Return date"
+              type="text"
+              class="form-control"
+              onfocus="(this.type='date')"
+              onblur="(this.type='text')"
+              id="ReturnDate"
+            />
+          </div>
+        </div>
+        <div class="col-sm-3"></div>
+      </div>
+
+      <br />
+
+      <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
+          <div>
+            <button type="submit" class="btn btn-primary btn-block">
+              Search
+            </button>
+            <br />
+          </div>
+        </div>
+        <div class="col-sm-3"></div>
+      </div>
+    </form>
+
+    <br />
     <div class="row">
       <div class="col-sm-3"></div>
       <div class="col-sm-6 text-center">
-        <br />
         <div>
-          <h4><b>Search available flights</b></h4>
+          <h4><b>Flights</b></h4>
         </div>
       </div>
       <div class="col-sm-3"></div>
     </div>
-
-    <br />
-
     <div class="row">
-      <div class="col-sm-3"></div>
-      <div class="col-sm-3">
-        <div class="form-group" id="RoadType">
-          <select class="browser-default custom-select">
-            <option selected></option>
-            <option value="1">One-way</option>
-            <option value="2">Multi-city</option>
-            <option value="3">Round-trip</option>
-          </select>
-        </div>
+      <div class="table-responsive">
+        <table class="table text-center table-bordered">
+          <thead style="background: #e37222">
+            <tr>
+              <th scope="col">Depart time</th>
+              <th scope="col">Arrival time</th>
+              <th scope="col">Presedanja</th>
+              <th scope="col">Flight time</th>
+              <th scope="col">Company</th>
+              <th scope="col">Price</th>
+              <th scope="col">Free Seats</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>17:50</td>
+              <td>19:00</td>
+              <td>0</td>
+              <td>1:10</td>
+              <td><a href="#" routerLink="/airline-profile">Air Serbia</a></td>
+              <td>50$</td>
+              <td>40/100</td>
+            </tr>
 
-        <div class="form-group" id="ClassType">
-          <select class="browser-default custom-select">
-            <option selected> </option>
-            <option value="1">economy</option>
-            <option value="2">business</option>
-          </select>
-        </div>
+            <tr>
+              <td>3:30</td>
+              <td>10:00</td>
+              <td>3</td>
+              <td>6:30</td>
+              <td><a href="#" routerLink="/airline-profile">Air Serbia</a></td>
+              <td>200$</td>
+              <td>60/100</td>
+            </tr>
 
-        <div class="form-group">
-          <input
-            type="text"
-            class="form-control"
-            id="SourceCity"
-            placeholder="From"
-          />
-        </div>
-
-        <div class="form-group">
-          <input
-            placeholder="Depart date"
-            type="text"
-            class="form-control"
-            onfocus="(this.type='date')"
-            onblur="(this.type='text')"
-            id="DepartDate"
-          />
-        </div>
+            <tr>
+              <td>8:00</td>
+              <td>12:00</td>
+              <td>2</td>
+              <td>4:00</td>
+              <td>
+                <a href="#" routerLink="/airline-profile">Katar Airways</a>
+              </td>
+              <td>100$</td>
+              <td>5/100</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-
-      <div class="col-sm-3">
-        <div class="form-group" id="NumberOfPassengers">
-          <select class="browser-default custom-select">
-            <option selected></option>
-            <option value="1">1 adults</option>
-            <option value="2">2 adults</option>
-            <option value="3">3 adults</option>
-            <option value="4">4 adults</option>
-          </select>
-        </div>
-
-        <div class="form-group" id="NumberOfBags">
-          <select class="browser-default custom-select">
-            <option selected></option>
-            <option value="1">1 bags</option>
-            <option value="2">2 bags</option>
-            <option value="3">3 bags</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <input
-            type="text"
-            class="form-control"
-            id="DestinationCity"
-            placeholder="To"
-          />
-        </div>
-
-        <div class="form-group">
-          <input
-            placeholder="Return date"
-            type="text"
-            class="form-control"
-            onfocus="(this.type='date')"
-            onblur="(this.type='text')"
-            id="ReturnDate"
-          />
-        </div>
-      </div>
-      <div class="col-sm-3"></div>
     </div>
-
     <br />
-
-    <div class="row">
-      <div class="col-sm-3"></div>
-      <div class="col-sm-6">
-        <div>
-          <button type="submit" class="btn btn-primary btn-block">
-            Search
-          </button>
-          <br />
-        </div>
-      </div>
-      <div class="col-sm-3"></div>
-    </div>
-  </form>
-
-  <br />
-  <div class="row">
-    <div class="col-sm-3"></div>
-    <div class="col-sm-6 text-center">
-      <div>
-        <h4><b>Flights</b></h4>
-      </div>
-    </div>
-    <div class="col-sm-3"></div>
   </div>
-  <div class="row">
-    <div class="table-responsive">
-      <table class="table text-center table-bordered">
-        <thead style="background: #e37222;">
-          <tr>
-            <th scope="col">Depart time</th>
-            <th scope="col">Arrival time</th>
-            <th scope="col">Presedanja</th>
-            <th scope="col">Flight time</th>
-            <th scope="col">Company</th>
-            <th scope="col">Price</th>
-            <th scope="col">Free Seats</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>17:50</td>
-            <td>19:00</td>
-            <td>0</td>
-            <td>1:10</td>
-            <td><a href="#" routerLink="/airline-profile">Air Serbia</a></td>
-            <td>50$</td>
-            <td>40/100</td>
-          </tr>
-
-          <tr>
-            <td>3:30</td>
-            <td>10:00</td>
-            <td>3</td>
-            <td>6:30</td>
-            <td><a href="#" routerLink="/airline-profile">Air Serbia</a></td>
-            <td>200$</td>
-            <td>60/100</td>
-          </tr>
-
-          <tr>
-            <td>8:00</td>
-            <td>12:00</td>
-            <td>2</td>
-            <td>4:00</td>
-            <td><a href="#" routerLink="/airline-profile">Katar Airways</a></td>
-            <td>100$</td>
-            <td>5/100</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-  <br />
 </div>

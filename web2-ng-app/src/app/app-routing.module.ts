@@ -6,10 +6,6 @@ import { UnsignedHomeComponent } from './unsignedUser/unsigned-home/unsigned-hom
 import { UnsignedFlightsComponent } from './unsignedUser/unsigned-flights/unsigned-flights.component';
 import { UnsignedRacServicesComponent } from './unsignedUser/unsigned-cars/unsigned-rac-services/unsigned-rac-services.component';
 import { UnsignedRacServicesCarsComponent } from './unsignedUser/unsigned-cars/unsigned-rac-services-cars/unsigned-rac-services-cars.component';
-import { SignedHomeComponent } from './signedUser/signed-home/signed-home.component';
-import { SignedFlightsComponent } from './signedUser/signed-flights/signed-flights.component';
-import { SignedRacServicesComponent } from './signedUser/signed-cars/signed-rac-services/signed-rac-services.component';
-import { SignedRacServicesCarsComponent } from './signedUser/signed-cars/signed-rac-services-cars/signed-rac-services-cars.component';
 import { EditProfileComponent } from './signedUser/profile/edit-profile/edit-profile.component';
 import { FriendsComponent } from './signedUser/profile/friends/friends.component';
 import { UserFlightsComponent } from './signedUser/profile/user-flights/user-flights.component';
@@ -34,26 +30,6 @@ const routes: Routes = [
   { path: 'flights', component: UnsignedFlightsComponent },
   { path: 'rac-services', component: UnsignedRacServicesComponent },
   { path: 'rac-services/cars', component: UnsignedRacServicesCarsComponent },
-  {
-    path: 'signed-home',
-    component: SignedHomeComponent,
-    canActivate: [AuthGuardService],
-  },
-  {
-    path: 'signed-flights',
-    component: SignedFlightsComponent,
-    canActivate: [AuthGuardService],
-  },
-  {
-    path: 'signed-rac-services',
-    component: SignedRacServicesComponent,
-    canActivate: [AuthGuardService],
-  },
-  {
-    path: 'signed-rac-services/cars',
-    component: SignedRacServicesCarsComponent,
-    canActivate: [AuthGuardService],
-  },
   {
     path: 'edit-profile',
     component: EditProfileComponent,

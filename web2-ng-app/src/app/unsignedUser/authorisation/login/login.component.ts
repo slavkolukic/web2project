@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
     GlobalVariables.loggedUser = 'admin';
     this.authService.login(this.loginForm.value).subscribe((data) => {
       this.authService.saveToken(data['token']);
-      this.router.navigate(['signed-home']);
+      this.router.navigate(['home']);
     });
 
     this.authService.getUserRole();

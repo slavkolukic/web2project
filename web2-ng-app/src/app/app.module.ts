@@ -9,10 +9,7 @@ import { UnsignedHomeComponent } from './unsignedUser/unsigned-home/unsigned-hom
 import { UnsignedFlightsComponent } from './unsignedUser/unsigned-flights/unsigned-flights.component';
 import { UnsignedRacServicesCarsComponent } from './unsignedUser/unsigned-cars/unsigned-rac-services-cars/unsigned-rac-services-cars.component';
 import { UnsignedRacServicesComponent } from './unsignedUser/unsigned-cars/unsigned-rac-services/unsigned-rac-services.component';
-import { SignedHomeComponent } from './signedUser/signed-home/signed-home.component';
-import { SignedFlightsComponent } from './signedUser/signed-flights/signed-flights.component';
-import { SignedRacServicesComponent } from './signedUser/signed-cars/signed-rac-services/signed-rac-services.component';
-import { SignedRacServicesCarsComponent } from './signedUser/signed-cars/signed-rac-services-cars/signed-rac-services-cars.component';
+
 import { ProfileNavbarComponent } from './signedUser/profile/profile-navbar/profile-navbar.component';
 import { EditProfileComponent } from './signedUser/profile/edit-profile/edit-profile.component';
 import { FriendsComponent } from './signedUser/profile/friends/friends.component';
@@ -38,6 +35,7 @@ import {
 import { AuthService } from './services/auth.service';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthGuardService } from './guards/auth-guard.service';
+import { NavBarComponent } from './nav-bar/nav-bar/nav-bar.component';
 
 @NgModule({
   declarations: [
@@ -46,8 +44,7 @@ import { AuthGuardService } from './guards/auth-guard.service';
     RegisterComponent,
     UnsignedHomeComponent,
     UnsignedFlightsComponent,
-    SignedHomeComponent,
-    SignedFlightsComponent,
+
     ProfileNavbarComponent,
     EditProfileComponent,
     FriendsComponent,
@@ -66,8 +63,8 @@ import { AuthGuardService } from './guards/auth-guard.service';
     AddNewFriendComponent,
     UnsignedRacServicesCarsComponent,
     UnsignedRacServicesComponent,
-    SignedRacServicesComponent,
-    SignedRacServicesCarsComponent,
+
+    NavBarComponent,
   ],
   imports: [
     BrowserModule,
