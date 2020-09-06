@@ -13,7 +13,7 @@ namespace web2_server
 
     using web2_server.Database;
 
-    using web2_server.Models;
+    using web2_server.Models.User;
 
     public class Startup
     {

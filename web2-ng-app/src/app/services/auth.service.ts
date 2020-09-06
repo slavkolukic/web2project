@@ -9,6 +9,7 @@ import { environment } from '../../environments/environment';
 export class AuthService {
   private loginPath = environment.apiUrl + '/user/login';
   private registerPath = environment.apiUrl + '/user/register';
+  private registerNewAdminPath = environment.apiUrl + '/user/newAdmin';
 
   constructor(private http: HttpClient) {}
 
@@ -48,6 +49,10 @@ export class AuthService {
 
     let userRole = decodedJwtData.role;
 
-     return userRole;
+    return userRole;
+  }
+
+  registerNewAdmin(data): Observable<any> {
+    return this.http.post(this.registerNewAdminPath, data);
   }
 }

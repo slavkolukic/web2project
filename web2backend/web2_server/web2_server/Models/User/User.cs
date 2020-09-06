@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 
-namespace web2_server.Models
+namespace web2_server.Models.User
 {
     public class User : IdentityUser
     {

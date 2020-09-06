@@ -14,7 +14,11 @@
   </div>
 
   <!--Ako se radi za neregistrovanog korisnika-->
-  <div class="container" style="background-color: rgba(245, 245, 245, 0.2)">
+  <div
+    class="container"
+    style="background-color: rgba(245, 245, 245, 0.2)"
+    [hidden]="userRole != 'NonRegistered'"
+  >
     <div class="text-center">
       <br />
       <h2>Partnered companies</h2>
@@ -151,5 +155,8 @@
         </tbody>
       </table>
     </div>
+  </div>
+  <div class="container" style="background-color: rgba(245, 245, 245, 0.2)">
+    Sadrzaj za registrovanog korisnika
   </div>
 </div>

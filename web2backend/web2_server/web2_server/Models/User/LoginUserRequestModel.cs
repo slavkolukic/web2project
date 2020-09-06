@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace web2_server.Models.Identity
+namespace web2_server.Models.User
 {
     public class LoginUserRequestModel
     {

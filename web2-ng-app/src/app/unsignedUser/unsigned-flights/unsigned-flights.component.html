@@ -13,7 +13,11 @@
     </div>
   </div>
 
-  <div class="container" style="background-color: rgba(245, 245, 245, 0.2)">
+  <div
+    class="container"
+    style="background-color: rgba(245, 245, 245, 0.2)"
+    [hidden]="userRole != 'NonRegistered'"
+  >
     <form action="/cars">
       <div class="row">
         <div class="col-sm-3"></div>
@@ -189,5 +193,8 @@
       </div>
     </div>
     <br />
+  </div>
+  <div class="container" style="background-color: rgba(245, 245, 245, 0.2)">
+    Sadrzaj za registrovanog korisnika
   </div>
 </div>

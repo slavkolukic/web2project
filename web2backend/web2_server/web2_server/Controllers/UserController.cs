@@ -11,7 +11,7 @@
     using System.Threading.Tasks;
     using web2_server.Database;
     using web2_server.Models;
-    using web2_server.Models.Identity;
+    using web2_server.Models.User;
 
     public class UserController : ApiController
     {
@@ -90,6 +90,27 @@
             var token = generateJwtToken(user);
 
             return Ok(new { token });
+        }
+
+        [HttpPost]
+        [Route("newAdmin")]
+        public async Task<IActionResult> GiveUserAdminRights(NewAdminModel newAdminModel)
+        {
+            var userExists = await userManager.FindByEmailAsync(newAdminModel.email);
+            if (userExists == null)
+            {
+                return BadRequest(new { message = "User with given email does not exist!" });
+            }
+
+            if (userExists.Role == UserRole.SystemAdmin)
+            {
+                return BadRequest(new { message = "User with given email is already admin!" });
+            }
+
+            userExists.Role = UserRole.SystemAdmin;
+
+            IdentityResult result = await userManager.UpdateAsync(userExists);
+            return Ok($"User with email {newAdminModel.email} is now admin");
         }
 
         private string generateJwtToken(User user)

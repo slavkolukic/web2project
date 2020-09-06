@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using web2_server.Models;
+using web2_server.Models.User;
 
 namespace web2_server.Database
 {
