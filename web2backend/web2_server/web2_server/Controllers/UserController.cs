@@ -5,7 +5,9 @@
     using Microsoft.Extensions.Options;
     using Microsoft.IdentityModel.Tokens;
     using System;
+    using System.Collections.Generic;
     using System.IdentityModel.Tokens.Jwt;
+    using System.Linq;
     using System.Security.Claims;
     using System.Text;
     using System.Threading.Tasks;
@@ -104,13 +106,22 @@
 
             if (userExists.Role == UserRole.SystemAdmin)
             {
-                return BadRequest(new { message = "User with given email is already admin!" });
+                return Ok(new { message = "User with given email is already admin!" });
             }
 
             userExists.Role = UserRole.SystemAdmin;
 
             IdentityResult result = await userManager.UpdateAsync(userExists);
             return Ok($"User with email {newAdminModel.email} is now admin");
+        }
+
+        [HttpGet]
+        [Route("getAllUsers")]
+        public async Task<Object> GetAllUsers()
+        {
+            List<User> allUsers = _dbContext.Users.ToList();
+
+            return Ok(new { allUsers });
         }
 
         private string generateJwtToken(User user)

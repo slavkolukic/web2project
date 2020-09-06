@@ -15,7 +15,6 @@ export class User {
     city: string,
     password: string
   ) {
-    this.id = '1';
     this.name = name;
     this.lastname = lastname;
     this.email = email;

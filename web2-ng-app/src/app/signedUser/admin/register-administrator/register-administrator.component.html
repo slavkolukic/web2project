@@ -65,26 +65,24 @@
         <table class="table">
           <thead class="thead-dark">
             <tr>
-              <th style="width: 20%">#</th>
-              <th style="width: 40%">Name</th>
-              <th style="width: 40%">Email</th>
+              <th style="width: 25%">#</th>
+              <th style="width: 25%">Name</th>
+              <th style="width: 25%">Email</th>
+              <th style="width: 25%">Role</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody *ngFor="let user of allUsers; let i = index">
             <tr>
-              <th scope="row">1</th>
-              <td>Marko</td>
-              <td>marko@gmail.com</td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Petar</td>
-              <td>petar@outlook.com</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td>Slavko</td>
-              <td>slavko@yahoo.com</td>
+              <th scope="row">{{ i }}</th>
+              <td>{{ user.name }}</td>
+              <td>{{ user.email }}</td>
+
+              <container-element [ngSwitch]="user.role">
+                <td *ngSwitchCase="0">Registered</td>
+                <td *ngSwitchCase="1">CarAdmin</td>
+                <td *ngSwitchCase="2">AirlineAdmin</td>
+                <td *ngSwitchDefault>SystemAdmin</td>
+              </container-element>
             </tr>
           </tbody>
         </table>

@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { User } from '../models/user';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -10,6 +12,7 @@ export class AuthService {
   private loginPath = environment.apiUrl + '/user/login';
   private registerPath = environment.apiUrl + '/user/register';
   private registerNewAdminPath = environment.apiUrl + '/user/newAdmin';
+  private getAllUsersPath = environment.apiUrl + '/user/getAllUsers';
 
   constructor(private http: HttpClient) {}
 
@@ -54,5 +57,11 @@ export class AuthService {
 
   registerNewAdmin(data): Observable<any> {
     return this.http.post(this.registerNewAdminPath, data);
+  }
+
+  getAllUsers(): Observable<User[]> {
+    return this.http
+      .get(this.getAllUsersPath)
+      .pipe(map((res) => res['allUsers']));
   }
 }
