@@ -55,13 +55,21 @@ export class AuthService {
     return userRole;
   }
 
-  registerNewAdmin(data): Observable<any> {
-    return this.http.post(this.registerNewAdminPath, data);
-  }
-
   getAllUsers(): Observable<User[]> {
     return this.http
       .get(this.getAllUsersPath)
       .pipe(map((res) => res['allUsers']));
+  }
+
+  getUserId(): string {
+    let jwt = this.getToken();
+
+    let jwtData = jwt.split('.')[1];
+    let decodedJwtJsonData = window.atob(jwtData);
+    let decodedJwtData = JSON.parse(decodedJwtJsonData);
+
+    let userRole = decodedJwtData.id;
+
+    return userRole;
   }
 }

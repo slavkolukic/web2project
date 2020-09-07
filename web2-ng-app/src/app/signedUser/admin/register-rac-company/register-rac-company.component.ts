@@ -25,9 +25,11 @@ export class RegisterRacCompanyComponent implements OnInit {
     ) {
       alert('Fields must not be empty!');
     } else {
-      this.adminService.registerNewAdmin(this.registerRacAdminForm.value).subscribe((data) => {
-        console.log(data);
-      });
+      this.adminService
+        .registerNewRacAdmin(this.registerRacAdminForm.value)
+        .subscribe((data) => {
+          console.log(data);
+        });
     }
   }
 }

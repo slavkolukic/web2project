@@ -37,6 +37,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AuthGuardService } from './guards/auth-guard.service';
 import { NavBarComponent } from './nav-bar/nav-bar/nav-bar.component';
 import { AdminService } from './services/admin/admin.service';
+import { RacAdminService } from './services/racAdmin/rac-admin.service';
 
 @NgModule({
   declarations: [
@@ -74,7 +75,7 @@ import { AdminService } from './services/admin/admin.service';
     ReactiveFormsModule,
     HttpClientModule,
   ],
-  providers: [AuthService, AuthGuardService, AdminService],
+  providers: [AuthService, AuthGuardService, AdminService, RacAdminService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

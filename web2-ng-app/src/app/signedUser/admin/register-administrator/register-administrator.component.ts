@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { AuthService } from 'src/app/services/auth.service';
 import { User } from '../../../models/user';
+import { AdminService } from 'src/app/services/admin/admin.service';
 
 @Component({
   selector: 'app-register-administrator',
@@ -11,11 +11,11 @@ import { User } from '../../../models/user';
 export class RegisterAdministratorComponent implements OnInit {
   newAdminForm: FormGroup;
   allUsers: User[];
-  constructor(private fb: FormBuilder, private authService: AuthService) {
+  constructor(private fb: FormBuilder, private adminService: AdminService) {
     this.newAdminForm = this.fb.group({
       email: ['', Validators.required],
     });
-    this.authService.getAllUsers().subscribe((data) => {
+    this.adminService.getAllUsers().subscribe((data) => {
       this.allUsers = data;
     });
   }
@@ -26,7 +26,7 @@ export class RegisterAdministratorComponent implements OnInit {
     if (this.newAdminForm.get('email').value == '') {
       alert('Field must not be empty!');
     } else {
-      this.authService
+      this.adminService
         .registerNewAdmin(this.newAdminForm.value)
         .subscribe((data) => {
           console.log(data);

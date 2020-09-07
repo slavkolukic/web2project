@@ -16,45 +16,25 @@
   <app-rac-service-navbar></app-rac-service-navbar>
   <div class="container transparent-bg">
     <br />
-    <form action="/action_page.php">
+    <form [formGroup]="editRacInfoForm" (ngSubmit)="saveProfileChanges()">
       <div class="mx-4 form-group">
         <label for="serviceName">Service Name:</label>
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Name..."
-          id="serviceName"
-        />
+        <input type="text" class="form-control" formControlName="CompanyName" />
       </div>
 
       <div class="mx-4 form-group">
         <label for="address">Address:</label>
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Address..."
-          id="address"
-        />
+        <input type="text" class="form-control" formControlName="Adress" />
       </div>
 
       <div class="mx-4 form-group">
-        <label for="promoText">Promo text:</label>
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Promo text..."
-          id="promoText"
-        />
+        <label for="promoText">Description:</label>
+        <input type="text" class="form-control" formControlName="Description" />
       </div>
 
       <div class="mx-4 form-group">
         <label for="phone">Phone number:</label>
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Phone number..."
-          id="phone"
-        />
+        <input type="text" class="form-control" formControlName="PhoneNumber" />
       </div>
 
       <br />

@@ -113,6 +113,8 @@
             userExists.Role = UserRole.SystemAdmin;
 
             IdentityResult result = await userManager.UpdateAsync(userExists);
+            //await _context.SaveChangesAsync();
+
             return Ok($"User with email {newAdminModel.email} is now admin");
         }
 
@@ -120,13 +122,13 @@
         [Route("assignRacCompany")]
         public async Task<IActionResult> AssignRacCompanyToUser(RaCAssignmentModel racAssignmentModel)
         {
-            var owner = await userManager.FindByEmailAsync(racAssignmentModel.OwnerEmail);
+            var owner = _dbContext.Users.SingleOrDefault(u => u.Email == racAssignmentModel.OwnerEmail);
             if (owner == null)
             {
                 return Ok(new { message = "User with given email does not exist!" });
             }
 
-            if (owner.RaCCompany == null)
+            if (owner.RaCCompany != null)
             {
                 return Ok(new { message = "User already owns another company!" });
             }
@@ -135,11 +137,12 @@
             rac.CompanyName = racAssignmentModel.CompanyName;
 
             owner.RaCCompany = rac;
+
             owner.Role = UserRole.CarAdmin;
 
-            IdentityResult result = await userManager.UpdateAsync(owner);
+            _dbContext.SaveChanges();
 
-            return Ok($"Company successfully assigned!");
+            return Ok(owner);
         }
 
         [HttpGet]
