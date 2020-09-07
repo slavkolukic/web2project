@@ -18,22 +18,24 @@
     <br />
     <form [formGroup]="editRacInfoForm" (ngSubmit)="saveProfileChanges()">
       <div class="mx-4 form-group">
-        <label for="serviceName">Service Name:</label>
+        <label for="serviceName">Service Name: {{ currentCompanyName }}</label>
         <input type="text" class="form-control" formControlName="CompanyName" />
       </div>
 
       <div class="mx-4 form-group">
-        <label for="address">Address:</label>
+        <label for="address">Address: {{ currentCompanyAddress }}</label>
         <input type="text" class="form-control" formControlName="Adress" />
       </div>
 
       <div class="mx-4 form-group">
-        <label for="promoText">Description:</label>
+        <label for="promoText"
+          >Description: {{ currentCompanyDescription }}</label
+        >
         <input type="text" class="form-control" formControlName="Description" />
       </div>
 
       <div class="mx-4 form-group">
-        <label for="phone">Phone number:</label>
+        <label for="phone">Phone number: {{ currentCompanyPhoneNumber }}</label>
         <input type="text" class="form-control" formControlName="PhoneNumber" />
       </div>
 
@@ -42,4 +44,6 @@
     </form>
     <br />
   </div>
+  <br />
+  <br />
 </div>

@@ -35,10 +35,17 @@ namespace web2_server.Controllers
             User user = _dbContext.Users.Include(c => c.RaCCompany).SingleOrDefault(c => c.Id == racProfileEditModel.OwnerId); //nece da radi bez include
             RentACarCompany comp = _dbContext.RentACarCompanies.Where(x => x.Id == user.RaCCompany.Id).SingleOrDefault();
 
-            comp.CompanyName = racProfileEditModel.CompanyName;
-            comp.Adress = racProfileEditModel.Adress;
-            comp.Description = racProfileEditModel.Description;
-            comp.PhoneNumber = racProfileEditModel.PhoneNumber;
+            if (racProfileEditModel.CompanyName != "")
+                comp.CompanyName = racProfileEditModel.CompanyName;
+
+            if (racProfileEditModel.Adress != "")
+                comp.Adress = racProfileEditModel.Adress;
+
+            if (racProfileEditModel.Description != "")
+                comp.Description = racProfileEditModel.Description;
+
+            if (racProfileEditModel.PhoneNumber != "")
+                comp.PhoneNumber = racProfileEditModel.PhoneNumber;
 
             await _dbContext.SaveChangesAsync();
 

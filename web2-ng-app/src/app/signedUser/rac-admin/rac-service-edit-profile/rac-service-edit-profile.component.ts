@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { stringify } from 'querystring';
 import { RentACarCompany } from 'src/app/models/RentACarCompany';
 import { Variable } from '@angular/compiler/src/render3/r3_ast';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-rac-service-edit-profile',
@@ -14,6 +15,13 @@ import { Variable } from '@angular/compiler/src/render3/r3_ast';
 })
 export class RacServiceEditProfileComponent implements OnInit {
   editRacInfoForm: FormGroup;
+  racCompany: RentACarCompany;
+  currentCompanyName: string = '';
+  currentCompanyAddress: string = '';
+  currentCompanyDescription: string = '';
+  currentCompanyPhoneNumber: string = '';
+  mySubscription: any;
+
   constructor(
     private fb: FormBuilder,
     private racAdminService: RacAdminService,
@@ -33,12 +41,7 @@ export class RacServiceEditProfileComponent implements OnInit {
   ngOnInit(): void {}
 
   saveProfileChanges() {
-    if (
-      this.editRacInfoForm.get('CompanyName').value == '' ||
-      this.editRacInfoForm.get('Adress').value == '' ||
-      this.editRacInfoForm.get('Description').value == '' ||
-      this.editRacInfoForm.get('PhoneNumber').value == ''
-    ) {
+    if (this.checkIfFieldsAreEmpty()) {
       alert('Fields must not be empty!');
     } else {
       this.racAdminService
@@ -47,13 +50,31 @@ export class RacServiceEditProfileComponent implements OnInit {
           console.log(data);
         });
     }
+
+    location.reload();
+  }
+
+  private checkIfFieldsAreEmpty() {
+    if (
+      this.editRacInfoForm.get('CompanyName').value == '' &&
+      this.editRacInfoForm.get('Adress').value == '' &&
+      this.editRacInfoForm.get('Description').value == '' &&
+      this.editRacInfoForm.get('PhoneNumber').value == ''
+    ) {
+      return true;
+    }
+    return false;
   }
 
   getRacProfileInfo() {
     this.racAdminService
       .getRacProfileInfo(this.editRacInfoForm.value)
       .subscribe((data) => {
-        console.log(data.racCompany);
+        console.log(data);
+        this.currentCompanyName = data.companyName;
+        this.currentCompanyAddress = data.adress;
+        this.currentCompanyDescription = data.description;
+        this.currentCompanyPhoneNumber = data.phoneNumber;
       });
   }
 }

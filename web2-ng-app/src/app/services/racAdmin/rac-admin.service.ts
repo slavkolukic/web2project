@@ -19,7 +19,9 @@ export class RacAdminService {
     return this.http.post(this.saveRacProfileChangesPath, data);
   }
 
-  getRacProfileInfo(data): Observable<any> {
-    return this.http.post(this.getRacProfileInfoPath, data);
+  getRacProfileInfo(data) {
+    return this.http
+      .post(this.getRacProfileInfoPath, data)
+      .pipe(map((res) => res['racCompany']));
   }
 }
