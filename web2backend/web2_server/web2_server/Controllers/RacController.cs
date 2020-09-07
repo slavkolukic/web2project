@@ -44,5 +44,15 @@ namespace web2_server.Controllers
 
             return Ok("Rac profile is successfully updated!");
         }
+
+        [HttpPost]
+        [Route("getRacProfileInfo")]
+        public async Task<IActionResult> GetRacProfileInfo(UserIdModel userIdModel)
+        {
+            User user = _dbContext.Users.Include(c => c.RaCCompany).SingleOrDefault(c => c.Id == userIdModel.OwnerId); //nece da radi bez include
+            RentACarCompany racCompany = _dbContext.RentACarCompanies.Where(x => x.Id == user.RaCCompany.Id).SingleOrDefault();
+
+            return Ok(new { racCompany });
+        }
     }
 }
