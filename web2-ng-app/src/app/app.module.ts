@@ -36,6 +36,7 @@ import { AuthService } from './services/auth.service';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthGuardService } from './guards/auth-guard.service';
 import { NavBarComponent } from './nav-bar/nav-bar/nav-bar.component';
+import { AdminService } from './services/admin/admin.service';
 
 @NgModule({
   declarations: [
@@ -73,7 +74,7 @@ import { NavBarComponent } from './nav-bar/nav-bar/nav-bar.component';
     ReactiveFormsModule,
     HttpClientModule,
   ],
-  providers: [AuthService, AuthGuardService],
+  providers: [AuthService, AuthGuardService, AdminService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

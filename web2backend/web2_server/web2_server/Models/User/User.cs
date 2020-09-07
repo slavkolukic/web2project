@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
+using web2_server.Models.RentACar;
 
 namespace web2_server.Models.User
 {
@@ -16,7 +17,7 @@ namespace web2_server.Models.User
         //public ICollection<FriendRequest> Friends { get; set; }
 
         //public Airline AirlineComnpany { get; set; }
-        //public RentCarCompany CarCompany { get; set; }
+        public RentACarCompany RaCCompany { get; set; }
 
         //public ICollection<CarReservation> CarReservations { get; set; }
     }

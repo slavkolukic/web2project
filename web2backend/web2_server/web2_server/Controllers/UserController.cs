@@ -13,6 +13,7 @@
     using System.Threading.Tasks;
     using web2_server.Database;
     using web2_server.Models;
+    using web2_server.Models.RentACar;
     using web2_server.Models.User;
 
     public class UserController : ApiController
@@ -113,6 +114,32 @@
 
             IdentityResult result = await userManager.UpdateAsync(userExists);
             return Ok($"User with email {newAdminModel.email} is now admin");
+        }
+
+        [HttpPost]
+        [Route("assignRacCompany")]
+        public async Task<IActionResult> AssignRacCompanyToUser(RaCAssignmentModel racAssignmentModel)
+        {
+            var owner = await userManager.FindByEmailAsync(racAssignmentModel.OwnerEmail);
+            if (owner == null)
+            {
+                return Ok(new { message = "User with given email does not exist!" });
+            }
+
+            if (owner.RaCCompany == null)
+            {
+                return Ok(new { message = "User already owns another company!" });
+            }
+
+            RentACarCompany rac = new RentACarCompany();
+            rac.CompanyName = racAssignmentModel.CompanyName;
+
+            owner.RaCCompany = rac;
+            owner.Role = UserRole.CarAdmin;
+
+            IdentityResult result = await userManager.UpdateAsync(owner);
+
+            return Ok($"Company successfully assigned!");
         }
 
         [HttpGet]
