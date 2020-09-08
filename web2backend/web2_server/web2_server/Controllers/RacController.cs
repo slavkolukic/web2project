@@ -100,5 +100,31 @@ namespace web2_server.Controllers
             await _dbContext.SaveChangesAsync();
             return Ok("Office is successfully deleted!");
         }
+
+        [HttpPost]
+        [Route("getOfficeInfo")]
+        public async Task<IActionResult> GetOfficeInfo(OfficeIdModel officeIdModel)
+        {
+            Office officeInfo = _dbContext.Offices.Where(x => x.Id == Int32.Parse(officeIdModel.Id)).SingleOrDefault();
+
+            return Ok(new { officeInfo });
+        }
+
+        [HttpPost]
+        [Route("editOfficeInfo")]
+        public async Task<IActionResult> EditOfficeInfo(Office officeModel)
+        {
+            Office officeInfo = _dbContext.Offices.Where(x => x.Id == officeModel.Id).SingleOrDefault();
+
+            if (officeModel.Address != "")
+                officeInfo.Address = officeModel.Address;
+
+            if (officeModel.City != "")
+                officeInfo.City = officeModel.City;
+
+            await _dbContext.SaveChangesAsync();
+
+            return Ok("Office is successfully updated!");
+        }
     }
 }

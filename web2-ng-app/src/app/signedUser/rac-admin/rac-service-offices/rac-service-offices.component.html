@@ -17,7 +17,11 @@
   <div class="container transparent-bg">
     <br />
 
-    <form [formGroup]="newOfficeForm" (ngSubmit)="registerNewOffice()">
+    <form
+      [formGroup]="newOfficeForm"
+      (ngSubmit)="registerNewOffice()"
+      [hidden]="mode == 'edit'"
+    >
       <div class="row">
         <div class="col-sm-4"></div>
         <div class="col-sm-4 rounded border-color transparent-bg">
@@ -54,6 +58,55 @@
       </div>
     </form>
 
+    <form
+      [formGroup]="editOfficeForm"
+      (ngSubmit)="editOffice()"
+      [hidden]="mode == 'add'"
+    >
+      <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4 rounded border-color transparent-bg">
+          <br />
+          <div class="text-center">
+            <h4><b>Edit office</b></h4>
+          </div>
+
+          <div>
+            <label>Address: {{ editOfficeAddress }}</label>
+          </div>
+
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Address"
+              formControlName="address"
+            />
+          </div>
+
+          <div>
+            <label>City: {{ editOfficeCity }}</label>
+          </div>
+
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="City"
+              formControlName="city"
+            />
+          </div>
+
+          <div>
+            <button type="submit" class="btn btn-secondary btn-block">
+              Save changes
+            </button>
+            <br />
+          </div>
+        </div>
+      </div>
+    </form>
+
     <div class="table-responsive">
       <table class="table table-bordered text-center">
         <thead style="background: #e37222">
@@ -68,7 +121,12 @@
             <td>{{ office.address }}</td>
             <td>{{ office.city }}</td>
             <td>
-              <button type="button" class="btn mx-4 btn-secondary btn-sm">
+              <button
+                type="button"
+                class="btn mx-4 btn-secondary btn-sm"
+                (click)="editOfficeButton($event)"
+                id="{{ office.id }}"
+              >
                 Edit
               </button>
               <button

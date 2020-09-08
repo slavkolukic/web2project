@@ -12,7 +12,12 @@ import { stringify } from 'querystring';
 })
 export class RacServiceOfficesComponent implements OnInit {
   newOfficeForm: FormGroup;
+  editOfficeForm: FormGroup;
   allOffices: Office[];
+  mode: string = 'add';
+  editOfficeId: string = '';
+  editOfficeAddress: string = '';
+  editOfficeCity: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -23,6 +28,12 @@ export class RacServiceOfficesComponent implements OnInit {
       address: ['', Validators.required],
       city: ['', Validators.required],
       ownerId: [authService.getUserId()],
+    });
+
+    this.editOfficeForm = this.fb.group({
+      address: ['', Validators.required],
+      city: ['', Validators.required],
+      id: [''],
     });
 
     this.racAdminService
@@ -54,5 +65,29 @@ export class RacServiceOfficesComponent implements OnInit {
     this.racAdminService.deleteOffice(event.target.id).subscribe((data) => {
       console.log(data);
     });
+  }
+
+  editOfficeButton(event) {
+    this.mode = 'edit';
+
+    this.racAdminService.getOfficeInfo(event.target.id).subscribe((data) => {
+      this.editOfficeId = data.officeInfo.id;
+      this.editOfficeAddress = data.officeInfo.address;
+      this.editOfficeCity = data.officeInfo.city;
+      console.log(this.editOfficeId);
+    });
+  }
+
+  editOffice() {
+    this.editOfficeForm.patchValue({
+      id: this.editOfficeId,
+    });
+    this.racAdminService
+      .editOfficeInfo(this.editOfficeForm.value)
+      .subscribe((data) => {
+        console.log(data);
+      });
+
+    location.reload();
   }
 }
