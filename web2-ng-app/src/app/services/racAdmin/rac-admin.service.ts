@@ -15,7 +15,8 @@ export class RacAdminService {
     environment.apiUrl + '/rac/saveRacProfileChanges';
   private getRacProfileInfoPath = environment.apiUrl + '/rac/getRacProfileInfo';
   private registerNewOfficePath = environment.apiUrl + '/rac/registerNewOffice';
-  private getAllOfficesPath = environment.apiUrl + '/rac/getAllOffices';
+  private getUserOfficesPath = environment.apiUrl + '/rac/getUserOffices';
+  private deleteOfficePath = environment.apiUrl + '/rac/deleteOffice';
   constructor(private http: HttpClient) {}
 
   saveProfileChanges(data): Observable<any> {
@@ -32,9 +33,21 @@ export class RacAdminService {
     return this.http.post(this.registerNewOfficePath, data);
   }
 
-  getAllOffices(): Observable<Office[]> {
+  getUserOffices(ownerId: string): Observable<Office[]> {
+    var data = {
+      OwnerId: ownerId,
+    };
+
     return this.http
-      .get(this.getAllOfficesPath)
+      .post(this.getUserOfficesPath, data)
       .pipe(map((res) => res['allOffices']));
+  }
+
+  deleteOffice(id: string): Observable<any> {
+    var data = {
+      Id: id,
+    };
+
+    return this.http.post(this.deleteOfficePath, data);
   }
 }

@@ -80,13 +80,25 @@ namespace web2_server.Controllers
             return Ok("New office is successfully registered!");
         }
 
-        [HttpGet]
-        [Route("getAllOffices")]
-        public async Task<IActionResult> GetAllOffices()
+        [HttpPost]
+        [Route("getUserOffices")]
+        public async Task<IActionResult> GetUserOffices(UserIdModel userIdModel)
         {
-            List<Office> allOffices = _dbContext.Offices.ToList();
-
+            User user = _dbContext.Users.Include(c => c.RaCCompany).SingleOrDefault(c => c.Id == userIdModel.OwnerId);
+            RentACarCompany racCompany = _dbContext.RentACarCompanies.Include(x => x.Offices).SingleOrDefault(x => x.Id == user.RaCCompany.Id);
+            //List<Office> allOffices = _dbContext.Offices.Where(x => x)
+            List<Office> allOffices = racCompany.Offices.ToList();
             return Ok(new { allOffices });
+        }
+
+        [HttpPost]
+        [Route("deleteOffice")]
+        public async Task<IActionResult> DeleteOffice(OfficeIdModel officeIdModel)
+        {
+            Office officeToRemove = _dbContext.Offices.Where(x => x.Id == Int32.Parse(officeIdModel.Id)).SingleOrDefault();
+            _dbContext.Offices.Remove(officeToRemove);
+            await _dbContext.SaveChangesAsync();
+            return Ok("Office is successfully deleted!");
         }
     }
 }

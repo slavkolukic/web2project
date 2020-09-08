@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { RacAdminService } from 'src/app/services/racAdmin/rac-admin.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { Office } from 'src/app/models/Office';
+import { stringify } from 'querystring';
 
 @Component({
   selector: 'app-rac-service-offices',
@@ -12,6 +13,7 @@ import { Office } from 'src/app/models/Office';
 export class RacServiceOfficesComponent implements OnInit {
   newOfficeForm: FormGroup;
   allOffices: Office[];
+
   constructor(
     private fb: FormBuilder,
     private racAdminService: RacAdminService,
@@ -23,10 +25,12 @@ export class RacServiceOfficesComponent implements OnInit {
       ownerId: [authService.getUserId()],
     });
 
-    this.racAdminService.getAllOffices().subscribe((data) => {
-      this.allOffices = data;
-      console.log(this.allOffices);
-    });
+    this.racAdminService
+      .getUserOffices(this.authService.getUserId())
+      .subscribe((data) => {
+        this.allOffices = data;
+        console.log(this.allOffices);
+      });
   }
 
   ngOnInit(): void {}
@@ -44,5 +48,11 @@ export class RacServiceOfficesComponent implements OnInit {
           console.log(data);
         });
     }
+  }
+
+  deleteOffice(event) {
+    this.racAdminService.deleteOffice(event.target.id).subscribe((data) => {
+      console.log(data);
+    });
   }
 }
