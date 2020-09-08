@@ -63,34 +63,10 @@
             <th scope="col"></th>
           </tr>
         </thead>
-        <tbody>
+        <tbody *ngFor="let office of allOffices">
           <tr>
-            <td>Petra Petrovica 2</td>
-            <td>Novi Sad</td>
-            <td>
-              <button type="button" class="btn mx-4 btn-secondary btn-sm">
-                Edit
-              </button>
-              <button type="button" class="btn mx-4 btn-secondary btn-sm">
-                Remove
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>Marka Markovica 1</td>
-            <td>Belgrade</td>
-            <td>
-              <button type="button" class="btn mx-4 btn-secondary btn-sm">
-                Edit
-              </button>
-              <button type="button" class="btn mx-4 btn-secondary btn-sm">
-                Remove
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>Marka Markovica 1</td>
-            <td>Belgrade</td>
+            <td>{{ office.address }}</td>
+            <td>{{ office.city }}</td>
             <td>
               <button type="button" class="btn mx-4 btn-secondary btn-sm">
                 Edit

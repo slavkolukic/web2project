@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { RacAdminService } from 'src/app/services/racAdmin/rac-admin.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { Office } from 'src/app/models/Office';
 
 @Component({
   selector: 'app-rac-service-offices',
@@ -10,6 +11,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class RacServiceOfficesComponent implements OnInit {
   newOfficeForm: FormGroup;
+  allOffices: Office[];
   constructor(
     private fb: FormBuilder,
     private racAdminService: RacAdminService,
@@ -19,6 +21,11 @@ export class RacServiceOfficesComponent implements OnInit {
       address: ['', Validators.required],
       city: ['', Validators.required],
       ownerId: [authService.getUserId()],
+    });
+
+    this.racAdminService.getAllOffices().subscribe((data) => {
+      this.allOffices = data;
+      console.log(this.allOffices);
     });
   }
 

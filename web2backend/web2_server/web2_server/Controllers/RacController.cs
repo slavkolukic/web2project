@@ -79,5 +79,14 @@ namespace web2_server.Controllers
 
             return Ok("New office is successfully registered!");
         }
+
+        [HttpGet]
+        [Route("getAllOffices")]
+        public async Task<IActionResult> GetAllOffices()
+        {
+            List<Office> allOffices = _dbContext.Offices.ToList();
+
+            return Ok(new { allOffices });
+        }
     }
 }
