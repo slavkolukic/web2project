@@ -17,36 +17,57 @@
   <div class="container transparent-bg">
     <br />
 
-    <form>
+    <form [formGroup]="addCarForm" (ngSubmit)="addNewCar()">
       <div class="row">
         <div class="col-sm-2"></div>
         <div class="col-sm-4 rounded border-color transparent-bg">
           <br />
 
           <div class="form-group">
-            <input type="text" class="form-control" placeholder="Model" />
-          </div>
-
-          <div class="form-group">
-            <input type="text" class="form-control" placeholder="Brand" />
-          </div>
-
-          <div class="form-group">
-            <input type="number" class="form-control" placeholder="Year" />
-          </div>
-        </div>
-        <div class="col-sm-4 rounded border-color transparent-bg">
-          <br />
-
-          <div class="form-group">
-            <input type="text" class="form-control" placeholder="Car type" />
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Model"
+              formControlName="model"
+            />
           </div>
 
           <div class="form-group">
             <input
               type="text"
               class="form-control"
+              placeholder="Brand"
+              formControlName="brand"
+            />
+          </div>
+
+          <div class="form-group">
+            <input
+              type="number"
+              class="form-control"
+              placeholder="Year"
+              formControlName="year"
+            />
+          </div>
+        </div>
+        <div class="col-sm-4 rounded border-color transparent-bg">
+          <br />
+
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Car type"
+              formControlName="typeOfCar"
+            />
+          </div>
+
+          <div class="form-group">
+            <input
+              type="number"
+              class="form-control"
               placeholder="Number of seats"
+              formControlName="numberOfSeats"
             />
           </div>
 
@@ -55,17 +76,43 @@
               type="number"
               class="form-control"
               placeholder="Price per day ($) "
+              formControlName="pricePerDay"
             />
           </div>
         </div>
         <div class="col-sm-2"></div>
       </div>
 
-      <div class="row">
+      <div class="row text-center">
         <div class="col-sm-2"></div>
         <div class="col-sm-8 rounded border-color transparent-bg">
           <div class="form-group">
-            <input type="text" class="form-control" placeholder="Location" />
+            <div class="dropdown">
+              <button
+                class="btn btn-info dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                {{ selectedOffice }}
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <div *ngFor="let office of allOffices">
+                  <button
+                    type="button"
+                    class="dropdown-item"
+                    id="option"
+                    on-click="
+                      saveSelectedOffice(office.id, office.city, office.address)
+                    "
+                  >
+                    {{ office.city }} : {{ office.address }}
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="col-sm-2"></div>

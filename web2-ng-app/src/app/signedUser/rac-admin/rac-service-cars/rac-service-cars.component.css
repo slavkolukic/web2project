@@ -14,8 +14,6 @@ table.table-bordered > tbody > tr > td {
   border: 1px solid black;
 }
 
-
-
 hr.solid {
   border-top: 2px solid whitesmoke;
 }
@@ -27,4 +25,3 @@ hr.solid {
   background-repeat: no-repeat;
   background-size: cover;
 }
-

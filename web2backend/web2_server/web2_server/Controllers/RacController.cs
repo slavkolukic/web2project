@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using web2_server.Database;
@@ -72,6 +73,7 @@ namespace web2_server.Controllers
             Office newOffice = new Office();
             newOffice.Address = registerNewOfficeModel.Address;
             newOffice.City = registerNewOfficeModel.City;
+            newOffice.Cars = new Collection<Car>();
 
             racCompany.Offices.Add(newOffice);
 
@@ -125,6 +127,27 @@ namespace web2_server.Controllers
             await _dbContext.SaveChangesAsync();
 
             return Ok("Office is successfully updated!");
+        }
+
+        [HttpPost]
+        [Route("addNewCar")]
+        public async Task<IActionResult> AddNewCar(NewCarModel newCarModel)
+        {
+            Office carOffice = _dbContext.Offices.Include(x => x.Cars).Where(x => x.Id == newCarModel.OfficeId).SingleOrDefault();
+            Car newCar = new Car();
+            newCar.CarReservations = new Collection<CarReservation>();
+            newCar.Model = newCarModel.Model;
+            newCar.Brand = newCarModel.Brand;
+            newCar.Year = newCarModel.Year;
+            newCar.TypeOfCar = newCarModel.TypeOfCar;
+            newCar.NumberOfSeats = newCarModel.NumberOfSeats;
+            newCar.PricePerDay = newCarModel.PricePerDay;
+
+            carOffice.Cars.Add(newCar);
+
+            await _dbContext.SaveChangesAsync();
+
+            return Ok("Car is successfully added!");
         }
     }
 }
