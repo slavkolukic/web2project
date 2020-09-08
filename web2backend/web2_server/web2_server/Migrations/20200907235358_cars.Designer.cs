@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using web2_server.Database;
 
 namespace web2_server.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20200907235358_cars")]
+    partial class cars
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,21 +40,21 @@ namespace web2_server.Migrations
                     b.Property<int>("NumberOfSeats")
                         .HasColumnType("int");
 
-                    b.Property<int?>("OfficeId")
-                        .HasColumnType("int");
-
                     b.Property<int>("PricePerDay")
                         .HasColumnType("int");
 
-                    b.Property<string>("TypeOfCar")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("RentACarCompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TypeOfCar")
+                        .HasColumnType("int");
 
                     b.Property<int>("Year")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OfficeId");
+                    b.HasIndex("RentACarCompanyId");
 
                     b.ToTable("Cars");
                 });
@@ -81,29 +83,6 @@ namespace web2_server.Migrations
                     b.HasIndex("CarId");
 
                     b.ToTable("CarReservation");
-                });
-
-            modelBuilder.Entity("web2_server.Models.RentACar.Office", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("RentACarCompanyId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RentACarCompanyId");
-
-                    b.ToTable("Offices");
                 });
 
             modelBuilder.Entity("web2_server.Models.RentACar.RentACarCompany", b =>
@@ -201,9 +180,9 @@ namespace web2_server.Migrations
 
             modelBuilder.Entity("web2_server.Models.RentACar.Car", b =>
                 {
-                    b.HasOne("web2_server.Models.RentACar.Office", null)
+                    b.HasOne("web2_server.Models.RentACar.RentACarCompany", null)
                         .WithMany("Cars")
-                        .HasForeignKey("OfficeId");
+                        .HasForeignKey("RentACarCompanyId");
                 });
 
             modelBuilder.Entity("web2_server.Models.RentACar.CarReservation", b =>
@@ -211,13 +190,6 @@ namespace web2_server.Migrations
                     b.HasOne("web2_server.Models.RentACar.Car", null)
                         .WithMany("CarReservations")
                         .HasForeignKey("CarId");
-                });
-
-            modelBuilder.Entity("web2_server.Models.RentACar.Office", b =>
-                {
-                    b.HasOne("web2_server.Models.RentACar.RentACarCompany", null)
-                        .WithMany("Offices")
-                        .HasForeignKey("RentACarCompanyId");
                 });
 
             modelBuilder.Entity("web2_server.Models.User.User", b =>

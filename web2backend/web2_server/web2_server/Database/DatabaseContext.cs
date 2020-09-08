@@ -12,5 +12,9 @@ namespace web2_server.Database
         public DbSet<User> Users { get; set; }
 
         public DbSet<RentACarCompany> RentACarCompanies { get; set; }
+
+        public DbSet<Car> Cars { get; set; }
+
+        public DbSet<Office> Offices { get; set; }
     }
 }

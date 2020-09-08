@@ -17,6 +17,6 @@ namespace web2_server.Models.RentACar
 
         public string PhoneNumber { get; set; }
 
-        public ICollection<Car> Cars { get; set; }
+        public ICollection<Office> Offices { get; set; }
     }
 }

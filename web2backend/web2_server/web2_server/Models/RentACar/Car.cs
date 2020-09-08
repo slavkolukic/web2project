@@ -14,10 +14,12 @@ namespace web2_server.Models.RentACar
         public string Location { get; set; }
         public int PricePerDay { get; set; }
         public int NumberOfSeats { get; set; }
-        public int BabySeats { get; set; }
+
         public string Brand { get; set; }
         public int Year { get; set; }
         public string Model { get; set; }
+
+        public string TypeOfCar { get; set; }
 
         public ICollection<CarReservation> CarReservations { get; set; }
     }
