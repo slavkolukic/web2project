@@ -6,6 +6,7 @@
     using Microsoft.IdentityModel.Tokens;
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.IdentityModel.Tokens.Jwt;
     using System.Linq;
     using System.Security.Claims;
@@ -128,14 +129,14 @@
                 return Ok(new { message = "User with given email does not exist!" });
             }
 
-            if (owner.RaCCompany != null)
-            {
-                return Ok(new { message = "User already owns another company!" });
-            }
+            //if (owner.RaCCompany != null)
+            //{
+            //    return Ok(new { message = "User already owns another company!" });
+            //}
 
             RentACarCompany rac = new RentACarCompany();
             rac.CompanyName = racAssignmentModel.CompanyName;
-
+            rac.Offices = new Collection<Office>();
             owner.RaCCompany = rac;
 
             owner.Role = UserRole.CarAdmin;

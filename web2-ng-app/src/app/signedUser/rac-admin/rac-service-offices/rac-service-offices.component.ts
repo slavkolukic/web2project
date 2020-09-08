@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { RacAdminService } from 'src/app/services/racAdmin/rac-admin.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-rac-service-offices',
@@ -6,16 +9,33 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./rac-service-offices.component.css'],
 })
 export class RacServiceOfficesComponent implements OnInit {
-  newOfficeProcess = false;
-  constructor() {}
+  newOfficeForm: FormGroup;
+  constructor(
+    private fb: FormBuilder,
+    private racAdminService: RacAdminService,
+    private authService: AuthService
+  ) {
+    this.newOfficeForm = this.fb.group({
+      address: ['', Validators.required],
+      city: ['', Validators.required],
+      ownerId: [authService.getUserId()],
+    });
+  }
 
   ngOnInit(): void {}
 
-  newOfficeOn(): void {
-    this.newOfficeProcess = true;
-  }
-
-  newOfficeOff(): void {
-    this.newOfficeProcess = false;
+  registerNewOffice() {
+    if (
+      this.newOfficeForm.get('address').value == '' ||
+      this.newOfficeForm.get('city').value == ''
+    ) {
+      alert('Field must not be empty!');
+    } else {
+      this.racAdminService
+        .registerNewOffice(this.newOfficeForm.value)
+        .subscribe((data) => {
+          console.log(data);
+        });
+    }
   }
 }

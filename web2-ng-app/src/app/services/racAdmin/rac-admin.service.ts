@@ -13,6 +13,7 @@ export class RacAdminService {
   private saveRacProfileChangesPath =
     environment.apiUrl + '/rac/saveRacProfileChanges';
   private getRacProfileInfoPath = environment.apiUrl + '/rac/getRacProfileInfo';
+  private registerNewOfficePath = environment.apiUrl + '/rac/registerNewOffice';
   constructor(private http: HttpClient) {}
 
   saveProfileChanges(data): Observable<any> {
@@ -23,5 +24,9 @@ export class RacAdminService {
     return this.http
       .post(this.getRacProfileInfoPath, data)
       .pipe(map((res) => res['racCompany']));
+  }
+
+  registerNewOffice(data): Observable<any> {
+    return this.http.post(this.registerNewOfficePath, data);
   }
 }

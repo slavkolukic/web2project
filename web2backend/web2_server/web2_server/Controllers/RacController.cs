@@ -61,5 +61,23 @@ namespace web2_server.Controllers
 
             return Ok(new { racCompany });
         }
+
+        [HttpPost]
+        [Route("registerNewOffice")]
+        public async Task<IActionResult> RegisterNewOffice(RegisterNewOfficeModel registerNewOfficeModel)
+        {
+            User user = _dbContext.Users.Include(c => c.RaCCompany).SingleOrDefault(c => c.Id == registerNewOfficeModel.OwnerId);
+            //RentACarCompany racCompany = _dbContext.RentACarCompanies.Where(x => x.Id == user.RaCCompany.Id).SingleOrDefault();
+            RentACarCompany racCompany = _dbContext.RentACarCompanies.Include(x => x.Offices).SingleOrDefault(x => x.Id == user.RaCCompany.Id);
+            Office newOffice = new Office();
+            newOffice.Address = registerNewOfficeModel.Address;
+            newOffice.City = registerNewOfficeModel.City;
+
+            racCompany.Offices.Add(newOffice);
+
+            await _dbContext.SaveChangesAsync();
+
+            return Ok("New office is successfully registered!");
+        }
     }
 }
