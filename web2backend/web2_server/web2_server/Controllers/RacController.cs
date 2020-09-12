@@ -168,5 +168,43 @@ namespace web2_server.Controllers
             }
             return Ok(new { allCars });
         }
+
+        [HttpPost]
+        [Route("getCarInfo")]
+        public async Task<IActionResult> GetCarInfo(OfficeIdModel officeIdModel) //koristim officeIdModel da ne bih pravio i za auto
+        {
+            Car carInfo = _dbContext.Cars.Where(x => x.Id == Int32.Parse(officeIdModel.Id)).SingleOrDefault();
+
+            return Ok(new { carInfo });
+        }
+
+        [HttpPost]
+        [Route("editCarInfo")]
+        public async Task<IActionResult> EditCarInfo(Car carModel)
+        {
+            Car carInfo = _dbContext.Cars.Where(x => x.Id == carModel.Id).SingleOrDefault();
+
+            if (carModel.Brand != "")
+                carInfo.Brand = carModel.Brand;
+
+            if (carModel.Model != "")
+                carInfo.Model = carModel.Model;
+
+            if (carModel.Year.ToString() != "")
+                carInfo.Year = carModel.Year;
+
+            if (carModel.TypeOfCar != "")
+                carInfo.TypeOfCar = carModel.TypeOfCar;
+
+            if (carModel.NumberOfSeats.ToString() != "")
+                carInfo.NumberOfSeats = carModel.NumberOfSeats;
+
+            if (carModel.PricePerDay.ToString() != "")
+                carInfo.PricePerDay = carModel.PricePerDay;
+
+            await _dbContext.SaveChangesAsync();
+
+            return Ok("Car is successfully updated!");
+        }
     }
 }

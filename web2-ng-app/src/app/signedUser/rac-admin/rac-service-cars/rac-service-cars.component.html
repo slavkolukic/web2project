@@ -17,7 +17,15 @@
   <div class="container transparent-bg">
     <br />
 
-    <form [formGroup]="addCarForm" (ngSubmit)="addNewCar()">
+    <form
+      [formGroup]="addCarForm"
+      (ngSubmit)="addNewCar()"
+      [hidden]="mode == 'edit'"
+    >
+      <div class="text-center">
+        <h4><b>Add new car</b></h4>
+      </div>
+
       <div class="row">
         <div class="col-sm-2"></div>
         <div class="col-sm-4 rounded border-color transparent-bg">
@@ -125,6 +133,111 @@
       </div>
     </form>
 
+    <form
+      [formGroup]="editCarForm"
+      (ngSubmit)="editCar()"
+      [hidden]="mode == 'add'"
+    >
+      <div class="text-center">
+        <h4><b>Edit car info</b></h4>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-4 rounded border-color transparent-bg">
+          <br />
+
+          <div>
+            <label>Model: {{ editCarModel }}</label>
+          </div>
+
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Model"
+              formControlName="model"
+            />
+          </div>
+
+          <div>
+            <label>Brand: {{ editCarBrand }}</label>
+          </div>
+
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Brand"
+              formControlName="brand"
+            />
+          </div>
+
+          <div>
+            <label>Year: {{ editCarYear }}</label>
+          </div>
+
+          <div class="form-group">
+            <input
+              type="number"
+              class="form-control"
+              placeholder="Year"
+              formControlName="year"
+            />
+          </div>
+        </div>
+        <div class="col-sm-4 rounded border-color transparent-bg">
+          <br />
+
+          <div>
+            <label>Car type: {{ editCarTypeOfCar }}</label>
+          </div>
+
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Car type"
+              formControlName="typeOfCar"
+            />
+          </div>
+
+          <div>
+            <label>Number of Seats: {{ editCarNumberOfSeats }}</label>
+          </div>
+
+          <div class="form-group">
+            <input
+              type="number"
+              class="form-control"
+              placeholder="Number of seats"
+              formControlName="numberOfSeats"
+            />
+          </div>
+
+          <div>
+            <label>Price per day: {{ editCarPricePerDay }}</label>
+          </div>
+
+          <div class="form-group">
+            <input
+              type="number"
+              class="form-control"
+              placeholder="Price per day ($) "
+              formControlName="pricePerDay"
+            />
+          </div>
+        </div>
+        <div class="col-sm-2"></div>
+      </div>
+
+      <div class="text-center">
+        <br />
+        <button type="submit" class="btn btn-secondary">Save changes</button>
+        <br />
+      </div>
+    </form>
+
     <div class="table-responsive">
       <table class="table table-bordered text-center">
         <thead style="background: #e37222">
@@ -135,7 +248,7 @@
             <th scope="col">Car Type</th>
             <th scope="col">Number of seats</th>
             <th scope="col">Price per day ($)</th>
-            <th scope="col">Location</th>
+            <th scope="col">Office</th>
             <th scope="col">Status</th>
             <th scope="col"></th>
           </tr>
@@ -151,7 +264,12 @@
             <td></td>
             <td></td>
             <td>
-              <button type="button" class="btn mx-4 btn-secondary btn-sm">
+              <button
+                type="button"
+                class="btn mx-4 btn-secondary btn-sm"
+                (click)="editCarButton($event)"
+                id="{{ car.id }}"
+              >
                 Edit
               </button>
               <button type="button" class="btn mx-4 btn-secondary btn-sm">

@@ -12,10 +12,19 @@ import { Car } from 'src/app/models/Car';
 })
 export class RacServiceCarsComponent implements OnInit {
   addCarForm: FormGroup;
+  editCarForm: FormGroup;
   allOffices: Office[];
   allCars: Car[];
   selectedOffice: string = 'Select Office';
   selectedOfficeId: string = '';
+  mode: string = 'add';
+  editCarId: string = '';
+  editCarModel: string = '';
+  editCarBrand: string = '';
+  editCarYear: string = '';
+  editCarTypeOfCar: string = '';
+  editCarNumberOfSeats: string = '';
+  editCarPricePerDay: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -32,13 +41,17 @@ export class RacServiceCarsComponent implements OnInit {
       officeId: [''],
     });
 
-    this.racAdminService
-      .getUserOffices(this.authService.getUserId())
-      .subscribe((data) => {
-        this.allOffices = data;
-        console.log(this.allOffices);
-      });
+    this.editCarForm = this.fb.group({
+      model: ['', Validators.required],
+      brand: ['', Validators.required],
+      year: ['', Validators.required],
+      typeOfCar: ['', Validators.required],
+      numberOfSeats: ['', Validators.required],
+      pricePerDay: ['', Validators.required],
+      id: ['', Validators.required],
+    });
 
+    this.getAllOffices();
     this.getAllCars();
   }
 
@@ -93,6 +106,60 @@ export class RacServiceCarsComponent implements OnInit {
       .subscribe((data) => {
         this.allCars = data;
         console.log(this.allCars);
+      });
+  }
+
+  getAllOffices() {
+    this.racAdminService
+      .getUserOffices(this.authService.getUserId())
+      .subscribe((data) => {
+        this.allOffices = data;
+        console.log(this.allOffices);
+      });
+  }
+
+  editCarButton(event) {
+    this.mode = 'edit';
+
+    this.racAdminService.getCarInfo(event.target.id).subscribe((data) => {
+      this.editCarId = data.carInfo.id;
+      this.editCarModel = data.carInfo.model;
+      this.editCarBrand = data.carInfo.brand;
+      this.editCarYear = data.carInfo.year;
+      this.editCarTypeOfCar = data.carInfo.typeOfCar;
+      this.editCarNumberOfSeats = data.carInfo.numberOfSeats;
+      this.editCarPricePerDay = data.carInfo.pricePerDay;
+      console.log(data);
+    });
+  }
+
+  editCar() {
+    this.editCarForm.patchValue({
+      id: this.editCarId,
+    });
+
+    if (this.editCarForm.get('year').value == '') {
+      this.editCarForm.patchValue({
+        year: this.editCarYear,
+      });
+    }
+
+    if (this.editCarForm.get('numberOfSeats').value == '') {
+      this.editCarForm.patchValue({
+        numberOfSeats: this.editCarNumberOfSeats,
+      });
+    }
+
+    if (this.editCarForm.get('pricePerDay').value == '') {
+      this.editCarForm.patchValue({
+        pricePerDay: this.editCarPricePerDay,
+      });
+    }
+
+    this.racAdminService
+      .editCarInfo(this.editCarForm.value)
+      .subscribe((data) => {
+        console.log(data);
       });
   }
 }
