@@ -14,4 +14,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Data.Entity">
+      <HintPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.5\System.Data.Entity.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

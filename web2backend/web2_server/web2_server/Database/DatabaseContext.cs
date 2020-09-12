@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using web2_server.Models.RentACar;
 using web2_server.Models.User;
+using System.Data.Entity;
 
 namespace web2_server.Database
 {

@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { map } from 'rxjs/operators';
 import { RentACarCompany } from 'src/app/models/RentACarCompany';
 import { Office } from '../../models/Office';
+import { Car } from 'src/app/models/Car';
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +21,7 @@ export class RacAdminService {
   private getOfficeInfoPath = environment.apiUrl + '/rac/getOfficeInfo';
   private editOfficeInfoPath = environment.apiUrl + '/rac/editOfficeInfo';
   private addNewCarPath = environment.apiUrl + '/rac/addNewCar';
+  private getUserCarsPath = environment.apiUrl + '/rac/getAllUserCars';
   constructor(private http: HttpClient) {}
 
   saveProfileChanges(data): Observable<any> {
@@ -37,7 +39,7 @@ export class RacAdminService {
   }
 
   getUserOffices(ownerId: string): Observable<Office[]> {
-    var data = {
+    const data = {
       OwnerId: ownerId,
     };
 
@@ -68,5 +70,15 @@ export class RacAdminService {
 
   addNewCar(data): Observable<any> {
     return this.http.post(this.addNewCarPath, data);
+  }
+
+  getUserCars(ownerId: string): Observable<Car[]> {
+    var data = {
+      OwnerId: ownerId,
+    };
+
+    return this.http
+      .post(this.getUserCarsPath, data)
+      .pipe(map((res) => res['allCars']));
   }
 }

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using web2_server.Database;
 using web2_server.Models.RentACar;
 using web2_server.Models.User;
+using System.Data.Entity;
 
 namespace web2_server.Controllers
 {
@@ -148,6 +149,24 @@ namespace web2_server.Controllers
             await _dbContext.SaveChangesAsync();
 
             return Ok("Car is successfully added!");
+        }
+
+        [HttpPost]
+        [Route("getAllUserCars")]
+        public async Task<IActionResult> GetAllUserCars(UserIdModel userIdModel)
+        {
+            var user = _dbContext.Users.Include(x => x.RaCCompany).ThenInclude(x => x.Offices).ThenInclude(x => x.Cars).Where(x => x.Id == userIdModel.OwnerId).ToList().First();
+
+            List<Car> allCars = new List<Car>();
+
+            foreach (var office in user.RaCCompany.Offices)
+            {
+                foreach (var car in office.Cars)
+                {
+                    allCars.Add(car);
+                }
+            }
+            return Ok(new { allCars });
         }
     }
 }

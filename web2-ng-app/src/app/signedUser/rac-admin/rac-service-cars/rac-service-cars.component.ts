@@ -3,6 +3,7 @@ import { Office } from 'src/app/models/Office';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RacAdminService } from 'src/app/services/racAdmin/rac-admin.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { Car } from 'src/app/models/Car';
 
 @Component({
   selector: 'app-rac-service-cars',
@@ -12,6 +13,7 @@ import { AuthService } from 'src/app/services/auth.service';
 export class RacServiceCarsComponent implements OnInit {
   addCarForm: FormGroup;
   allOffices: Office[];
+  allCars: Car[];
   selectedOffice: string = 'Select Office';
   selectedOfficeId: string = '';
 
@@ -36,6 +38,8 @@ export class RacServiceCarsComponent implements OnInit {
         this.allOffices = data;
         console.log(this.allOffices);
       });
+
+    this.getAllCars();
   }
 
   ngOnInit(): void {}
@@ -81,5 +85,14 @@ export class RacServiceCarsComponent implements OnInit {
       return true;
     }
     return false;
+  }
+
+  getAllCars() {
+    this.racAdminService
+      .getUserCars(this.authService.getUserId())
+      .subscribe((data) => {
+        this.allCars = data;
+        console.log(this.allCars);
+      });
   }
 }

@@ -140,52 +140,16 @@
             <th scope="col"></th>
           </tr>
         </thead>
-        <tbody>
+        <tbody *ngFor="let car of allCars">
           <tr>
-            <td>Audi</td>
-            <td>Petra Petrovica 2, Novi Sad</td>
-            <td>10$</td>
-            <td>Reserved</td>
-            <td>Audi</td>
-            <td>Audi</td>
-            <td>Audi</td>
-            <td>Audi</td>
-            <td>
-              <button type="button" class="btn mx-4 btn-secondary btn-sm">
-                Edit
-              </button>
-              <button type="button" class="btn mx-4 btn-secondary btn-sm">
-                Remove
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>Audi</td>
-            <td>Petra Petrovica 2, Novi Sad</td>
-            <td>10$</td>
-            <td>Reserved</td>
-            <td>Audi</td>
-            <td>Audi</td>
-            <td>Audi</td>
-            <td>Audi</td>
-            <td>
-              <button type="button" class="btn mx-4 btn-secondary btn-sm">
-                Edit
-              </button>
-              <button type="button" class="btn mx-4 btn-secondary btn-sm">
-                Remove
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>Audi</td>
-            <td>Petra Petrovica 2, Novi Sad</td>
-            <td>10$</td>
-            <td>Reserved</td>
-            <td>Audi</td>
-            <td>Audi</td>
-            <td>Audi</td>
-            <td>Audi</td>
+            <td>{{ car.model }}</td>
+            <td>{{ car.brand }}</td>
+            <td>{{ car.year }}</td>
+            <td>{{ car.typeOfCar }}</td>
+            <td>{{ car.numberOfSeats }}</td>
+            <td>{{ car.pricePerDay }}</td>
+            <td></td>
+            <td></td>
             <td>
               <button type="button" class="btn mx-4 btn-secondary btn-sm">
                 Edit
