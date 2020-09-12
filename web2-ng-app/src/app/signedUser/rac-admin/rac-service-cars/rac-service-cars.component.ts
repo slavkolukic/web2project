@@ -161,5 +161,15 @@ export class RacServiceCarsComponent implements OnInit {
       .subscribe((data) => {
         console.log(data);
       });
+
+    location.reload();
+  }
+
+  deleteCarButton(event) {
+    this.racAdminService.deleteCar(event.target.id).subscribe((data) => {
+      console.log(data);
+    });
+
+    location.reload();
   }
 }

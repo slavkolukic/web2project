@@ -206,5 +206,20 @@ namespace web2_server.Controllers
 
             return Ok("Car is successfully updated!");
         }
+
+        [HttpPost]
+        [Route("deleteCar")]
+        public async Task<IActionResult> DeleteCar(OfficeIdModel carModel)
+        {
+            Car carToRemove = _dbContext.Cars.Where(x => x.Id == Int32.Parse(carModel.Id)).SingleOrDefault();
+            if (carToRemove != null)
+            {
+                _dbContext.Cars.Remove(carToRemove);
+                await _dbContext.SaveChangesAsync();
+                return Ok("Car is successfully deleted!");
+            }
+
+            return Ok("There is no car with given ID");
+        }
     }
 }
