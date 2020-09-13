@@ -14,6 +14,7 @@ namespace web2_server
     using web2_server.Database;
 
     using web2_server.Models.User;
+    using web2_server.SmtpOptions;
 
     public class Startup
     {
@@ -39,7 +40,9 @@ namespace web2_server
                 options.Password.RequireLowercase = false;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
-            }).AddEntityFrameworkStores<DatabaseContext>();
+                options.SignIn.RequireConfirmedAccount = true;
+            }).AddEntityFrameworkStores<DatabaseContext>()
+            .AddDefaultTokenProviders();
 
             var appSettings = applicationSettingsConfiguration.Get<AppSettings>();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
@@ -63,6 +66,8 @@ namespace web2_server
                     };
                 });
 
+            services.Configure<SmtpSettings>(Configuration.GetSection("SmtpSettings"));
+            services.AddSingleton<IMailer, Mailer>();
             services.AddControllers();
         }
 

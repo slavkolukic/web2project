@@ -1,5 +1,6 @@
 ﻿namespace web2_server.Controllers
 {
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
@@ -17,21 +18,25 @@
     using web2_server.Models;
     using web2_server.Models.RentACar;
     using web2_server.Models.User;
+    using web2_server.SmtpOptions;
 
     public class UserController : ApiController
     {
         private readonly UserManager<User> userManager;
         private readonly AppSettings appSettings;
         private DatabaseContext _dbContext;
+        private readonly IMailer _mailer;
 
         public UserController(
             UserManager<User> userManager,
             IOptions<AppSettings> appSettings,
-            DatabaseContext db)
+            DatabaseContext db,
+            IMailer mailer)
         {
             this.userManager = userManager;
             this.appSettings = appSettings.Value;
             this._dbContext = db;
+            _mailer = mailer;
         }
 
         [HttpPost]
@@ -56,7 +61,12 @@
                 var result = await userManager.CreateAsync(newUser, model.Password);
                 if (result.Succeeded)
                 {
-                    return Ok("User is successfully registered!");
+                    var token = await userManager.GenerateEmailConfirmationTokenAsync(newUser);
+                    var confirmationLink = Url.Action("ConfirmEmail", "User", new { userId = newUser.Id, token = token }, Request.Scheme);
+
+                    await _mailer.SendEmailAsync(model.Email, "Email verification", confirmationLink);
+
+                    return Ok(new { message = $"Please confirm registration via email" });
                 }
 
                 return BadRequest(result.Errors);
@@ -65,6 +75,30 @@
             {
                 return BadRequest(new { message = "Email already exist" });
             }
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            if (userId == null || token == null)
+            {
+                return RedirectToAction("index", "home");
+            }
+
+            var user = await userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return BadRequest(new { message = $"The User ID {userId} is invalid." });
+            }
+
+            var result = await userManager.ConfirmEmailAsync(user, token);
+            if (result.Succeeded)
+            {
+                return Ok("Thank you for confirming your email. You are successfully registered!");
+            }
+
+            return BadRequest(new { message = $"Email confirmation failed." });
         }
 
         [HttpPost]
@@ -83,6 +117,12 @@
             if (user == null)
             {
                 return Unauthorized("Email is not registered!");
+            }
+
+            var isEmailConfirmed = await this.userManager.IsEmailConfirmedAsync(user);
+            if (!isEmailConfirmed)
+            {
+                return Unauthorized("Email is not confirmed on email!");
             }
 
             var passwordValid = await this.userManager.CheckPasswordAsync(user, model.Password);
@@ -225,8 +265,31 @@
         [Route("getFilteredCars")]
         public async Task<IActionResult> GetFilteredCars(FilteredCarsModel filteredCarsModel) //Koristimo samo da smjestimo id
         {
-            DateTime from = Convert.ToDateTime(filteredCarsModel.FirstDayOfReservaton);
-            DateTime to = Convert.ToDateTime(filteredCarsModel.LastDayOfReservaton);
+            bool parseDates = true;
+            if (filteredCarsModel.FirstDayOfReservaton == "" || filteredCarsModel.LastDayOfReservaton == "")
+                parseDates = false;
+
+            bool parseNumberOfSeats = true;
+            if (filteredCarsModel.NumberOfSeats == "")
+                parseNumberOfSeats = false;
+
+            bool parsePricePerDay = true;
+            if (filteredCarsModel.PricePerDay == "")
+                parsePricePerDay = false;
+
+            bool parseTypeOfCar = true;
+            if (filteredCarsModel.TypeOfCar == "")
+                parseTypeOfCar = false;
+
+            DateTime from = new DateTime();
+            DateTime to = new DateTime();
+
+            if (parseDates)
+            {
+                from = Convert.ToDateTime(filteredCarsModel.FirstDayOfReservaton);
+                to = Convert.ToDateTime(filteredCarsModel.LastDayOfReservaton);
+            }
+
             List<Car> allCars = _dbContext.Cars.Include(x => x.CarReservations).ToList();
             List<Car> retCars = new List<Car>();
 
@@ -235,8 +298,8 @@
             foreach (var car in allCars)
             {
                 addCar = true;
-                if (filteredCarsModel.NumberOfSeats > car.NumberOfSeats ||
-                    filteredCarsModel.PricePerDay > car.PricePerDay ||
+                if (Int32.Parse(filteredCarsModel.NumberOfSeats) > car.NumberOfSeats ||
+                    Int32.Parse(filteredCarsModel.PricePerDay) > car.PricePerDay ||
                     filteredCarsModel.TypeOfCar != car.TypeOfCar)
                 {
                     addCar = false;

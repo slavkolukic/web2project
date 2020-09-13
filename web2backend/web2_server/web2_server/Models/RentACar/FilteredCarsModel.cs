@@ -11,10 +11,10 @@ namespace web2_server.Models.RentACar
 
         public string LastDayOfReservaton { get; set; }
 
-        public int PricePerDay { get; set; }
+        public string PricePerDay { get; set; }
 
         public string TypeOfCar { get; set; }
 
-        public int NumberOfSeats { get; set; }
+        public string NumberOfSeats { get; set; }
     }
 }

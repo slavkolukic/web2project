@@ -33,13 +33,15 @@ import {
   FormGroup,
 } from '@angular/forms';
 import { AuthService } from './services/auth.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthGuardService } from './guards/auth-guard.service';
 import { NavBarComponent } from './nav-bar/nav-bar/nav-bar.component';
 import { AdminService } from './services/admin/admin.service';
 import { RacAdminService } from './services/racAdmin/rac-admin.service';
 import { UnsignedUserService } from './services/unsigned/unsigned-user.service';
 import { SignedUserService } from './services/signed/signed-user.service';
+import { AuthInterceptor } from './Interceptor/AuthInterceptor';
+import { Router } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -78,6 +80,14 @@ import { SignedUserService } from './services/signed/signed-user.service';
     HttpClientModule,
   ],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useFactory(router: Router) {
+        return new AuthInterceptor(router);
+      },
+      multi: true,
+      deps: [Router],
+    },
     AuthService,
     AuthGuardService,
     AdminService,
