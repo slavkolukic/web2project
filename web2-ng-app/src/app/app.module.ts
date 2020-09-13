@@ -38,6 +38,7 @@ import { AuthGuardService } from './guards/auth-guard.service';
 import { NavBarComponent } from './nav-bar/nav-bar/nav-bar.component';
 import { AdminService } from './services/admin/admin.service';
 import { RacAdminService } from './services/racAdmin/rac-admin.service';
+import { UnsignedUserService } from './services/unsigned/unsigned-user.service';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,13 @@ import { RacAdminService } from './services/racAdmin/rac-admin.service';
     ReactiveFormsModule,
     HttpClientModule,
   ],
-  providers: [AuthService, AuthGuardService, AdminService, RacAdminService],
+  providers: [
+    AuthService,
+    AuthGuardService,
+    AdminService,
+    ,
+    UnsignedUserService,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

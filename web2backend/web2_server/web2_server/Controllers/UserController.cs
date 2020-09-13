@@ -2,6 +2,7 @@
 {
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Options;
     using Microsoft.IdentityModel.Tokens;
     using System;
@@ -153,6 +154,62 @@
             List<User> allUsers = _dbContext.Users.ToList();
 
             return Ok(new { allUsers });
+        }
+
+        [HttpGet]
+        [Route("getAllCarCompanies")]
+        public async Task<Object> GetAllCarCompanies()
+        {
+            List<RentACarCompany> allCarCompanies = _dbContext.RentACarCompanies.ToList();
+
+            return Ok(new { allCarCompanies });
+        }
+
+        [HttpPost]
+        [Route("getRacCompanyInfo")]
+        public async Task<IActionResult> GetRacCompanyInfo(OfficeIdModel racModel) //Koristimo samo da smjestimo id
+        {
+            RentACarCompany rac = _dbContext.RentACarCompanies.Where(x => x.Id == Int32.Parse(racModel.Id)).SingleOrDefault();
+            if (rac != null)
+                return Ok(new { rac });
+            else
+                return Ok(new { rac = "Rent a Car Company with this id does not exist!" });
+        }
+
+        [HttpPost]
+        [Route("getRacCompanyOffices")]
+        public async Task<IActionResult> GetRacCompanyOffices(OfficeIdModel racModel) //Koristimo samo da smjestimo id
+        {
+            RentACarCompany rac = _dbContext.RentACarCompanies.Include(x => x.Offices).Where(x => x.Id == Int32.Parse(racModel.Id)).SingleOrDefault();
+            if (rac != null)
+            {
+                List<Office> retOffices = rac.Offices.ToList();
+                return Ok(new { retOffices });
+            }
+            else
+                return Ok(new { retOffices = "Rent a Car Company with this id does not exist!" });
+        }
+
+        [HttpPost]
+        [Route("getRacCompanyCars")]
+        public async Task<IActionResult> GetRacCompanyCars(OfficeIdModel racModel) //Koristimo samo da smjestimo id
+        {
+            RentACarCompany rac = _dbContext.RentACarCompanies.Include(x => x.Offices).ThenInclude(x => x.Cars).Where(x => x.Id == Int32.Parse(racModel.Id)).SingleOrDefault();
+
+            List<Car> retCars = new List<Car>();
+            if (rac != null)
+            {
+                foreach (var office in rac.Offices)
+                {
+                    foreach (var car in office.Cars)
+                    {
+                        retCars.Add(car);
+                    }
+                }
+                return Ok(new { retCars });
+            }
+            else
+                return Ok(new { retCars = "Rent a Car Company with this id does not exist!" });
         }
 
         private string generateJwtToken(User user)

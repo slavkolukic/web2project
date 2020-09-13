@@ -21,142 +21,100 @@
   >
     <div class="text-center">
       <br />
-      <h2>Partnered companies</h2>
+      <h2>Airline companies</h2>
       <br />
     </div>
+
     <div class="table-responsive">
-      <table class="table table-borderless">
-        <thead>
-          <tr class="text-center">
-            <th scope="col" colspan="4"><h2>Airlines</h2></th>
+      <table class="table table-bordered text-center">
+        <thead style="background: #e37222">
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">City</th>
+            <th scope="col">Description</th>
+            <th scope="col">Average rating</th>
+            <th scope="col">Destinations</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>
-              <div class="card float-right" style="width: 150px">
-                <img
-                  class="card-img-top"
-                  src="../../../assets/air_serbia.png"
-                  alt="Air Serbia"
-                  style="width: 100%; height: 150px"
-                />
-                <div class="card-body">
-                  <h4 class="card-title">Air <br />Serbia</h4>
-                  <a
-                    href="#"
-                    class="btn btn-primary"
-                    routerLink="/airline-profile"
-                    >See Profile</a
-                  >
-                </div>
-              </div>
-            </td>
-
-            <td>
-              <div class="card" style="width: 150px">
-                <img
-                  class="card-img-top rounded"
-                  src="../../../assets/qatar_airways2.png"
-                  alt="Qatar Airways"
-                  style="width: 100%; height: 150px"
-                />
-                <div class="card-body">
-                  <h4 class="card-title">Qatar Airways</h4>
-                  <a
-                    href="#"
-                    class="btn btn-primary"
-                    routerLink="/airline-profile"
-                    >See Profile</a
-                  >
-                </div>
-              </div>
-            </td>
+            <td>AirSerbia</td>
+            <td>Belgrade</td>
+            <td>Affordable flights</td>
+            <td>4/5</td>
+            <td>London/Paris/New York...</td>
           </tr>
           <tr>
-            <td colspan="2" class="text-center">
-              <button
-                type="button"
-                class="btn btn-primary btn-lg"
-                routerLink="/flights"
-              >
-                See Available Flights
-              </button>
-            </td>
+            <td>QatarAirways</td>
+            <td>Doha</td>
+            <td>Affordable flights</td>
+            <td>4/5</td>
+            <td>London/Paris/New York...</td>
           </tr>
         </tbody>
       </table>
-    </div>
 
+      <div class="text-center">
+        <button
+          type="button"
+          class="btn btn-primary btn-lg"
+          routerLink="/flights"
+        >
+          Search Flights
+        </button>
+      </div>
+    </div>
     <br />
     <br />
+
+    <div class="text-center">
+      <br />
+      <h2>Rent A Car Companies</h2>
+      <br />
+    </div>
 
     <div class="table-responsive">
-      <table class="table table-borderless">
-        <thead>
-          <tr class="text-center">
-            <th scope="col" colspan="2">
-              <h2>Rent a Car</h2>
-            </th>
+      <table class="table table-bordered text-center">
+        <thead style="background: #e37222">
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">City</th>
+            <th scope="col">Description</th>
+            <th scope="col">Average rating</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody *ngFor="let rac of allCarCompanies">
           <tr>
             <td>
-              <div class="card float-right" style="width: 150px">
-                <img
-                  class="card-img-top rounded"
-                  src="../../../assets/ar_rent_a_car.jpg"
-                  alt="RentACar"
-                  style="width: 100%; height: 150px"
-                />
-                <div class="card-body">
-                  <h4 class="card-title">AR <br />RaC</h4>
-                  <a
-                    href="#"
-                    class="btn btn-primary"
-                    routerLink="/rent-a-car-profile"
-                    >See Profile</a
-                  >
-                </div>
-              </div>
+              <a [routerLink]="['/rac-services/profile', rac.id]"
+                >{{ rac.companyName }}
+              </a>
             </td>
-            <td>
-              <div class="card" style="width: 150px">
-                <img
-                  class="card-img-top rounded"
-                  src="../../../assets/karavan_rent_a_car.jpg"
-                  alt="RentACar"
-                  style="width: 100%; height: 150px"
-                />
-                <div class="card-body">
-                  <h4 class="card-title">Karavan <br />RaC</h4>
-                  <a
-                    href="#"
-                    class="btn btn-primary"
-                    routerLink="/rent-a-car-profile"
-                    >See Profile</a
-                  >
-                </div>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="2" class="text-center">
-              <button
-                type="button"
-                class="btn btn-primary btn-lg"
-                routerLink="/rac-services"
-              >
-                Search Car Companies
-              </button>
-            </td>
+            <td>{{ rac.adress }}</td>
+            <td>{{ rac.description }}</td>
+            <td>4/5</td>
           </tr>
         </tbody>
       </table>
+
+      <div class="text-center">
+        <button
+          type="button"
+          class="btn btn-primary btn-lg"
+          routerLink="/rac-services"
+        >
+          Search Cars
+        </button>
+      </div>
     </div>
+    <br />
+    <br />
   </div>
-  <div class="container" style="background-color: rgba(245, 245, 245, 0.2)">
+  <div
+    class="container"
+    style="background-color: rgba(245, 245, 245, 0.2)"
+    [hidden]="userRole != 'Registered'"
+  >
     Sadrzaj za registrovanog korisnika
   </div>
 </div>

@@ -28,8 +28,8 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'flights', component: UnsignedFlightsComponent },
-  { path: 'rac-services', component: UnsignedRacServicesComponent },
-  { path: 'rac-services/cars', component: UnsignedRacServicesCarsComponent },
+  { path: 'rac-services/profile/:id', component: UnsignedRacServicesComponent },
+  { path: 'rac-services', component: UnsignedRacServicesCarsComponent },
   {
     path: 'edit-profile',
     component: EditProfileComponent,
