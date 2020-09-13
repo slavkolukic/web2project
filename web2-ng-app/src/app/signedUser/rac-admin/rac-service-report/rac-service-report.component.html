@@ -27,22 +27,16 @@
             <th scope="col" colspan="2">Average rating per car</th>
           </tr>
           <tr>
-            <th scope="col">Car</th>
+            <th scope="col">Brand</th>
+            <th scope="col">Model</th>
             <th scope="col">Rating</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody *ngFor="let car of allCars">
           <tr>
-            <td>Audi</td>
-            <td>4.3/5</td>
-          </tr>
-          <tr>
-            <td>Fiat</td>
-            <td>4/5</td>
-          </tr>
-          <tr>
-            <td>BMW</td>
-            <td>4.8/5</td>
+            <td>{{ car.brand }}</td>
+            <td>{{ car.model }}</td>
+            <td>{{ getCarRating(car.carRating, car.numberOfRatings) }}</td>
           </tr>
         </tbody>
       </table>
