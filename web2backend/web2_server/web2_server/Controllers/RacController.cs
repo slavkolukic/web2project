@@ -221,5 +221,34 @@ namespace web2_server.Controllers
 
             return Ok("There is no car with given ID");
         }
+
+        [HttpPost]
+        [Route("getServiceRating")]
+        public async Task<IActionResult> GetServiceRating(UserIdModel userIdModel)
+        {
+            var user = _dbContext.Users.Include(x => x.RaCCompany).ThenInclude(x => x.Offices).ThenInclude(x => x.Cars).Where(x => x.Id == userIdModel.OwnerId).ToList().First();
+
+            int overallRatingSum = 0;
+            int ratingsCount = 0;
+
+            foreach (var office in user.RaCCompany.Offices)
+            {
+                foreach (var car in office.Cars)
+                {
+                    overallRatingSum += car.CarRating;
+                    ratingsCount += car.NumberOfRatings;
+                }
+            }
+
+            if (ratingsCount != 0)
+            {
+                int retVal = overallRatingSum / ratingsCount;
+                return Ok(new { retVal });
+            }
+            else
+            {
+                return Ok(new { retVal = "0" });
+            }
+        }
     }
 }

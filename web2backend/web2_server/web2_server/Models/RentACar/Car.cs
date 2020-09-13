@@ -21,6 +21,10 @@ namespace web2_server.Models.RentACar
 
         public string TypeOfCar { get; set; }
 
+        public int CarRating { get; set; }
+
+        public int NumberOfRatings { get; set; }
+
         public ICollection<CarReservation> CarReservations { get; set; }
     }
 }

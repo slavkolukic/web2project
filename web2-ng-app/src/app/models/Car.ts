@@ -6,6 +6,7 @@ export class Car {
   Year: string = '';
   Model: string = '';
   TypeOfCar: string = '';
-
+  CarRating: string = '';
+  NumberOfRatings: string = '';
   constructor() {}
 }

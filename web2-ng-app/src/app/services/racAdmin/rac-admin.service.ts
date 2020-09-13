@@ -25,6 +25,8 @@ export class RacAdminService {
   private getCarInfoPath = environment.apiUrl + '/rac/getCarInfo';
   private editCarInfoPath = environment.apiUrl + '/rac/editCarInfo';
   private deleteCarPath = environment.apiUrl + '/rac/deleteCar';
+  private getServiceRatingPath = environment.apiUrl + '/rac/getServiceRating';
+
   constructor(private http: HttpClient) {}
 
   saveProfileChanges(data): Observable<any> {
@@ -103,5 +105,13 @@ export class RacAdminService {
     };
 
     return this.http.post(this.deleteCarPath, data);
+  }
+
+  getServiceRating(ownerId: string): Observable<any> {
+    var data = {
+      OwnerId: ownerId,
+    };
+
+    return this.http.post(this.getServiceRatingPath, data);
   }
 }
