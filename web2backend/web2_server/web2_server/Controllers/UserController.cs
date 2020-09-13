@@ -212,6 +212,63 @@
                 return Ok(new { retCars = "Rent a Car Company with this id does not exist!" });
         }
 
+        [HttpGet]
+        [Route("getAllCars")]
+        public async Task<IActionResult> GetAllCars() //Koristimo samo da smjestimo id
+        {
+            List<Car> retCars = _dbContext.Cars.ToList();
+
+            return Ok(new { retCars });
+        }
+
+        [HttpPost]
+        [Route("getFilteredCars")]
+        public async Task<IActionResult> GetFilteredCars(FilteredCarsModel filteredCarsModel) //Koristimo samo da smjestimo id
+        {
+            DateTime from = Convert.ToDateTime(filteredCarsModel.FirstDayOfReservaton);
+            DateTime to = Convert.ToDateTime(filteredCarsModel.LastDayOfReservaton);
+            List<Car> allCars = _dbContext.Cars.Include(x => x.CarReservations).ToList();
+            List<Car> retCars = new List<Car>();
+
+            bool addCar = true;
+
+            foreach (var car in allCars)
+            {
+                addCar = true;
+                if (filteredCarsModel.NumberOfSeats > car.NumberOfSeats ||
+                    filteredCarsModel.PricePerDay > car.PricePerDay ||
+                    filteredCarsModel.TypeOfCar != car.TypeOfCar)
+                {
+                    addCar = false;
+                    continue;
+                }
+                else
+                {
+                    foreach (var reservation in car.CarReservations)
+                    {
+                        if (reservation.FirstDayOfReservaton >= from && reservation.FirstDayOfReservaton <= to)
+                        {
+                            addCar = false;
+                            break;
+                        }
+
+                        if (reservation.LastDayOfReservaton >= from && reservation.LastDayOfReservaton <= to)
+                        {
+                            addCar = false;
+                            break;
+                        }
+                    }
+                }
+
+                if (addCar)
+                {
+                    retCars.Add(car);
+                }
+            }
+
+            return Ok(new { retCars });
+        }
+
         private string generateJwtToken(User user)
         {
             // generate token that is valid for 7 days

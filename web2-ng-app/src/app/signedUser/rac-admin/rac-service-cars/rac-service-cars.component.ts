@@ -17,6 +17,8 @@ export class RacServiceCarsComponent implements OnInit {
   allCars: Car[];
   selectedOffice: string = 'Select Office';
   selectedOfficeId: string = '';
+  selectedCarType: string = 'Select car type';
+  selectedEditCarType: string = '';
   mode: string = 'add';
   editCarId: string = '';
   editCarModel: string = '';
@@ -64,6 +66,22 @@ export class RacServiceCarsComponent implements OnInit {
   ) {
     this.selectedOfficeId = officeId;
     this.selectedOffice = officeCity + ' ' + officeAddress;
+  }
+
+  saveSelectedCarType(carType: string) {
+    this.selectedCarType = carType;
+
+    this.addCarForm.patchValue({
+      typeOfCar: carType,
+    });
+  }
+
+  saveEditedCarType(carType: string) {
+    this.selectedEditCarType = carType;
+
+    this.editCarForm.patchValue({
+      typeOfCar: carType,
+    });
   }
 
   addNewCar() {

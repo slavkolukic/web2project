@@ -39,6 +39,7 @@ import { NavBarComponent } from './nav-bar/nav-bar/nav-bar.component';
 import { AdminService } from './services/admin/admin.service';
 import { RacAdminService } from './services/racAdmin/rac-admin.service';
 import { UnsignedUserService } from './services/unsigned/unsigned-user.service';
+import { SignedUserService } from './services/signed/signed-user.service';
 
 @NgModule({
   declarations: [
@@ -82,6 +83,7 @@ import { UnsignedUserService } from './services/unsigned/unsigned-user.service';
     AdminService,
     ,
     UnsignedUserService,
+    SignedUserService,
   ],
   bootstrap: [AppComponent],
 })

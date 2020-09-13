@@ -13,12 +13,40 @@
     </div>
   </div>
 
-  <!--Ako se radi za neregistrovanog korisnika-->
-  <div
-    class="container"
-    style="background-color: rgba(245, 245, 245, 0.2)"
-    [hidden]="userRole != 'NonRegistered'"
-  >
+  <div class="container" style="background-color: rgba(245, 245, 245, 0.2)">
+    <div class="table-responsive" [hidden]="userRole != 'Registered'">
+      <div class="text-center">
+        <br />
+        <h2>History of reservations</h2>
+        <br />
+      </div>
+
+      <table class="table table-bordered text-center">
+        <thead style="background: #e37222">
+          <tr>
+            <th scope="col">Transport type</th>
+            <th scope="col">From date</th>
+            <th scope="col">To date</th>
+            <th scope="col">Total price</th>
+            <th scope="col">Status</th>
+            <th scope="col">Rate</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>1</td>
+            <td>1</td>
+            <td>1</td>
+            <td>1</td>
+            <td>1</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br />
+    <br />
+
     <div class="text-center">
       <br />
       <h2>Airline companies</h2>
@@ -109,12 +137,5 @@
     </div>
     <br />
     <br />
-  </div>
-  <div
-    class="container"
-    style="background-color: rgba(245, 245, 245, 0.2)"
-    [hidden]="userRole != 'Registered'"
-  >
-    Sadrzaj za registrovanog korisnika
   </div>
 </div>

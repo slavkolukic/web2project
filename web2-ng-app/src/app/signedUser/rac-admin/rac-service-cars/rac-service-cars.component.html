@@ -62,12 +62,46 @@
           <br />
 
           <div class="form-group">
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Car type"
-              formControlName="typeOfCar"
-            />
+            <div class="dropdown">
+              <button
+                class="btn btn-info dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                {{ selectedCarType }}
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <div>
+                  <button
+                    type="button"
+                    class="dropdown-item btn-primary btn-block"
+                    id="option"
+                    on-click="saveSelectedCarType('Suv')"
+                  >
+                    Suv
+                  </button>
+                  <button
+                    type="button"
+                    class="dropdown-item btn-primary btn-block"
+                    id="option"
+                    on-click="saveSelectedCarType('Supercar')"
+                  >
+                    Supercar
+                  </button>
+                  <button
+                    type="button"
+                    class="dropdown-item btn-primary btn-block"
+                    id="option"
+                    on-click="saveSelectedCarType('Truck')"
+                  >
+                    Truck
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div class="form-group">
@@ -194,12 +228,46 @@
           </div>
 
           <div class="form-group">
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Car type"
-              formControlName="typeOfCar"
-            />
+            <div class="dropdown">
+              <button
+                class="btn btn-info dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                {{ selectedEditCarType }}
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <div>
+                  <button
+                    type="button"
+                    class="dropdown-item btn-primary btn-block"
+                    id="option"
+                    on-click="saveEditedCarType('Suv')"
+                  >
+                    Suv
+                  </button>
+                  <button
+                    type="button"
+                    class="dropdown-item btn-primary btn-block"
+                    id="option"
+                    on-click="saveEditedCarType('Supercar')"
+                  >
+                    Supercar
+                  </button>
+                  <button
+                    type="button"
+                    class="dropdown-item btn-primary btn-block"
+                    id="option"
+                    on-click="saveEditedCarType('Truck')"
+                  >
+                    Truck
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div>
