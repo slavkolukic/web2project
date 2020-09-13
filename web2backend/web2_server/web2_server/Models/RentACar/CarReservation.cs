@@ -16,5 +16,7 @@ namespace web2_server.Models.RentACar
         public DateTime LastDayOfReservaton { get; set; }
 
         public int TotalPrice { get; set; }
+
+        public string OwnerId { get; set; }
     }
 }

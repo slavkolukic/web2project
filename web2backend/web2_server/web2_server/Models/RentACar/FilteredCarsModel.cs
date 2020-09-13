@@ -7,9 +7,9 @@ namespace web2_server.Models.RentACar
 {
     public class FilteredCarsModel
     {
-        public string FirstDayOfReservaton { get; set; }
+        public string FirstDayOfReservation { get; set; }
 
-        public string LastDayOfReservaton { get; set; }
+        public string LastDayOfReservation { get; set; }
 
         public string PricePerDay { get; set; }
 

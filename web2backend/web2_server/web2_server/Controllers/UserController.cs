@@ -119,11 +119,11 @@
                 return Unauthorized("Email is not registered!");
             }
 
-            var isEmailConfirmed = await this.userManager.IsEmailConfirmedAsync(user);
-            if (!isEmailConfirmed)
-            {
-                return Unauthorized("Email is not confirmed on email!");
-            }
+            //var isEmailConfirmed = await this.userManager.IsEmailConfirmedAsync(user);
+            //if (!isEmailConfirmed)
+            //{
+            //    return Unauthorized("Email is not confirmed!");
+            //}
 
             var passwordValid = await this.userManager.CheckPasswordAsync(user, model.Password);
 
@@ -266,7 +266,7 @@
         public async Task<IActionResult> GetFilteredCars(FilteredCarsModel filteredCarsModel) //Koristimo samo da smjestimo id
         {
             bool parseDates = true;
-            if (filteredCarsModel.FirstDayOfReservaton == "" || filteredCarsModel.LastDayOfReservaton == "")
+            if (filteredCarsModel.FirstDayOfReservation == "" || filteredCarsModel.LastDayOfReservation == "")
                 parseDates = false;
 
             bool parseNumberOfSeats = true;
@@ -286,8 +286,8 @@
 
             if (parseDates)
             {
-                from = Convert.ToDateTime(filteredCarsModel.FirstDayOfReservaton);
-                to = Convert.ToDateTime(filteredCarsModel.LastDayOfReservaton);
+                from = Convert.ToDateTime(filteredCarsModel.FirstDayOfReservation);
+                to = Convert.ToDateTime(filteredCarsModel.LastDayOfReservation);
             }
 
             List<Car> allCars = _dbContext.Cars.Include(x => x.CarReservations).ToList();
@@ -330,6 +330,29 @@
             }
 
             return Ok(new { retCars });
+        }
+
+        [HttpPost]
+        [Route("makeCarReservation")]
+        public async Task<IActionResult> MakeCarReservation(CarReservationRequestModel carReservationModel) //Koristimo samo da smjestimo id
+        {
+            Car car = _dbContext.Cars.Include(x => x.CarReservations).Where(x => x.Id == carReservationModel.CarId).SingleOrDefault();
+            CarReservation cr = new CarReservation();
+
+            DateTime startDate = Convert.ToDateTime(carReservationModel.FirstDayOfReservation);
+            DateTime endDate = Convert.ToDateTime(carReservationModel.LastDayOfReservation);
+
+            cr.FirstDayOfReservaton = startDate;
+            cr.LastDayOfReservaton = endDate;
+
+            int dayDifference = (endDate.Date - startDate.Date).Days;
+            cr.TotalPrice = dayDifference * Int32.Parse(carReservationModel.PricePerDay);
+            cr.OwnerId = carReservationModel.OwnerId;
+
+            car.CarReservations.Add(cr);
+            _dbContext.SaveChanges();
+
+            return Ok(new { message = "New reservation is successfully added!" });
         }
 
         private string generateJwtToken(User user)

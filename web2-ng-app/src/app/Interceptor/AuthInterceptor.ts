@@ -18,7 +18,7 @@ export class AuthInterceptor implements HttpInterceptor {
     // handle your auth error or rethrow
     if (err.status === 401 || err.status === 403) {
       // navigate /delete cookies or whatever
-      alert('AUTHORIZATION FAILED. YOU ARE NOT REGISTERED.');
+      alert(err.error);
       // if you've caught / handled the error, you don't want to rethrow it unless
       // you also want downstream consumers to have to handle it as well.
       return of(err.message); // or EMPTY may be appropriate here

@@ -20,7 +20,7 @@
         <div class="col-sm-6 text-center">
           <br />
           <div>
-            <h4><b>Search cars</b></h4>
+            <h4><b>Enter info</b></h4>
           </div>
         </div>
         <div class="col-sm-3"></div>
@@ -39,7 +39,7 @@
               onfocus="(this.type='date')"
               onblur="(this.type='text')"
               id="PickUpDate"
-              formControlName="firstDayOfReservaton"
+              formControlName="firstDayOfReservation"
             />
           </div>
 
@@ -61,7 +61,7 @@
               class="form-control"
               onfocus="(this.type='date')"
               onblur="(this.type='text')"
-              formControlName="lastDayOfReservaton"
+              formControlName="lastDayOfReservation"
             />
           </div>
 
@@ -165,7 +165,7 @@
               <th scope="col">Car type</th>
               <th scope="col">Car rating</th>
               <th scope="col">Price</th>
-              <th scope="col">Reserve</th>
+              <th scope="col" [hidden]="reservationOn == false">Reserve</th>
             </tr>
           </thead>
           <tbody *ngFor="let car of allCars">
@@ -177,7 +177,14 @@
               <td>{{ car.typeOfCar }}</td>
               <td>{{ car.carRating }}</td>
               <td>{{ car.pricePerDay }}</td>
-              <td><a>Reserve</a></td>
+              <td [hidden]="reservationOn == false">
+                <button
+                  type="button"
+                  on-click="makeCarReservation(car.id, car.pricePerDay)"
+                >
+                  Reserve
+                </button>
+              </td>
             </tr>
           </tbody>
         </table>

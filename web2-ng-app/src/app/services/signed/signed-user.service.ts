@@ -12,6 +12,8 @@ export class SignedUserService {
   static ngInjectableDef = undefined; //nece da radi bez ovoga
   private getAllCarsPath = environment.apiUrl + '/user/getAllCars';
   private getFilteredCarsPath = environment.apiUrl + '/user/getFilteredCars';
+  private makeCarReservationPath =
+    environment.apiUrl + '/user/makeCarReservation';
   constructor(private http: HttpClient) {}
 
   getAllCars(): Observable<Car[]> {
@@ -24,5 +26,9 @@ export class SignedUserService {
     return this.http
       .post(this.getFilteredCarsPath, data)
       .pipe(map((res) => res['retCars']));
+  }
+
+  makeCarReservation(data): any {
+    return this.http.post(this.makeCarReservationPath, data);
   }
 }
