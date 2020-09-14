@@ -13,11 +13,7 @@
     </div>
   </div>
 
-  <div
-    class="container"
-    style="background-color: rgba(245, 245, 245, 0.2)"
-    [hidden]="userRole != 'NonRegistered'"
-  >
+  <div class="container" style="background-color: rgba(245, 245, 245, 0.2)">
     <br />
     <div class="text-center">
       <h4>
@@ -30,7 +26,7 @@
         <thead style="background: #e37222">
           <tr>
             <th scope="col">Name</th>
-            <th scope="col">City</th>
+            <th scope="col">Address</th>
             <th scope="col">Description</th>
             <th scope="col">Phone Number</th>
             <th scope="col">Average rating</th>
@@ -42,7 +38,7 @@
             <td>{{ racCompanyAddress }}</td>
             <td>{{ racCompanyDescription }}</td>
             <td>{{ racCompanyPhoneNumber }}</td>
-            <td>4 / 5</td>
+            <td>{{ racCompanyRating }} / 5</td>
           </tr>
         </tbody>
       </table>
@@ -109,12 +105,5 @@
     </div>
 
     <br />
-  </div>
-  <div
-    class="container"
-    style="background-color: rgba(245, 245, 245, 0.2)"
-    [hidden]="userRole == 'NonRegistered'"
-  >
-    Sadrzaj za registrovanog korisnika
   </div>
 </div>

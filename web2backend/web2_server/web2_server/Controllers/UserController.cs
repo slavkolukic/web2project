@@ -40,126 +40,87 @@
         }
 
         [HttpPost]
-        [Route(nameof(Register))]
-        public async Task<ActionResult> Register(RegisterUserRequestModel model)
-        {
-            var userExists = await userManager.FindByEmailAsync(model.Email);
-            if (userExists == null)
-            {
-                var newUser = new User()
-                {
-                    UserName = model.Name,
-                    Email = model.Email,
-                    Name = model.Name,
-                    LastName = model.LastName,
-                    PhoneNumber = model.PhoneNumber,
-                    City = model.City,
-                    Role = UserRole.Registered,
-                    EmailConfirmed = false
-                };
-
-                var result = await userManager.CreateAsync(newUser, model.Password);
-                if (result.Succeeded)
-                {
-                    var token = await userManager.GenerateEmailConfirmationTokenAsync(newUser);
-                    var confirmationLink = Url.Action("ConfirmEmail", "User", new { userId = newUser.Id, token = token }, Request.Scheme);
-
-                    await _mailer.SendEmailAsync(model.Email, "Email verification", confirmationLink);
-
-                    return Ok(new { message = $"Successfully registered! Please confirm registration via email" });
-                }
-
-                return Ok(new { message = result.Errors });
-            }
-            else
-            {
-                return Ok(new { message = "Email already exists!" });
-            }
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> ConfirmEmail(string userId, string token)
-        {
-            if (userId == null || token == null)
-            {
-                return RedirectToAction("index", "home");
-            }
-
-            var user = await userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                return BadRequest(new { message = $"The User ID {userId} is invalid." });
-            }
-
-            var result = await userManager.ConfirmEmailAsync(user, token);
-            if (result.Succeeded)
-            {
-                return Ok("Thank you for confirming your email. You are successfully registered!");
-            }
-
-            return BadRequest(new { message = $"Email confirmation failed." });
-        }
-
-        [HttpPost]
-        [Route(nameof(Login))]
-        public async Task<ActionResult<string>> Login(LoginUserRequestModel model)
-        {
-            if (model.Password == null)
-            {
-                return BadRequest(new { message = "Bad data" });
-            }
-            if (model.Password.Length < 6)
-            {
-                return BadRequest(new { message = "Bad data" });
-            }
-            var user = await this.userManager.FindByEmailAsync(model.Email);
-            if (user == null)
-            {
-                return Unauthorized("Email is not registered!");
-            }
-
-            //var isEmailConfirmed = await this.userManager.IsEmailConfirmedAsync(user);
-            //if (!isEmailConfirmed)
-            //{
-            //    return Unauthorized("Email is not confirmed!");
-            //}
-
-            var passwordValid = await this.userManager.CheckPasswordAsync(user, model.Password);
-
-            if (!passwordValid)
-            {
-                return Unauthorized("Wrong password!");
-            }
-
-            var token = generateJwtToken(user);
-
-            return Ok(new { token });
-        }
-
-        [HttpGet]
         [Route("getAllUsers")]
-        public async Task<Object> GetAllUsers()
+        public async Task<Object> GetAllUsers(UserRoleModel userRoleModel)
         {
-            List<User> allUsers = _dbContext.Users.ToList();
+            List<User> allUsers = new List<User>();
+            if (userRoleModel.Role == UserRole.SystemAdmin.ToString())
+            {
+                using (var transaction = _dbContext.Database.BeginTransaction())
+                {
+                    allUsers = _dbContext.Users.ToList();
+                    transaction.Commit();
+                }
+                return Ok(new { allUsers });
+            }
 
-            return Ok(new { allUsers });
+            return Unauthorized("Permission required to use this method!");
         }
 
         [HttpGet]
         [Route("getAllCarCompanies")]
         public async Task<Object> GetAllCarCompanies()
         {
-            List<RentACarCompany> allCarCompanies = _dbContext.RentACarCompanies.ToList();
+            List<RentACarCompany> allCarCompanies = new List<RentACarCompany>();
+            using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                allCarCompanies = _dbContext.RentACarCompanies.ToList();
+                transaction.Commit(); ;
+            }
+
+            if (allCarCompanies == null)
+            {
+                return Ok(new { message = "No registrated rent a car companies so far!" });
+            }
 
             return Ok(new { allCarCompanies });
+        }
+
+        [HttpPost]
+        [Route("getRacCompanyRating")]
+        public async Task<IActionResult> GetRacCompanyRating(IdModel racModel) //Koristimo samo da smjestimo id
+        {
+            int retVal = 0;
+            RentACarCompany rac = new RentACarCompany();
+            using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                rac = _dbContext.RentACarCompanies.Include(x => x.Offices).ThenInclude(x => x.Cars).ThenInclude(x => x.CarReservations).Where(x => x.Id == Int32.Parse(racModel.Id)).SingleOrDefault();
+                transaction.Commit();
+            }
+
+            if (rac != null)
+            {
+                int rating = 0;
+                int numberOfRatings = 0;
+                foreach (var office in rac.Offices)
+                {
+                    foreach (var car in office.Cars)
+                    {
+                        rating += car.CarRating;
+                        numberOfRatings += car.NumberOfRatings;
+                    }
+                }
+
+                if (numberOfRatings != 0)
+                    retVal = rating / numberOfRatings;
+
+                return Ok(new { retVal });
+            }
+            else
+                return Ok(new { retVal = "Rent a Car Company with this id does not exist!" });
         }
 
         [HttpPost]
         [Route("getRacCompanyInfo")]
         public async Task<IActionResult> GetRacCompanyInfo(IdModel racModel) //Koristimo samo da smjestimo id
         {
-            RentACarCompany rac = _dbContext.RentACarCompanies.Where(x => x.Id == Int32.Parse(racModel.Id)).SingleOrDefault();
+            RentACarCompany rac = new RentACarCompany();
+            using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                rac = _dbContext.RentACarCompanies.Where(x => x.Id == Int32.Parse(racModel.Id)).SingleOrDefault();
+                transaction.Commit();
+            }
+
             if (rac != null)
                 return Ok(new { rac });
             else
@@ -170,7 +131,12 @@
         [Route("getRacCompanyOffices")]
         public async Task<IActionResult> GetRacCompanyOffices(IdModel racModel) //Koristimo samo da smjestimo id
         {
-            RentACarCompany rac = _dbContext.RentACarCompanies.Include(x => x.Offices).Where(x => x.Id == Int32.Parse(racModel.Id)).SingleOrDefault();
+            RentACarCompany rac = new RentACarCompany();
+            using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                rac = _dbContext.RentACarCompanies.Include(x => x.Offices).Where(x => x.Id == Int32.Parse(racModel.Id)).SingleOrDefault();
+                transaction.Commit();
+            }
             if (rac != null)
             {
                 List<Office> retOffices = rac.Offices.ToList();
@@ -184,7 +150,17 @@
         [Route("getRacCompanyCars")]
         public async Task<IActionResult> GetRacCompanyCars(IdModel racModel) //Koristimo samo da smjestimo id
         {
-            RentACarCompany rac = _dbContext.RentACarCompanies.Include(x => x.Offices).ThenInclude(x => x.Cars).Where(x => x.Id == Int32.Parse(racModel.Id)).SingleOrDefault();
+            RentACarCompany rac = new RentACarCompany();
+            using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                rac = _dbContext.RentACarCompanies.Include(x => x.Offices).ThenInclude(x => x.Cars).Where(x => x.Id == Int32.Parse(racModel.Id)).SingleOrDefault();
+                transaction.Commit();
+            }
+
+            if (rac == null)
+            {
+                return Ok(new { message = "Rac company does not exist!" });
+            }
 
             List<Car> retCars = new List<Car>();
             if (rac != null)
@@ -204,11 +180,23 @@
 
         [HttpGet]
         [Route("getAllCars")]
-        public async Task<IActionResult> GetAllCars() //Koristimo samo da smjestimo id
+        public async Task<IActionResult> GetAllCars()
         {
-            List<Car> retCars = _dbContext.Cars.ToList();
+            List<Car> retCars = new List<Car>();
+            using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                retCars = _dbContext.Cars.ToList();
+                transaction.Commit();
+            }
 
-            return Ok(new { retCars });
+            if (retCars == null)
+            {
+                return Ok(new { retCars = "No added cars!" });
+            }
+            else
+            {
+                return Ok(new { retCars });
+            }
         }
 
         [HttpPost]
@@ -243,7 +231,13 @@
                 to = Convert.ToDateTime(filteredCarsModel.LastDayOfReservation);
             }
 
-            List<Car> allCars = _dbContext.Cars.Include(x => x.CarReservations).ToList();
+            List<Car> allCars = new List<Car>();
+            using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                allCars = _dbContext.Cars.Include(x => x.CarReservations).ToList();
+                transaction.Commit();
+            }
+
             List<Car> retCars = new List<Car>();
 
             if (allCars.Count == 0 || allCars == null)
@@ -310,7 +304,18 @@
         [Route("makeCarReservation")]
         public async Task<IActionResult> MakeCarReservation(CarReservationRequestModel carReservationModel) //Koristimo samo da smjestimo id
         {
-            Car car = _dbContext.Cars.Include(x => x.CarReservations).Where(x => x.Id == carReservationModel.CarId).SingleOrDefault();
+            Car car = new Car();
+            using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                car = _dbContext.Cars.Include(x => x.CarReservations).Where(x => x.Id == carReservationModel.CarId).SingleOrDefault();
+                transaction.Commit();
+            }
+
+            if (car == null)
+            {
+                return Ok(new { message = "Car does not exist!" });
+            }
+
             CarReservation cr = new CarReservation();
 
             DateTime startDate = Convert.ToDateTime(carReservationModel.FirstDayOfReservation);
@@ -333,7 +338,13 @@
         [Route("getAllUserCarReservations")]
         public async Task<IActionResult> GetAllUserCarReservations(IdModel userModel)
         {
-            User user = _dbContext.Users.Include(x => x.RaCCompany).ThenInclude(x => x.Offices).ThenInclude(x => x.Cars).ThenInclude(x => x.CarReservations).Where(x => x.Id == userModel.Id).SingleOrDefault();
+            User user = new User();
+            using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                user = _dbContext.Users.Include(x => x.RaCCompany).ThenInclude(x => x.Offices).ThenInclude(x => x.Cars).ThenInclude(x => x.CarReservations).Where(x => x.Id == userModel.Id).SingleOrDefault();
+                transaction.Commit();
+            }
+
             if (user != null)
             {
                 try
@@ -373,7 +384,13 @@
         [Route("getUserProfileInfo")]
         public async Task<IActionResult> GetUserProfileInfo(UserIdModel userIdModel)
         {
-            User user = _dbContext.Users.Where(x => x.Id == userIdModel.OwnerId).FirstOrDefault();
+            User user = new User();
+            using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                user = _dbContext.Users.Where(x => x.Id == userIdModel.OwnerId).FirstOrDefault();
+                transaction.Commit();
+            }
+
             if (user != null)
             {
                 if (user.Role == UserRole.Registered
@@ -398,7 +415,13 @@
         [Route("saveUserProfileChanges")]
         public async Task<IActionResult> SaveUserProfileChanges(ProfileInfoRequestModel profileModel)
         {
-            User user = _dbContext.Users.Where(x => x.Id == profileModel.OwnerId).FirstOrDefault();
+            User user = new User();
+            using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                user = _dbContext.Users.Where(x => x.Id == profileModel.OwnerId).FirstOrDefault();
+                transaction.Commit();
+            }
+
             if (user != null)
             {
                 if (user.Role == UserRole.Registered
@@ -449,22 +472,6 @@
             {
                 return Ok(new { message = "User with this id does not exist!" });
             }
-        }
-
-        private string generateJwtToken(User user)
-        {
-            // generate token that is valid for 7 days
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(this.appSettings.Secret);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()), new Claim("role", user.Role.ToString()) }),
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            var retToken = tokenHandler.WriteToken(token);
-            return retToken;
         }
     }
 }

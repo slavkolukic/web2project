@@ -94,12 +94,11 @@ export class RacServiceCarsComponent implements OnInit {
         officeId: this.selectedOfficeId,
       });
 
-      console.log(this.addCarForm.value);
-
       this.racAdminService
         .addNewCar(this.addCarForm.value)
         .subscribe((data) => {
           console.log(data);
+          alert(data.message);
         });
     }
   }
@@ -178,6 +177,7 @@ export class RacServiceCarsComponent implements OnInit {
       .editCarInfo(this.editCarForm.value)
       .subscribe((data) => {
         console.log(data);
+        alert(data.message);
       });
 
     location.reload();
@@ -186,8 +186,7 @@ export class RacServiceCarsComponent implements OnInit {
   deleteCarButton(event) {
     this.racAdminService.deleteCar(event.target.id).subscribe((data) => {
       console.log(data);
+      alert(data.message);
     });
-
-    location.reload();
   }
 }

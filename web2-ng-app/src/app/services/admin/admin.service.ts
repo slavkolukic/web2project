@@ -27,9 +27,12 @@ export class AdminService {
     return this.http.post(this.registerNewAdminPath, data);
   }
 
-  getAllUsers(): Observable<User[]> {
+  getAllUsers(data): Observable<User[]> {
+    var body = {
+      role: data,
+    };
     return this.http
-      .get(this.getAllUsersPath)
+      .post(this.getAllUsersPath, body)
       .pipe(map((res) => res['allUsers']));
   }
 

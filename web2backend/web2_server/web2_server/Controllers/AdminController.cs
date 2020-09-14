@@ -34,50 +34,57 @@ namespace web2_server.Controllers
         [Route("newAdmin")]
         public async Task<IActionResult> GiveUserAdminRights(NewAdminModel newAdminModel)
         {
-            var userExists = await userManager.FindByEmailAsync(newAdminModel.email);
-            if (userExists == null)
+            using (var transaction = _dbContext.Database.BeginTransaction())
             {
-                return Ok(new { message = "User with given email does not exist!" });
+                var userExists = await userManager.FindByEmailAsync(newAdminModel.email);
+                if (userExists == null)
+                {
+                    return Ok(new { message = "User with given email does not exist!" });
+                }
+
+                if (userExists.Role == UserRole.SystemAdmin)
+                {
+                    return Ok(new { message = "User with given email is already admin!" });
+                }
+
+                userExists.Role = UserRole.SystemAdmin;
+
+                IdentityResult result = await userManager.UpdateAsync(userExists);
+                transaction.Commit();
+
+                return Ok(new { message = $"User with email {newAdminModel.email} is now admin" });
             }
-
-            if (userExists.Role == UserRole.SystemAdmin)
-            {
-                return Ok(new { message = "User with given email is already admin!" });
-            }
-
-            userExists.Role = UserRole.SystemAdmin;
-
-            IdentityResult result = await userManager.UpdateAsync(userExists);
-            //await _context.SaveChangesAsync();
-
-            return Ok(new { message = $"User with email {newAdminModel.email} is now admin" });
         }
 
         [HttpPost]
         [Route("assignRacCompany")]
         public async Task<IActionResult> AssignRacCompanyToUser(RaCAssignmentModel racAssignmentModel)
         {
-            var owner = _dbContext.Users.SingleOrDefault(u => u.Email == racAssignmentModel.OwnerEmail);
-            if (owner == null)
+            using (var transaction = _dbContext.Database.BeginTransaction())
             {
-                return Ok(new { message = "User with given email does not exist!" });
+                var owner = _dbContext.Users.SingleOrDefault(u => u.Email == racAssignmentModel.OwnerEmail);
+                if (owner == null)
+                {
+                    return Ok(new { message = "User with given email does not exist!" });
+                }
+
+                if (owner.RaCCompany != null)
+                {
+                    return Ok(new { message = "User already owns another company!" });
+                }
+
+                RentACarCompany rac = new RentACarCompany();
+                rac.CompanyName = racAssignmentModel.CompanyName;
+                rac.Offices = new Collection<Office>();
+                owner.RaCCompany = rac;
+
+                owner.Role = UserRole.CarAdmin;
+
+                _dbContext.SaveChanges();
+                transaction.Commit();
+
+                return Ok(new { message = "New rent a car administrator is successfully registered!" });
             }
-
-            //if (owner.RaCCompany != null)
-            //{
-            //    return Ok(new { message = "User already owns another company!" });
-            //}
-
-            RentACarCompany rac = new RentACarCompany();
-            rac.CompanyName = racAssignmentModel.CompanyName;
-            rac.Offices = new Collection<Office>();
-            owner.RaCCompany = rac;
-
-            owner.Role = UserRole.CarAdmin;
-
-            _dbContext.SaveChanges();
-
-            return Ok(new { message = "New rent a car administrator is successfully registered!" });
         }
     }
 }

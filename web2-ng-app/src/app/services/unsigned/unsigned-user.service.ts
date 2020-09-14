@@ -20,6 +20,8 @@ export class UnsignedUserService {
     environment.apiUrl + '/user/getRacCompanyOffices';
   private getRacCompanyCarsPath =
     environment.apiUrl + '/user/getRacCompanyCars';
+  private getRacCompanyRatingPath =
+    environment.apiUrl + '/user/getRacCompanyRating';
 
   constructor(private http: HttpClient) {}
 
@@ -52,5 +54,12 @@ export class UnsignedUserService {
     return this.http
       .post(this.getRacCompanyCarsPath, data)
       .pipe(map((res) => res['retCars']));
+  }
+
+  getRacCompanyRating(id: string): any {
+    var data = {
+      Id: id,
+    };
+    return this.http.post(this.getRacCompanyRatingPath, data);
   }
 }

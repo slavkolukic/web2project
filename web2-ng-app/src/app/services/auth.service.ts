@@ -9,8 +9,8 @@ import { map } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class AuthService {
-  private loginPath = environment.apiUrl + '/user/login';
-  private registerPath = environment.apiUrl + '/user/register';
+  private loginPath = environment.apiUrl + '/auth/login';
+  private registerPath = environment.apiUrl + '/auth/register';
   private registerNewAdminPath = environment.apiUrl + '/user/newAdmin';
   private getAllUsersPath = environment.apiUrl + '/user/getAllUsers';
 
@@ -57,9 +57,12 @@ export class AuthService {
     return userRole;
   }
 
-  getAllUsers(): Observable<User[]> {
+  getAllUsers(data): Observable<User[]> {
+    var body = {
+      role: data,
+    };
     return this.http
-      .get(this.getAllUsersPath)
+      .post(this.getAllUsersPath, body)
       .pipe(map((res) => res['allUsers']));
   }
 

@@ -20,6 +20,7 @@ export class UnsignedRacServicesComponent implements OnInit {
   racCompanyAddress = '';
   racCompanyDescription = '';
   racCompanyPhoneNumber = '';
+  racCompanyRating = '';
 
   constructor(
     private authService: AuthService,
@@ -39,6 +40,8 @@ export class UnsignedRacServicesComponent implements OnInit {
     this.getRacCompanyOffices();
 
     this.getRacCompanyCars();
+
+    this.getRacCompanyRating();
   }
 
   getRacCompanyInfo() {
@@ -68,6 +71,15 @@ export class UnsignedRacServicesComponent implements OnInit {
       .subscribe((data) => {
         this.allCars = data;
         console.log(this.allCars);
+      });
+  }
+
+  getRacCompanyRating() {
+    this.unsignedService
+      .getRacCompanyRating(this.racCompanyId)
+      .subscribe((data) => {
+        console.log(data);
+        this.racCompanyRating = data.retVal;
       });
   }
 

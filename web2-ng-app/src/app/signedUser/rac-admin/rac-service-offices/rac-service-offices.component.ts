@@ -57,6 +57,7 @@ export class RacServiceOfficesComponent implements OnInit {
         .registerNewOffice(this.newOfficeForm.value)
         .subscribe((data) => {
           console.log(data);
+          alert(data.message);
         });
     }
   }
@@ -64,6 +65,7 @@ export class RacServiceOfficesComponent implements OnInit {
   deleteOffice(event) {
     this.racAdminService.deleteOffice(event.target.id).subscribe((data) => {
       console.log(data);
+      alert(data.message);
     });
   }
 
@@ -85,9 +87,7 @@ export class RacServiceOfficesComponent implements OnInit {
     this.racAdminService
       .editOfficeInfo(this.editOfficeForm.value)
       .subscribe((data) => {
-        console.log(data);
+        alert(data.message);
       });
-
-    location.reload();
   }
 }

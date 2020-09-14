@@ -11,6 +11,7 @@ using web2_server.Database;
 using web2_server.Models.RentACar;
 using web2_server.Models.User;
 using System.Data.Entity;
+using web2_server.Models;
 
 namespace web2_server.Controllers
 {
@@ -34,128 +35,252 @@ namespace web2_server.Controllers
         [Route("saveRacProfileChanges")]
         public async Task<IActionResult> SaveRacProfileChanges(RacProfileEditModel racProfileEditModel)
         {
-            User user = _dbContext.Users.Include(c => c.RaCCompany).SingleOrDefault(c => c.Id == racProfileEditModel.OwnerId); //nece da radi bez include
-            RentACarCompany comp = _dbContext.RentACarCompanies.Where(x => x.Id == user.RaCCompany.Id).SingleOrDefault();
+            User user = new User();
+            using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                user = _dbContext.Users.Include(c => c.RaCCompany).SingleOrDefault(c => c.Id == racProfileEditModel.OwnerId); //nece da radi bez include
+                if (user == null)
+                {
+                    return Ok(new { message = "User with given id is not registered!" });
+                }
 
-            if (racProfileEditModel.CompanyName != "")
-                comp.CompanyName = racProfileEditModel.CompanyName;
+                if (user.Role.ToString() != UserRole.CarAdmin.ToString())
+                {
+                    return Unauthorized(new { message = "User does not have permission to use this method!" });
+                }
+                RentACarCompany comp = _dbContext.RentACarCompanies.Where(x => x.Id == user.RaCCompany.Id).SingleOrDefault();
 
-            if (racProfileEditModel.Adress != "")
-                comp.Adress = racProfileEditModel.Adress;
+                if (comp == null)
+                {
+                    return Ok(new { message = "Rent a car company does not exist!" });
+                }
 
-            if (racProfileEditModel.Description != "")
-                comp.Description = racProfileEditModel.Description;
+                if (racProfileEditModel.CompanyName != "")
+                    comp.CompanyName = racProfileEditModel.CompanyName;
 
-            if (racProfileEditModel.PhoneNumber != "")
-                comp.PhoneNumber = racProfileEditModel.PhoneNumber;
+                if (racProfileEditModel.Adress != "")
+                    comp.Adress = racProfileEditModel.Adress;
 
-            await _dbContext.SaveChangesAsync();
+                if (racProfileEditModel.Description != "")
+                    comp.Description = racProfileEditModel.Description;
 
-            return Ok("Rac profile is successfully updated!");
+                if (racProfileEditModel.PhoneNumber != "")
+                    comp.PhoneNumber = racProfileEditModel.PhoneNumber;
+
+                _dbContext.SaveChanges();
+                transaction.Commit();
+            }
+
+            return Ok(new { message = "Rac profile is successfully updated!" });
         }
 
         [HttpPost]
         [Route("getRacProfileInfo")]
         public async Task<IActionResult> GetRacProfileInfo(UserIdModel userIdModel)
         {
-            User user = _dbContext.Users.Include(c => c.RaCCompany).SingleOrDefault(c => c.Id == userIdModel.OwnerId); //nece da radi bez include
-            RentACarCompany racCompany = _dbContext.RentACarCompanies.Where(x => x.Id == user.RaCCompany.Id).SingleOrDefault();
+            using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                User user = _dbContext.Users.Include(c => c.RaCCompany).SingleOrDefault(c => c.Id == userIdModel.OwnerId); //nece da radi bez include
 
-            return Ok(new { racCompany });
+                if (user == null)
+                {
+                    return Ok("User with given id is not registered!");
+                }
+
+                if (user.Role.ToString() != UserRole.CarAdmin.ToString())
+                {
+                    return Unauthorized("User does not have permission to use this method!");
+                }
+
+                RentACarCompany racCompany = _dbContext.RentACarCompanies.Where(x => x.Id == user.RaCCompany.Id).SingleOrDefault();
+
+                if (racCompany == null)
+                {
+                    return Ok("Rent a car company does not exist!");
+                }
+
+                transaction.Commit();
+                return Ok(new { racCompany });
+            }
         }
 
         [HttpPost]
         [Route("registerNewOffice")]
         public async Task<IActionResult> RegisterNewOffice(RegisterNewOfficeModel registerNewOfficeModel)
         {
-            User user = _dbContext.Users.Include(c => c.RaCCompany).SingleOrDefault(c => c.Id == registerNewOfficeModel.OwnerId);
-            //RentACarCompany racCompany = _dbContext.RentACarCompanies.Where(x => x.Id == user.RaCCompany.Id).SingleOrDefault();
-            RentACarCompany racCompany = _dbContext.RentACarCompanies.Include(x => x.Offices).SingleOrDefault(x => x.Id == user.RaCCompany.Id);
-            Office newOffice = new Office();
-            newOffice.Address = registerNewOfficeModel.Address;
-            newOffice.City = registerNewOfficeModel.City;
-            newOffice.Cars = new Collection<Car>();
+            using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                User user = _dbContext.Users.Include(c => c.RaCCompany).SingleOrDefault(c => c.Id == registerNewOfficeModel.OwnerId);
+                if (user == null)
+                {
+                    return Ok(new { message = "User with given id is not registered!" });
+                }
 
-            racCompany.Offices.Add(newOffice);
+                if (user.Role.ToString() != UserRole.CarAdmin.ToString())
+                {
+                    return Unauthorized(new { message = "User does not have permission to use this method!" });
+                }
 
-            await _dbContext.SaveChangesAsync();
+                RentACarCompany racCompany = _dbContext.RentACarCompanies.Include(x => x.Offices).SingleOrDefault(x => x.Id == user.RaCCompany.Id);
 
-            return Ok("New office is successfully registered!");
+                if (racCompany == null)
+                {
+                    return Ok(new { message = "Rent a car company does not exist!" });
+                }
+
+                Office newOffice = new Office();
+                newOffice.Address = registerNewOfficeModel.Address;
+                newOffice.City = registerNewOfficeModel.City;
+                newOffice.Cars = new Collection<Car>();
+
+                racCompany.Offices.Add(newOffice);
+
+                _dbContext.SaveChanges();
+                transaction.Commit();
+                return Ok(new { message = "New office is successfully registered!" });
+            }
         }
 
         [HttpPost]
         [Route("getUserOffices")]
         public async Task<IActionResult> GetUserOffices(UserIdModel userIdModel)
         {
-            User user = _dbContext.Users.Include(c => c.RaCCompany).SingleOrDefault(c => c.Id == userIdModel.OwnerId);
-            RentACarCompany racCompany = _dbContext.RentACarCompanies.Include(x => x.Offices).SingleOrDefault(x => x.Id == user.RaCCompany.Id);
-            //List<Office> allOffices = _dbContext.Offices.Where(x => x)
-            List<Office> allOffices = racCompany.Offices.ToList();
-            return Ok(new { allOffices });
+            using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                User user = _dbContext.Users.Include(c => c.RaCCompany).SingleOrDefault(c => c.Id == userIdModel.OwnerId);
+
+                if (user == null)
+                {
+                    return Ok("User with given id is not registered!");
+                }
+
+                if (user.Role.ToString() != UserRole.CarAdmin.ToString())
+                {
+                    return Unauthorized("User does not have permission to use this method!");
+                }
+
+                RentACarCompany racCompany = _dbContext.RentACarCompanies.Include(x => x.Offices).SingleOrDefault(x => x.Id == user.RaCCompany.Id);
+                if (racCompany == null)
+                {
+                    return Ok("Rent a car company does not exist!");
+                }
+
+                //List<Office> allOffices = _dbContext.Offices.Where(x => x)
+                List<Office> allOffices = racCompany.Offices.ToList();
+
+                transaction.Commit();
+                return Ok(new { allOffices });
+            }
         }
 
         [HttpPost]
         [Route("deleteOffice")]
         public async Task<IActionResult> DeleteOffice(IdModel officeIdModel)
         {
-            Office officeToRemove = _dbContext.Offices.Where(x => x.Id == Int32.Parse(officeIdModel.Id)).SingleOrDefault();
-            _dbContext.Offices.Remove(officeToRemove);
-            await _dbContext.SaveChangesAsync();
-            return Ok("Office is successfully deleted!");
+            using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                Office officeToRemove = _dbContext.Offices.Include(x => x.Cars).ThenInclude(x => x.CarReservations).Where(x => x.Id == Int32.Parse(officeIdModel.Id)).SingleOrDefault();
+                if (officeToRemove == null)
+                {
+                    return Ok(new { message = "Office does not exist!" });
+                }
+                _dbContext.Offices.Remove(officeToRemove);
+                _dbContext.SaveChanges();
+                transaction.Commit();
+                return Ok(new { message = "Office is successfully deleted!" });
+            }
         }
 
         [HttpPost]
         [Route("getOfficeInfo")]
         public async Task<IActionResult> GetOfficeInfo(IdModel officeIdModel)
         {
-            Office officeInfo = _dbContext.Offices.Where(x => x.Id == Int32.Parse(officeIdModel.Id)).SingleOrDefault();
+            using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                Office officeInfo = _dbContext.Offices.Where(x => x.Id == Int32.Parse(officeIdModel.Id)).SingleOrDefault();
+                transaction.Commit();
+                if (officeInfo == null)
+                {
+                    return Ok(new { message = "Office does not exist!" });
+                }
 
-            return Ok(new { officeInfo });
+                return Ok(new { officeInfo });
+            }
         }
 
         [HttpPost]
         [Route("editOfficeInfo")]
         public async Task<IActionResult> EditOfficeInfo(Office officeModel)
         {
-            Office officeInfo = _dbContext.Offices.Where(x => x.Id == officeModel.Id).SingleOrDefault();
+            using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                Office officeInfo = _dbContext.Offices.Where(x => x.Id == officeModel.Id).SingleOrDefault();
 
-            if (officeModel.Address != "")
-                officeInfo.Address = officeModel.Address;
+                if (officeInfo == null)
+                {
+                    return Ok(new { message = "Office does not exist!" });
+                }
 
-            if (officeModel.City != "")
-                officeInfo.City = officeModel.City;
+                if (officeModel.Address != "")
+                    officeInfo.Address = officeModel.Address;
 
-            await _dbContext.SaveChangesAsync();
+                if (officeModel.City != "")
+                    officeInfo.City = officeModel.City;
 
-            return Ok("Office is successfully updated!");
+                _dbContext.SaveChanges();
+                transaction.Commit();
+                return Ok(new { message = "Office is successfully updated!" });
+            }
         }
 
         [HttpPost]
         [Route("addNewCar")]
         public async Task<IActionResult> AddNewCar(NewCarModel newCarModel)
         {
-            Office carOffice = _dbContext.Offices.Include(x => x.Cars).Where(x => x.Id == newCarModel.OfficeId).SingleOrDefault();
-            Car newCar = new Car();
-            newCar.CarReservations = new Collection<CarReservation>();
-            newCar.Model = newCarModel.Model;
-            newCar.Brand = newCarModel.Brand;
-            newCar.Year = newCarModel.Year;
-            newCar.TypeOfCar = newCarModel.TypeOfCar;
-            newCar.NumberOfSeats = newCarModel.NumberOfSeats;
-            newCar.PricePerDay = newCarModel.PricePerDay;
+            using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                Office carOffice = _dbContext.Offices.Include(x => x.Cars).Where(x => x.Id == newCarModel.OfficeId).SingleOrDefault();
+                if (carOffice == null)
+                {
+                    return Ok(new { message = "Office does not exist!" });
+                }
+                Car newCar = new Car();
+                newCar.CarReservations = new Collection<CarReservation>();
+                newCar.Model = newCarModel.Model;
+                newCar.Brand = newCarModel.Brand;
+                newCar.Year = newCarModel.Year;
+                newCar.TypeOfCar = newCarModel.TypeOfCar;
+                newCar.NumberOfSeats = newCarModel.NumberOfSeats;
+                newCar.PricePerDay = newCarModel.PricePerDay;
 
-            carOffice.Cars.Add(newCar);
+                carOffice.Cars.Add(newCar);
 
-            await _dbContext.SaveChangesAsync();
-
-            return Ok("Car is successfully added!");
+                await _dbContext.SaveChangesAsync();
+                transaction.Commit();
+                return Ok(new { message = "Car is successfully added!" });
+            }
         }
 
         [HttpPost]
         [Route("getAllUserCars")]
         public async Task<IActionResult> GetAllUserCars(UserIdModel userIdModel)
         {
-            var user = _dbContext.Users.Include(x => x.RaCCompany).ThenInclude(x => x.Offices).ThenInclude(x => x.Cars).Where(x => x.Id == userIdModel.OwnerId).ToList().First();
+            User user = new User();
+            using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                user = _dbContext.Users.Include(x => x.RaCCompany).ThenInclude(x => x.Offices).ThenInclude(x => x.Cars).Where(x => x.Id == userIdModel.OwnerId).ToList().First();
+                transaction.Commit();
+            }
+
+            if (user == null)
+            {
+                return Ok("User with given id is not registered!");
+            }
+
+            if (user.Role.ToString() != UserRole.CarAdmin.ToString())
+            {
+                return Unauthorized("User does not have permission to use this method!");
+            }
 
             List<Car> allCars = new List<Car>();
 
@@ -173,60 +298,94 @@ namespace web2_server.Controllers
         [Route("getCarInfo")]
         public async Task<IActionResult> GetCarInfo(IdModel officeIdModel) //koristim officeIdModel da ne bih pravio i za auto
         {
-            Car carInfo = _dbContext.Cars.Where(x => x.Id == Int32.Parse(officeIdModel.Id)).SingleOrDefault();
-
-            return Ok(new { carInfo });
+            using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                Car carInfo = _dbContext.Cars.Where(x => x.Id == Int32.Parse(officeIdModel.Id)).SingleOrDefault();
+                if (carInfo == null)
+                {
+                    return Ok("Car does not exist!");
+                }
+                transaction.Commit();
+                return Ok(new { carInfo });
+            }
         }
 
         [HttpPost]
         [Route("editCarInfo")]
         public async Task<IActionResult> EditCarInfo(Car carModel)
         {
-            Car carInfo = _dbContext.Cars.Where(x => x.Id == carModel.Id).SingleOrDefault();
+            using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                Car carInfo = _dbContext.Cars.Where(x => x.Id == carModel.Id).SingleOrDefault();
 
-            if (carModel.Brand != "")
-                carInfo.Brand = carModel.Brand;
+                if (carInfo == null)
+                {
+                    return Ok(new { message = "Car does not exist!" });
+                }
 
-            if (carModel.Model != "")
-                carInfo.Model = carModel.Model;
+                if (carModel.Brand != "")
+                    carInfo.Brand = carModel.Brand;
 
-            if (carModel.Year.ToString() != "")
-                carInfo.Year = carModel.Year;
+                if (carModel.Model != "")
+                    carInfo.Model = carModel.Model;
 
-            if (carModel.TypeOfCar != "")
-                carInfo.TypeOfCar = carModel.TypeOfCar;
+                if (carModel.Year.ToString() != "")
+                    carInfo.Year = carModel.Year;
 
-            if (carModel.NumberOfSeats.ToString() != "")
-                carInfo.NumberOfSeats = carModel.NumberOfSeats;
+                if (carModel.TypeOfCar != "")
+                    carInfo.TypeOfCar = carModel.TypeOfCar;
 
-            if (carModel.PricePerDay.ToString() != "")
-                carInfo.PricePerDay = carModel.PricePerDay;
+                if (carModel.NumberOfSeats.ToString() != "")
+                    carInfo.NumberOfSeats = carModel.NumberOfSeats;
 
-            await _dbContext.SaveChangesAsync();
+                if (carModel.PricePerDay.ToString() != "")
+                    carInfo.PricePerDay = carModel.PricePerDay;
 
-            return Ok("Car is successfully updated!");
+                _dbContext.SaveChanges();
+                transaction.Commit();
+                return Ok(new { message = "Car is successfully updated!" });
+            }
         }
 
         [HttpPost]
         [Route("deleteCar")]
         public async Task<IActionResult> DeleteCar(IdModel carModel)
         {
-            Car carToRemove = _dbContext.Cars.Where(x => x.Id == Int32.Parse(carModel.Id)).SingleOrDefault();
-            if (carToRemove != null)
+            using (var transaction = _dbContext.Database.BeginTransaction())
             {
-                _dbContext.Cars.Remove(carToRemove);
-                await _dbContext.SaveChangesAsync();
-                return Ok("Car is successfully deleted!");
-            }
+                Car carToRemove = _dbContext.Cars.Include(x => x.CarReservations).Where(x => x.Id == Int32.Parse(carModel.Id)).SingleOrDefault();
+                if (carToRemove != null)
+                {
+                    _dbContext.Cars.Remove(carToRemove);
+                    _dbContext.SaveChanges();
+                    transaction.Commit();
+                    return Ok(new { message = "Car is successfully deleted!" });
+                }
 
-            return Ok("There is no car with given ID");
+                return Ok(new { message = "There is no car with given ID" });
+            }
         }
 
         [HttpPost]
         [Route("getServiceRating")]
         public async Task<IActionResult> GetServiceRating(UserIdModel userIdModel)
         {
-            var user = _dbContext.Users.Include(x => x.RaCCompany).ThenInclude(x => x.Offices).ThenInclude(x => x.Cars).Where(x => x.Id == userIdModel.OwnerId).ToList().First();
+            User user = new User();
+            using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                user = _dbContext.Users.Include(x => x.RaCCompany).ThenInclude(x => x.Offices).ThenInclude(x => x.Cars).Where(x => x.Id == userIdModel.OwnerId).ToList().First();
+                transaction.Commit();
+            }
+
+            if (user == null)
+            {
+                return Ok("User does not exist!");
+            }
+
+            if (user.Role.ToString() != UserRole.CarAdmin.ToString())
+            {
+                return Unauthorized("User does not have permission to use this method!");
+            }
 
             int overallRatingSum = 0;
             int ratingsCount = 0;
@@ -255,8 +414,24 @@ namespace web2_server.Controllers
         [Route("getAllCarEarnings")]
         public async Task<IActionResult> GetAllCarEarnings(UserIdModel userIdModel)
         {
-            User user = _dbContext.Users.Include(x => x.RaCCompany).ThenInclude(x => x.Offices).ThenInclude(x => x.Cars).ThenInclude(x => x.CarReservations).Where(x => x.Id == userIdModel.OwnerId).SingleOrDefault();
+            User user = new User();
+            using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                user = _dbContext.Users.Include(x => x.RaCCompany).ThenInclude(x => x.Offices).ThenInclude(x => x.Cars).ThenInclude(x => x.CarReservations).Where(x => x.Id == userIdModel.OwnerId).SingleOrDefault();
+                transaction.Commit();
+            }
+
+            if (user == null)
+            {
+                return Ok("User does not exist!");
+            }
+
             List<Office> userOffices = user.RaCCompany.Offices.ToList();
+
+            if (userOffices == null)
+            {
+                return Ok("Offices do not exist!");
+            }
             int retVal = 0;
 
             foreach (var office in userOffices)

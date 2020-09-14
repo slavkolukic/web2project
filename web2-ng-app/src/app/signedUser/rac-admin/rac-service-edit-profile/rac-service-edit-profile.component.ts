@@ -48,10 +48,9 @@ export class RacServiceEditProfileComponent implements OnInit {
         .saveProfileChanges(this.editRacInfoForm.value)
         .subscribe((data) => {
           console.log(data);
+          alert(data.message);
         });
     }
-
-    location.reload();
   }
 
   private checkIfFieldsAreEmpty() {
