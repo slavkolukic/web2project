@@ -15,6 +15,7 @@
     using System.Text;
     using System.Threading.Tasks;
     using web2_server.Database;
+
     using web2_server.Models;
     using web2_server.Models.RentACar;
     using web2_server.Models.User;
@@ -70,7 +71,7 @@
 
             if (allCarCompanies == null)
             {
-                return Ok(new { message = "No registrated rent a car companies so far!" });
+                return Ok(new { message = "No registrated rent a car company so far!" });
             }
 
             return Ok(new { allCarCompanies });
@@ -200,6 +201,40 @@
         }
 
         [HttpPost]
+        [Route("rateService")]
+        public async Task<IActionResult> RateService(RateServiceModel rsModel)
+        {
+            using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                List<Car> allCars = _dbContext.Cars.Include(x => x.CarReservations).ToList();
+
+                foreach (var car in allCars)
+                {
+                    foreach (var reservation in car.CarReservations)
+                    {
+                        if (reservation.Id == rsModel.ReservationId)
+                        {
+                            if (reservation.LastDayOfReservaton > DateTime.Now)
+                            {
+                                return Ok(new { message = "Cant rate service while reservation is still active!" });
+                            }
+                            else
+                            {
+                                car.CarRating += Int32.Parse(rsModel.CarRating);
+                                car.NumberOfRatings += 1;
+                                _dbContext.SaveChanges();
+                                transaction.Commit();
+
+                                return Ok(new { message = "Rating was submited successfully!" });
+                            }
+                        }
+                    }
+                }
+                return Ok(new { message = "Reservation was not found!" });
+            }
+        }
+
+        [HttpPost]
         [Route("getFilteredCars")]
         public async Task<IActionResult> GetFilteredCars(FilteredCarsModel filteredCarsModel) //Koristimo samo da smjestimo id
         {
@@ -304,34 +339,32 @@
         [Route("makeCarReservation")]
         public async Task<IActionResult> MakeCarReservation(CarReservationRequestModel carReservationModel) //Koristimo samo da smjestimo id
         {
-            Car car = new Car();
             using (var transaction = _dbContext.Database.BeginTransaction())
             {
-                car = _dbContext.Cars.Include(x => x.CarReservations).Where(x => x.Id == carReservationModel.CarId).SingleOrDefault();
+                Car car = _dbContext.Cars.Include(x => x.CarReservations).Where(x => x.Id == carReservationModel.CarId).SingleOrDefault();
+                if (car == null)
+                {
+                    return Ok(new { message = "Car does not exist!" });
+                }
+
+                CarReservation cr = new CarReservation();
+
+                DateTime startDate = Convert.ToDateTime(carReservationModel.FirstDayOfReservation);
+                DateTime endDate = Convert.ToDateTime(carReservationModel.LastDayOfReservation);
+
+                cr.FirstDayOfReservaton = startDate;
+                cr.LastDayOfReservaton = endDate;
+
+                int dayDifference = (endDate.Date - startDate.Date).Days;
+                cr.TotalPrice = dayDifference * Int32.Parse(carReservationModel.PricePerDay);
+                cr.OwnerId = carReservationModel.OwnerId;
+
+                car.CarReservations.Add(cr);
+                _dbContext.SaveChanges();
                 transaction.Commit();
+
+                return Ok(new { message = "New reservation is successfully added!" });
             }
-
-            if (car == null)
-            {
-                return Ok(new { message = "Car does not exist!" });
-            }
-
-            CarReservation cr = new CarReservation();
-
-            DateTime startDate = Convert.ToDateTime(carReservationModel.FirstDayOfReservation);
-            DateTime endDate = Convert.ToDateTime(carReservationModel.LastDayOfReservation);
-
-            cr.FirstDayOfReservaton = startDate;
-            cr.LastDayOfReservaton = endDate;
-
-            int dayDifference = (endDate.Date - startDate.Date).Days;
-            cr.TotalPrice = dayDifference * Int32.Parse(carReservationModel.PricePerDay);
-            cr.OwnerId = carReservationModel.OwnerId;
-
-            car.CarReservations.Add(cr);
-            _dbContext.SaveChanges();
-
-            return Ok(new { message = "New reservation is successfully added!" });
         }
 
         [HttpPost]

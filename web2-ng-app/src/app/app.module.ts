@@ -42,6 +42,8 @@ import { UnsignedUserService } from './services/unsigned/unsigned-user.service';
 import { SignedUserService } from './services/signed/signed-user.service';
 import { AuthInterceptor } from './Interceptor/AuthInterceptor';
 import { Router } from '@angular/router';
+import { AdminGuardService } from './guards/admin/admin-guard.service';
+import { CarAdminGuardService } from './guards/CarAdmin/car-admin-guard.service';
 
 @NgModule({
   declarations: [
@@ -93,6 +95,8 @@ import { Router } from '@angular/router';
     ,
     UnsignedUserService,
     SignedUserService,
+    AdminGuardService,
+    CarAdminGuardService,
   ],
   bootstrap: [AppComponent],
 })

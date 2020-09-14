@@ -12,7 +12,6 @@ import { UnsignedUserService } from 'src/app/services/unsigned/unsigned-user.ser
   styleUrls: ['./unsigned-home.component.css'],
 })
 export class UnsignedHomeComponent implements OnInit {
-  rateTransactionForm: FormGroup;
   userRole = '';
   allReservations: CarReservation[];
   allCarCompanies: RentACarCompany[];
@@ -22,10 +21,6 @@ export class UnsignedHomeComponent implements OnInit {
     private unsignedService: UnsignedUserService,
     private signedService: SignedUserService
   ) {
-    this.rateTransactionForm = this.fb.group({
-      rating: ['', [Validators.required, Validators.min(1), Validators.max(5)]],
-    });
-
     try {
       this.userRole = this.authService.getUserRole();
     } catch {
@@ -84,8 +79,26 @@ export class UnsignedHomeComponent implements OnInit {
     if (d1 < d2) return -1;
   }
 
-  rateTransaction() {
-    console.log(this.rateTransactionForm.value);
+  rateService(resId: string) {
+    var rating = (<HTMLInputElement>document.getElementById(resId)).value;
+    console.log(resId);
+    console.log(rating);
+
+    if (Number(rating) < 1 || Number(rating) > 5) {
+      alert('Rating can only be from 1 to 5!');
+    } else if (rating == '' || rating == 'null' || rating == null) {
+      alert('Please insert rating!');
+    } else {
+      var body = {
+        reservationId: resId,
+        carRating: rating,
+      };
+
+      this.signedService.rateService(body).subscribe((data) => {
+        console.log(data.message);
+        alert(data.message);
+      });
+    }
   }
 
   ngOnInit(): void {}

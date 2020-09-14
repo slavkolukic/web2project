@@ -17,6 +17,7 @@ export class SignedUserService {
     environment.apiUrl + '/user/makeCarReservation';
   private getAllUserCarReservationsPath =
     environment.apiUrl + '/user/getAllUserCarReservations';
+  private rateServicePath = environment.apiUrl + '/user/rateService';
   constructor(private http: HttpClient) {}
 
   getAllCars(): Observable<Car[]> {
@@ -43,5 +44,9 @@ export class SignedUserService {
     return this.http
       .post(this.getAllUserCarReservationsPath, data)
       .pipe(map((res) => res['retReservations']));
+  }
+
+  rateService(data): any {
+    return this.http.post(this.rateServicePath, data);
   }
 }

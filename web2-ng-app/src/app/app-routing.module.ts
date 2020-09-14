@@ -21,6 +21,8 @@ import { RegisterFlightCompanyComponent } from './signedUser/admin/register-flig
 import { RegisterAdministratorComponent } from './signedUser/admin/register-administrator/register-administrator.component';
 import { AddNewFriendComponent } from './signedUser/profile/add-new-friend/add-new-friend.component';
 import { AuthGuardService } from './guards/auth-guard.service';
+import { AdminGuardService } from './guards/admin/admin-guard.service';
+import { CarAdminGuardService } from './guards/CarAdmin/car-admin-guard.service';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -69,37 +71,37 @@ const routes: Routes = [
   {
     path: 'rac-service-edit-profile',
     component: RacServiceEditProfileComponent,
-    canActivate: [AuthGuardService],
+    canActivate: [CarAdminGuardService],
   },
   {
     path: 'rac-service-cars',
     component: RacServiceCarsComponent,
-    canActivate: [AuthGuardService],
+    canActivate: [CarAdminGuardService],
   },
   {
     path: 'rac-service-offices',
     component: RacServiceOfficesComponent,
-    canActivate: [AuthGuardService],
+    canActivate: [CarAdminGuardService],
   },
   {
     path: 'rac-service-report',
     component: RacServiceReportComponent,
-    canActivate: [AuthGuardService],
+    canActivate: [CarAdminGuardService],
   },
   {
     path: 'register-rac-company',
     component: RegisterRacCompanyComponent,
-    canActivate: [AuthGuardService],
+    canActivate: [AdminGuardService],
   },
   {
     path: 'register-flight-company',
     component: RegisterFlightCompanyComponent,
-    canActivate: [AuthGuardService],
+    canActivate: [AdminGuardService],
   },
   {
     path: 'register-administrator',
     component: RegisterAdministratorComponent,
-    canActivate: [AuthGuardService],
+    canActivate: [AdminGuardService],
   },
 ];
 
