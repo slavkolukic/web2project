@@ -9,9 +9,14 @@ import { User } from '../../models/user';
   providedIn: 'root',
 })
 export class AdminService {
-  private newRacAdminPath = environment.apiUrl + '/user/assignRacCompany';
-  private registerNewAdminPath = environment.apiUrl + '/user/newAdmin';
+  static ngInjectableDef = undefined; //nece da radi bez ovoga
+  private newRacAdminPath = environment.apiUrl + '/admin/assignRacCompany';
+  private registerNewAdminPath = environment.apiUrl + '/admin/newAdmin';
   private getAllUsersPath = environment.apiUrl + '/user/getAllUsers';
+  private getUserProfileInfoPath =
+    environment.apiUrl + '/user/getUserProfileInfo';
+  private saveUserProfileChangesPath =
+    environment.apiUrl + '/user/saveUserProfileChanges';
   constructor(private http: HttpClient) {}
 
   registerNewRacAdmin(data): Observable<any> {
@@ -26,5 +31,18 @@ export class AdminService {
     return this.http
       .get(this.getAllUsersPath)
       .pipe(map((res) => res['allUsers']));
+  }
+
+  getProfileInfo(data) {
+    var body = {
+      ownerId: data,
+    };
+    return this.http
+      .post(this.getUserProfileInfoPath, body)
+      .pipe(map((res) => res['user']));
+  }
+
+  saveProfileChanges(data): any {
+    return this.http.post(this.saveUserProfileChangesPath, data);
   }
 }

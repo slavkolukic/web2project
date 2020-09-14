@@ -16,53 +16,63 @@
   <app-profile-navbar></app-profile-navbar>
   <div class="container transparent-bg">
     <br />
-    <form action="/action_page.php">
+    <form [formGroup]="editProfileForm" (ngSubmit)="saveProfileChanges()">
       <div class="mx-4 form-group">
-        <label for="email">Email address:</label>
+        <label>Email address: {{ currentUserEmail }}</label>
         <input
           type="email"
           class="form-control"
           placeholder="Email..."
-          id="email"
+          formControlName="email"
         />
       </div>
       <div class="mx-4 form-group">
-        <label for="firstName">First name:</label>
+        <label>First name: {{ currentUserName }}</label>
         <input
           type="text"
           class="form-control"
           placeholder="First name..."
-          id="firstName"
+          formControlName="name"
         />
       </div>
 
       <div class="mx-4 form-group">
-        <label for="lastName">Last name:</label>
+        <label>Last name: {{ currentUserLastName }}</label>
         <input
           type="text"
           class="form-control"
           placeholder="Last name..."
-          id="lastName"
+          formControlName="lastName"
         />
       </div>
 
       <div class="mx-4 form-group">
-        <label for="city">City:</label>
+        <label>City: {{ currentUserCity }}</label>
         <input
           type="text"
           class="form-control"
           placeholder="City..."
-          id="city"
+          formControlName="city"
         />
       </div>
 
       <div class="mx-4 form-group">
-        <label for="phone">Phone number:</label>
+        <label>Phone number: {{ currentUserPhoneNumber }}</label>
         <input
-          type="text"
+          type="number"
           class="form-control"
           placeholder="Phone number..."
-          id="phone"
+          formControlName="phoneNumber"
+        />
+      </div>
+
+      <div class="mx-4 form-group">
+        <label>New password </label>
+        <input
+          type="password"
+          class="form-control"
+          placeholder="New password..."
+          formControlName="newPassword"
         />
       </div>
 

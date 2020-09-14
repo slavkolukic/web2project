@@ -18,12 +18,15 @@ export class UnsignedRacServicesCarsComponent implements OnInit {
   constructor(
     private signedService: SignedUserService,
     private fb: FormBuilder,
-    private authService: AuthService
+    public authService: AuthService
   ) {
     this.searchCarsForm = this.fb.group({
       firstDayOfReservation: ['', Validators.required],
       lastDayOfReservation: ['', Validators.required],
-      numberOfSeats: ['', Validators.required],
+      numberOfSeats: [
+        '',
+        [Validators.required, Validators.max(5), Validators.min(2)],
+      ],
       typeOfCar: ['', Validators.required],
       pricePerDay: ['', Validators.required],
     });
@@ -47,7 +50,9 @@ export class UnsignedRacServicesCarsComponent implements OnInit {
   }
 
   searchCars() {
-    this.reservationOn = true;
+    if (this.authService.getUserRole() != 'NonRegistered')
+      this.reservationOn = true;
+
     this.searchCarsForm.patchValue({
       numberOfSeats: String(this.searchCarsForm.get('numberOfSeats').value),
     });
@@ -100,19 +105,31 @@ export class UnsignedRacServicesCarsComponent implements OnInit {
   }
 
   makeCarReservation(carIdd: string, pricePerDayy: number) {
-    var data = {
-      firstDayOfReservation: this.searchCarsForm.get('firstDayOfReservation')
-        .value,
-      lastDayOfReservation: this.searchCarsForm.get('lastDayOfReservation')
-        .value,
-      pricePerDay: String(pricePerDayy),
-      carId: carIdd,
-      ownerId: this.authService.getUserId(),
-    };
+    if (
+      this.searchCarsForm.get('firstDayOfReservation').value == '' ||
+      this.searchCarsForm.get('lastDayOfReservation').value == ''
+    ) {
+      alert('Dates are required in order to make reservation!');
+    } else {
+      var data = {
+        firstDayOfReservation: this.searchCarsForm.get('firstDayOfReservation')
+          .value,
+        lastDayOfReservation: this.searchCarsForm.get('lastDayOfReservation')
+          .value,
+        pricePerDay: String(pricePerDayy),
+        carId: carIdd,
+        ownerId: this.authService.getUserId(),
+      };
 
-    this.signedService.makeCarReservation(data).subscribe((data) => {
-      alert(data.message);
-    });
+      this.signedService.makeCarReservation(data).subscribe((data) => {
+        alert(data.message);
+      });
+    }
+  }
+
+  getCarRating(ratings: number, numOfRatings: number): string {
+    if (numOfRatings == 0) return 'No ratings';
+    else return String(ratings / numOfRatings);
   }
 
   ngOnInit(): void {}

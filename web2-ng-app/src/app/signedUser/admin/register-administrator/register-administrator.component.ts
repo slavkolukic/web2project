@@ -29,7 +29,7 @@ export class RegisterAdministratorComponent implements OnInit {
       this.adminService
         .registerNewAdmin(this.newAdminForm.value)
         .subscribe((data) => {
-          console.log(data);
+          alert(data.message);
         });
     }
   }

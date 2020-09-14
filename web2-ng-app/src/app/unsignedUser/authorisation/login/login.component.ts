@@ -24,9 +24,16 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {}
 
   login() {
-    this.authService.login(this.loginForm.value).subscribe((data) => {
-      this.authService.saveToken(data['token']);
-      this.router.navigate(['home']);
-    });
+    if (
+      this.loginForm.get('email').value == '' ||
+      this.loginForm.get('password').value == ''
+    ) {
+      alert('Fields must not be empty!');
+    } else {
+      this.authService.login(this.loginForm.value).subscribe((data) => {
+        this.authService.saveToken(data['token']);
+        this.router.navigate(['home']);
+      });
+    }
   }
 }

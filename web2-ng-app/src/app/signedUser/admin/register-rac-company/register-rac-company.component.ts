@@ -28,7 +28,7 @@ export class RegisterRacCompanyComponent implements OnInit {
       this.adminService
         .registerNewRacAdmin(this.registerRacAdminForm.value)
         .subscribe((data) => {
-          console.log(data);
+          alert(data.message);
         });
     }
   }

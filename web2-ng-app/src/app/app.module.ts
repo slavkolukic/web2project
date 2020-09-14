@@ -69,7 +69,6 @@ import { Router } from '@angular/router';
     AddNewFriendComponent,
     UnsignedRacServicesCarsComponent,
     UnsignedRacServicesComponent,
-
     NavBarComponent,
   ],
   imports: [

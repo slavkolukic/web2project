@@ -41,12 +41,15 @@ export class RegisterComponent implements OnInit {
       this.registerForm.get('password').value !==
       this.registerForm.get('repeatedPassword').value
     ) {
-      alert('Passwords must be same!');
+      alert('Passwords must be the same!');
+    } else {
+      this.registerForm.patchValue({
+        phoneNumber: String(this.registerForm.get('phoneNumber').value),
+      });
+      this.authService.register(this.registerForm.value).subscribe((data) => {
+        console.log(data.message);
+        alert(data.message);
+      });
     }
-
-    this.authService.register(this.registerForm.value).subscribe((data) => {
-      console.log(data.message);
-      alert(data.message);
-    });
   }
 }

@@ -91,9 +91,9 @@
                     type="button"
                     class="dropdown-item btn-primary btn-block"
                     id="option"
-                    on-click="saveSelectedCarType('Supercar')"
+                    on-click="saveSelectedCarType('Sportscar')"
                   >
-                    Supercar
+                    Sportscar
                   </button>
                   <button
                     type="button"
@@ -150,6 +150,9 @@
         <div>
           <h4><b>Cars</b></h4>
         </div>
+        <div [hidden]="authService.getUserRole() != 'NonRegistered'">
+          <h6><b>Please login to make reservations!</b></h6>
+        </div>
       </div>
       <div class="col-sm-3"></div>
     </div>
@@ -164,7 +167,7 @@
               <th scope="col">Number of seats</th>
               <th scope="col">Car type</th>
               <th scope="col">Car rating</th>
-              <th scope="col">Price</th>
+              <th scope="col">Price per day ($)</th>
               <th scope="col" [hidden]="reservationOn == false">Reserve</th>
             </tr>
           </thead>
@@ -175,8 +178,8 @@
               <td>{{ car.year }}</td>
               <td>{{ car.numberOfSeats }}</td>
               <td>{{ car.typeOfCar }}</td>
-              <td>{{ car.carRating }}</td>
-              <td>{{ car.pricePerDay }}</td>
+              <td>{{ getCarRating(car.carRating, car.numberOfRatings) }}</td>
+              <td>{{ car.pricePerDay }} $</td>
               <td [hidden]="reservationOn == false">
                 <button
                   type="button"

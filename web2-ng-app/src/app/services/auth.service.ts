@@ -45,12 +45,14 @@ export class AuthService {
 
   getUserRole(): string {
     let jwt = this.getToken();
+    let userRole = 'NonRegistered';
+    if (jwt != null) {
+      let jwtData = jwt.split('.')[1];
+      let decodedJwtJsonData = window.atob(jwtData);
+      let decodedJwtData = JSON.parse(decodedJwtJsonData);
 
-    let jwtData = jwt.split('.')[1];
-    let decodedJwtJsonData = window.atob(jwtData);
-    let decodedJwtData = JSON.parse(decodedJwtJsonData);
-
-    let userRole = decodedJwtData.role;
+      userRole = decodedJwtData.role;
+    }
 
     return userRole;
   }
@@ -63,13 +65,14 @@ export class AuthService {
 
   getUserId(): string {
     let jwt = this.getToken();
+    let userRole = '';
+    if (jwt != null) {
+      let jwtData = jwt.split('.')[1];
+      let decodedJwtJsonData = window.atob(jwtData);
+      let decodedJwtData = JSON.parse(decodedJwtJsonData);
 
-    let jwtData = jwt.split('.')[1];
-    let decodedJwtJsonData = window.atob(jwtData);
-    let decodedJwtData = JSON.parse(decodedJwtJsonData);
-
-    let userRole = decodedJwtData.id;
-
+      userRole = decodedJwtData.id;
+    }
     return userRole;
   }
 }

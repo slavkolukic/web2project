@@ -60,7 +60,7 @@ export class UnsignedHomeComponent implements OnInit {
 
     var retVal = this.compareDate(today, endDate);
     if (retVal == 0 || retVal == -1) {
-      return 'RESERVED';
+      return 'ACTIVE';
     } else {
       return 'ENDED';
     }

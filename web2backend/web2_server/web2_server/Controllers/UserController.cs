@@ -66,14 +66,14 @@
 
                     await _mailer.SendEmailAsync(model.Email, "Email verification", confirmationLink);
 
-                    return Ok(new { message = $"Please confirm registration via email" });
+                    return Ok(new { message = $"Successfully registered! Please confirm registration via email" });
                 }
 
-                return BadRequest(result.Errors);
+                return Ok(new { message = result.Errors });
             }
             else
             {
-                return BadRequest(new { message = "Email already exist" });
+                return Ok(new { message = "Email already exists!" });
             }
         }
 
@@ -135,56 +135,6 @@
             var token = generateJwtToken(user);
 
             return Ok(new { token });
-        }
-
-        [HttpPost]
-        [Route("newAdmin")]
-        public async Task<IActionResult> GiveUserAdminRights(NewAdminModel newAdminModel)
-        {
-            var userExists = await userManager.FindByEmailAsync(newAdminModel.email);
-            if (userExists == null)
-            {
-                return BadRequest(new { message = "User with given email does not exist!" });
-            }
-
-            if (userExists.Role == UserRole.SystemAdmin)
-            {
-                return Ok(new { message = "User with given email is already admin!" });
-            }
-
-            userExists.Role = UserRole.SystemAdmin;
-
-            IdentityResult result = await userManager.UpdateAsync(userExists);
-            //await _context.SaveChangesAsync();
-
-            return Ok($"User with email {newAdminModel.email} is now admin");
-        }
-
-        [HttpPost]
-        [Route("assignRacCompany")]
-        public async Task<IActionResult> AssignRacCompanyToUser(RaCAssignmentModel racAssignmentModel)
-        {
-            var owner = _dbContext.Users.SingleOrDefault(u => u.Email == racAssignmentModel.OwnerEmail);
-            if (owner == null)
-            {
-                return Ok(new { message = "User with given email does not exist!" });
-            }
-
-            //if (owner.RaCCompany != null)
-            //{
-            //    return Ok(new { message = "User already owns another company!" });
-            //}
-
-            RentACarCompany rac = new RentACarCompany();
-            rac.CompanyName = racAssignmentModel.CompanyName;
-            rac.Offices = new Collection<Office>();
-            owner.RaCCompany = rac;
-
-            owner.Role = UserRole.CarAdmin;
-
-            _dbContext.SaveChanges();
-
-            return Ok(owner);
         }
 
         [HttpGet]
@@ -266,19 +216,22 @@
         public async Task<IActionResult> GetFilteredCars(FilteredCarsModel filteredCarsModel) //Koristimo samo da smjestimo id
         {
             bool parseDates = true;
-            if (filteredCarsModel.FirstDayOfReservation == "" || filteredCarsModel.LastDayOfReservation == "")
+            if (filteredCarsModel.FirstDayOfReservation == ""
+                || filteredCarsModel.FirstDayOfReservation == null
+                || filteredCarsModel.LastDayOfReservation == ""
+                || filteredCarsModel.LastDayOfReservation == null)
                 parseDates = false;
 
             bool parseNumberOfSeats = true;
-            if (filteredCarsModel.NumberOfSeats == "")
+            if (String.IsNullOrEmpty(filteredCarsModel.NumberOfSeats) || filteredCarsModel.NumberOfSeats == "null")
                 parseNumberOfSeats = false;
 
             bool parsePricePerDay = true;
-            if (filteredCarsModel.PricePerDay == "")
+            if (filteredCarsModel.PricePerDay == "null" || String.IsNullOrEmpty(filteredCarsModel.PricePerDay))
                 parsePricePerDay = false;
 
             bool parseTypeOfCar = true;
-            if (filteredCarsModel.TypeOfCar == "")
+            if (filteredCarsModel.TypeOfCar == "null" || String.IsNullOrEmpty(filteredCarsModel.TypeOfCar))
                 parseTypeOfCar = false;
 
             DateTime from = new DateTime();
@@ -293,17 +246,38 @@
             List<Car> allCars = _dbContext.Cars.Include(x => x.CarReservations).ToList();
             List<Car> retCars = new List<Car>();
 
+            if (allCars.Count == 0 || allCars == null)
+                return Ok(new { retCars });
+
             bool addCar = true;
 
             foreach (var car in allCars)
             {
                 addCar = true;
-                if (Int32.Parse(filteredCarsModel.NumberOfSeats) > car.NumberOfSeats ||
-                    Int32.Parse(filteredCarsModel.PricePerDay) > car.PricePerDay ||
-                    filteredCarsModel.TypeOfCar != car.TypeOfCar)
+                if (parseNumberOfSeats)
                 {
-                    addCar = false;
-                    continue;
+                    if (Int32.Parse(filteredCarsModel.NumberOfSeats) > car.NumberOfSeats)
+                    {
+                        addCar = false;
+                        continue;
+                    }
+                }
+                else if (parsePricePerDay)
+                {
+                    if (Int32.Parse(filteredCarsModel.PricePerDay) < car.PricePerDay)
+                    {
+                        addCar = false;
+                        continue;
+                    }
+                }
+
+                if (parseTypeOfCar)
+                {
+                    if (filteredCarsModel.TypeOfCar != car.TypeOfCar)
+                    {
+                        addCar = false;
+                        continue;
+                    }
                 }
                 else
                 {
@@ -357,24 +331,124 @@
 
         [HttpPost]
         [Route("getAllUserCarReservations")]
-        public async Task<IActionResult> GetAllUserCarReservations(IdModel userModel) //Koristimo samo da smjestimo id
+        public async Task<IActionResult> GetAllUserCarReservations(IdModel userModel)
         {
             User user = _dbContext.Users.Include(x => x.RaCCompany).ThenInclude(x => x.Offices).ThenInclude(x => x.Cars).ThenInclude(x => x.CarReservations).Where(x => x.Id == userModel.Id).SingleOrDefault();
-            List<Office> userOffices = user.RaCCompany.Offices.ToList();
-            List<CarReservation> retReservations = new List<CarReservation>();
-
-            foreach (var office in userOffices)
+            if (user != null)
             {
-                foreach (var car in office.Cars)
+                try
                 {
-                    foreach (var carReservation in car.CarReservations)
+                    var racCompany = user.RaCCompany as RentACarCompany;
+                    if (racCompany != null)
                     {
-                        retReservations.Add(carReservation);
+                        var officesCompany = racCompany.Offices.ToList() as List<Office>;
+                        if (officesCompany != null)
+                        {
+                            List<Office> userOffices = user.RaCCompany.Offices.ToList();
+                            List<CarReservation> retReservations = new List<CarReservation>();
+
+                            foreach (var office in userOffices)
+                            {
+                                foreach (var car in office.Cars)
+                                {
+                                    foreach (var carReservation in car.CarReservations)
+                                    {
+                                        retReservations.Add(carReservation);
+                                    }
+                                }
+                            }
+                            return Ok(new { retReservations });
+                        }
                     }
                 }
+                catch (NullReferenceException nre)
+                {
+                    return Ok(new { retReservations = "Reservation history is empty!" });
+                }
             }
+            return Ok(new { retReservations = "There is no user with this id!" });
+        }
 
-            return Ok(new { retReservations });
+        [HttpPost]
+        [Route("getUserProfileInfo")]
+        public async Task<IActionResult> GetUserProfileInfo(UserIdModel userIdModel)
+        {
+            User user = _dbContext.Users.Where(x => x.Id == userIdModel.OwnerId).FirstOrDefault();
+            if (user != null)
+            {
+                if (user.Role == UserRole.Registered
+                || user.Role == UserRole.SystemAdmin
+                || user.Role == UserRole.AirlineAdmin
+                || user.Role == UserRole.CarAdmin)
+                {
+                    return Ok(new { user });
+                }
+                else
+                {
+                    return Unauthorized(new { user = "User does not have permission for this method!" });
+                }
+            }
+            else
+            {
+                return Ok(new { user = "User with this id does not exist!" });
+            }
+        }
+
+        [HttpPost]
+        [Route("saveUserProfileChanges")]
+        public async Task<IActionResult> SaveUserProfileChanges(ProfileInfoRequestModel profileModel)
+        {
+            User user = _dbContext.Users.Where(x => x.Id == profileModel.OwnerId).FirstOrDefault();
+            if (user != null)
+            {
+                if (user.Role == UserRole.Registered
+                || user.Role == UserRole.SystemAdmin
+                || user.Role == UserRole.AirlineAdmin
+                || user.Role == UserRole.CarAdmin)
+                {
+                    if (profileModel.Email != "null" && !String.IsNullOrEmpty(profileModel.Email))
+                    {
+                        user.Email = profileModel.Email;
+                    }
+
+                    if (profileModel.Name != "null" && !String.IsNullOrEmpty(profileModel.Name))
+                    {
+                        user.Name = profileModel.Name;
+                    }
+
+                    if (profileModel.LastName != "null" && !String.IsNullOrEmpty(profileModel.LastName))
+                    {
+                        user.LastName = profileModel.LastName;
+                    }
+
+                    if (profileModel.PhoneNumber != "null" && !String.IsNullOrEmpty(profileModel.PhoneNumber))
+                    {
+                        user.PhoneNumber = profileModel.PhoneNumber;
+                    }
+
+                    if (profileModel.City != "null" && !String.IsNullOrEmpty(profileModel.City))
+                    {
+                        user.City = profileModel.City;
+                    }
+
+                    if (profileModel.NewPassword != "null" && !String.IsNullOrEmpty(profileModel.NewPassword))
+                    {
+                        var token = await userManager.GeneratePasswordResetTokenAsync(user);
+                        var result = await userManager.ResetPasswordAsync(user, token, profileModel.NewPassword);
+                    }
+
+                    _dbContext.SaveChanges();
+                    return Ok(new { message = "All changes are successfully saved!" });
+                }
+                else
+                {
+                    return Ok(new { message = "User does not have permission for this method!" });
+                }
+            }
+            else
+            {
+                return Ok(new { message = "User with this id does not exist!" });
+            }
         }
 
         private string generateJwtToken(User user)
