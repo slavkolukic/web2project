@@ -86,6 +86,21 @@ export class UnsignedRacServicesCarsComponent implements OnInit {
     var from = this.searchCarsForm.get('firstDayOfReservation').value;
     var to = this.searchCarsForm.get('lastDayOfReservation').value;
 
+    var fromDate = new Date(from);
+    var toDate = new Date(from);
+    var CurrentDate = new Date();
+    console.log(CurrentDate);
+    CurrentDate.setHours(0, 0, 0, 0);
+
+    if (fromDate < CurrentDate) {
+      alert('Date can not be in the past!');
+      return false;
+    }
+    if (toDate < CurrentDate) {
+      alert('Date can not be in the past!');
+      return false;
+    }
+
     var from_splitted = from.split('-');
     var to_splitted = to.split('-');
 

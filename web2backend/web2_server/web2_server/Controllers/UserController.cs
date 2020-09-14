@@ -291,7 +291,8 @@
                         continue;
                     }
                 }
-                else if (parsePricePerDay)
+
+                if (parsePricePerDay)
                 {
                     if (Int32.Parse(filteredCarsModel.PricePerDay) < car.PricePerDay)
                     {
@@ -308,21 +309,19 @@
                         continue;
                     }
                 }
-                else
-                {
-                    foreach (var reservation in car.CarReservations)
-                    {
-                        if (reservation.FirstDayOfReservaton >= from && reservation.FirstDayOfReservaton <= to)
-                        {
-                            addCar = false;
-                            break;
-                        }
 
-                        if (reservation.LastDayOfReservaton >= from && reservation.LastDayOfReservaton <= to)
-                        {
-                            addCar = false;
-                            break;
-                        }
+                foreach (var reservation in car.CarReservations)
+                {
+                    if (reservation.FirstDayOfReservaton >= from && reservation.FirstDayOfReservaton <= to)
+                    {
+                        addCar = false;
+                        break;
+                    }
+
+                    if (reservation.LastDayOfReservaton >= from && reservation.LastDayOfReservaton <= to)
+                    {
+                        addCar = false;
+                        break;
                     }
                 }
 
