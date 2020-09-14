@@ -96,7 +96,7 @@ namespace web2_server.Controllers
 
         [HttpPost]
         [Route("deleteOffice")]
-        public async Task<IActionResult> DeleteOffice(OfficeIdModel officeIdModel)
+        public async Task<IActionResult> DeleteOffice(IdModel officeIdModel)
         {
             Office officeToRemove = _dbContext.Offices.Where(x => x.Id == Int32.Parse(officeIdModel.Id)).SingleOrDefault();
             _dbContext.Offices.Remove(officeToRemove);
@@ -106,7 +106,7 @@ namespace web2_server.Controllers
 
         [HttpPost]
         [Route("getOfficeInfo")]
-        public async Task<IActionResult> GetOfficeInfo(OfficeIdModel officeIdModel)
+        public async Task<IActionResult> GetOfficeInfo(IdModel officeIdModel)
         {
             Office officeInfo = _dbContext.Offices.Where(x => x.Id == Int32.Parse(officeIdModel.Id)).SingleOrDefault();
 
@@ -171,7 +171,7 @@ namespace web2_server.Controllers
 
         [HttpPost]
         [Route("getCarInfo")]
-        public async Task<IActionResult> GetCarInfo(OfficeIdModel officeIdModel) //koristim officeIdModel da ne bih pravio i za auto
+        public async Task<IActionResult> GetCarInfo(IdModel officeIdModel) //koristim officeIdModel da ne bih pravio i za auto
         {
             Car carInfo = _dbContext.Cars.Where(x => x.Id == Int32.Parse(officeIdModel.Id)).SingleOrDefault();
 
@@ -209,7 +209,7 @@ namespace web2_server.Controllers
 
         [HttpPost]
         [Route("deleteCar")]
-        public async Task<IActionResult> DeleteCar(OfficeIdModel carModel)
+        public async Task<IActionResult> DeleteCar(IdModel carModel)
         {
             Car carToRemove = _dbContext.Cars.Where(x => x.Id == Int32.Parse(carModel.Id)).SingleOrDefault();
             if (carToRemove != null)
@@ -249,6 +249,28 @@ namespace web2_server.Controllers
             {
                 return Ok(new { retVal = "0" });
             }
+        }
+
+        [HttpPost]
+        [Route("getAllCarEarnings")]
+        public async Task<IActionResult> GetAllCarEarnings(UserIdModel userIdModel)
+        {
+            User user = _dbContext.Users.Include(x => x.RaCCompany).ThenInclude(x => x.Offices).ThenInclude(x => x.Cars).ThenInclude(x => x.CarReservations).Where(x => x.Id == userIdModel.OwnerId).SingleOrDefault();
+            List<Office> userOffices = user.RaCCompany.Offices.ToList();
+            int retVal = 0;
+
+            foreach (var office in userOffices)
+            {
+                foreach (var car in office.Cars)
+                {
+                    foreach (var carReservation in car.CarReservations)
+                    {
+                        retVal += carReservation.TotalPrice;
+                    }
+                }
+            }
+
+            return Ok(new { retVal });
         }
     }
 }

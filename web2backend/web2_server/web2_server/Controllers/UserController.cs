@@ -207,7 +207,7 @@
 
         [HttpPost]
         [Route("getRacCompanyInfo")]
-        public async Task<IActionResult> GetRacCompanyInfo(OfficeIdModel racModel) //Koristimo samo da smjestimo id
+        public async Task<IActionResult> GetRacCompanyInfo(IdModel racModel) //Koristimo samo da smjestimo id
         {
             RentACarCompany rac = _dbContext.RentACarCompanies.Where(x => x.Id == Int32.Parse(racModel.Id)).SingleOrDefault();
             if (rac != null)
@@ -218,7 +218,7 @@
 
         [HttpPost]
         [Route("getRacCompanyOffices")]
-        public async Task<IActionResult> GetRacCompanyOffices(OfficeIdModel racModel) //Koristimo samo da smjestimo id
+        public async Task<IActionResult> GetRacCompanyOffices(IdModel racModel) //Koristimo samo da smjestimo id
         {
             RentACarCompany rac = _dbContext.RentACarCompanies.Include(x => x.Offices).Where(x => x.Id == Int32.Parse(racModel.Id)).SingleOrDefault();
             if (rac != null)
@@ -232,7 +232,7 @@
 
         [HttpPost]
         [Route("getRacCompanyCars")]
-        public async Task<IActionResult> GetRacCompanyCars(OfficeIdModel racModel) //Koristimo samo da smjestimo id
+        public async Task<IActionResult> GetRacCompanyCars(IdModel racModel) //Koristimo samo da smjestimo id
         {
             RentACarCompany rac = _dbContext.RentACarCompanies.Include(x => x.Offices).ThenInclude(x => x.Cars).Where(x => x.Id == Int32.Parse(racModel.Id)).SingleOrDefault();
 
@@ -353,6 +353,28 @@
             _dbContext.SaveChanges();
 
             return Ok(new { message = "New reservation is successfully added!" });
+        }
+
+        [HttpPost]
+        [Route("getAllUserCarReservations")]
+        public async Task<IActionResult> GetAllUserCarReservations(IdModel userModel) //Koristimo samo da smjestimo id
+        {
+            User user = _dbContext.Users.Include(x => x.RaCCompany).ThenInclude(x => x.Offices).ThenInclude(x => x.Cars).ThenInclude(x => x.CarReservations).Where(x => x.Id == userModel.Id).SingleOrDefault();
+            List<Office> userOffices = user.RaCCompany.Offices.ToList();
+            List<CarReservation> retReservations = new List<CarReservation>();
+
+            foreach (var office in userOffices)
+            {
+                foreach (var car in office.Cars)
+                {
+                    foreach (var carReservation in car.CarReservations)
+                    {
+                        retReservations.Add(carReservation);
+                    }
+                }
+            }
+
+            return Ok(new { retReservations });
         }
 
         private string generateJwtToken(User user)

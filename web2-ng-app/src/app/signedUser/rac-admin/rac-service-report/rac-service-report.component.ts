@@ -11,12 +11,14 @@ import { RacAdminService } from 'src/app/services/racAdmin/rac-admin.service';
 export class RacServiceReportComponent implements OnInit {
   serviceRating: string = '';
   allCars: Car[];
+  totalCarEarnings: number = 0;
   constructor(
     private racAdminService: RacAdminService,
     private authService: AuthService
   ) {
     this.getServiceRating();
     this.getAllCars();
+    this.getAllCarsEarnings();
   }
 
   ngOnInit(): void {}
@@ -42,5 +44,14 @@ export class RacServiceReportComponent implements OnInit {
   getCarRating(rating: any, count: any): any {
     if (count == 0) return 'No ratings yet';
     return (rating - 0) / (count - 0) + ' / 5';
+  }
+
+  getAllCarsEarnings() {
+    this.racAdminService
+      .getAllCarsEarnings(this.authService.getUserId())
+      .subscribe((data) => {
+        this.totalCarEarnings = data.retVal;
+        console.log(this.totalCarEarnings);
+      });
   }
 }

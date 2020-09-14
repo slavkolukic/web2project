@@ -21,28 +21,54 @@
         <br />
       </div>
 
-      <table class="table table-bordered text-center">
-        <thead style="background: #e37222">
-          <tr>
-            <th scope="col">Transport type</th>
-            <th scope="col">From date</th>
-            <th scope="col">To date</th>
-            <th scope="col">Total price</th>
-            <th scope="col">Status</th>
-            <th scope="col">Rate</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>1</td>
-            <td>1</td>
-            <td>1</td>
-            <td>1</td>
-            <td>1</td>
-          </tr>
-        </tbody>
-      </table>
+      <form [formGroup]="rateTransactionForm" (ngSubmit)="rateTransaction()">
+        <table class="table table-bordered text-center">
+          <thead style="background: #e37222">
+            <tr>
+              <th scope="col">Transport type</th>
+              <th scope="col">Start date</th>
+              <th scope="col">End date</th>
+              <th scope="col">Total price</th>
+              <th scope="col">Status</th>
+              <th scope="col">Rate</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let reservation of allReservations">
+            <tr>
+              <td>Car</td>
+              <td>
+                {{ reservation.firstDayOfReservaton | date: "MM/dd/yyyy" }}
+              </td>
+              <td>
+                {{ reservation.lastDayOfReservaton | date: "MM/dd/yyyy" }}
+              </td>
+              <td>{{ reservation.totalPrice }} $</td>
+              <td>
+                {{ getReservationStatus(reservation.lastDayOfReservaton) }}
+              </td>
+
+              <div class="form-group">
+                <input
+                  type="number"
+                  class="form-control"
+                  formControlName="rating"
+                />
+              </div>
+
+              <td>
+                <button
+                  type="submit"
+                  class="btn mx-4 btn-primary"
+                  id="reservation.id"
+                >
+                  Rate
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
     </div>
     <br />
     <br />
